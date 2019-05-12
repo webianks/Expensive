@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Expensive</string>
+    <string name="spent_on">Spent Money On ?</string>
+    <string name="spent_how_much">Amount ?</string>
+</resources>
