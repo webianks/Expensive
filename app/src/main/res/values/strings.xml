@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Expensive</string>
-    <string name="spent_on">Spent Money On ?</string>
-    <string name="spent_how_much">Amount ?</string>
+    <string name="spent_on">Spent Money On</string>
+    <string name="spent_how_much">Amount</string>
+    <string name="spent_on_date">Date</string>
+    <string name="done">Done</string>
 </resources>

@@ -29,11 +29,11 @@
                     android:layout_height="wrap_content"/>
             <TextView
                     android:id="@+id/title"
-                    android:layout_marginTop="25dp"
-                    android:paddingBottom="25dp"
+                    android:layout_marginTop="35dp"
+                    android:paddingBottom="15dp"
                     android:textSize="22sp"
-                    android:textColor="@color/Grey_800"
-                    android:fontFamily="@font/righteous_regular"
+                    android:textColor="@color/Grey_900"
+                    android:fontFamily="@font/google_sans"
                     android:layout_gravity="center_horizontal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -90,7 +90,6 @@
                     android:layout_width="match_parent"
                     android:hint="@string/spent_how_much"
                     app:boxBackgroundMode="none"
-                    android:layout_marginBottom="@dimen/double_standard"
                     android:layout_marginTop="@dimen/standard"
                     app:boxBackgroundColor="@color/Grey_100"
                     android:layout_height="wrap_content">
@@ -105,6 +104,30 @@
                         android:paddingTop="@dimen/half"
                         android:background="@drawable/dashed_line_bg"
                         android:inputType="number"
+                        android:fontFamily="@font/google_sans"
+                />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:hint="@string/spent_on_date"
+                    app:boxBackgroundMode="none"
+                    android:layout_marginBottom="@dimen/double_standard"
+                    android:layout_marginTop="@dimen/standard"
+                    app:boxBackgroundColor="@color/Grey_100"
+                    android:layout_height="wrap_content">
+
+                <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/date_et"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/Grey_900"
+                        android:maxLines="1"
+                        android:textStyle="bold"
+                        android:focusableInTouchMode="false"
+                        android:paddingTop="@dimen/half"
+                        android:background="@drawable/dashed_line_bg"
+                        android:inputType="date"
                         android:fontFamily="@font/google_sans"
                 />
             </com.google.android.material.textfield.TextInputLayout>
@@ -124,14 +147,17 @@
             app:layout_constraintEnd_toEndOf="parent"/>
 
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <com.google.android.material.button.MaterialButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/standard"
-            app:backgroundTint="@color/colorAccent"
+            android:text="@string/done"
+            android:textStyle="bold"
+            app:cornerRadius="20dp"
+            android:fontFamily="@font/google_sans"
             app:layout_constraintBottom_toTopOf="@id/marginSpacer"
             app:layout_constraintEnd_toEndOf="@id/expense_input_card"
-            android:src="@drawable/round_done_outline_24"
+            app:icon="@drawable/round_done_outline_24"
     />
 
 
