@@ -17,5 +17,6 @@
     <color name="Grey_900">#212121</color>
     <color name="fab_color">#9fa8da</color>
     <color name="fab_icon_color">#304ffe</color>
+    <color name="accent_tint">#117986cb</color>
 
 </resources>

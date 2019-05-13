@@ -32,6 +32,7 @@
                     android:layout_marginTop="35dp"
                     android:paddingBottom="15dp"
                     android:textSize="22sp"
+                    android:textStyle="bold"
                     android:textColor="@color/Grey_900"
                     android:fontFamily="@font/google_sans"
                     android:layout_gravity="center_horizontal"
@@ -100,10 +101,12 @@
                         android:textColor="@color/Grey_900"
                         android:maxLines="1"
                         android:textStyle="bold"
+                        android:drawablePadding="@dimen/half"
                         android:drawableStart="@drawable/ic_rupee_indian"
                         android:paddingTop="@dimen/half"
                         android:background="@drawable/dashed_line_bg"
                         android:inputType="number"
+                        app:drawableTint="@color/Grey_800"
                         android:fontFamily="@font/google_sans"
                 />
             </com.google.android.material.textfield.TextInputLayout>
@@ -123,7 +126,10 @@
                         android:layout_height="wrap_content"
                         android:textColor="@color/Grey_900"
                         android:maxLines="1"
+                        android:drawableStart="@drawable/round_calendar_today_24"
                         android:textStyle="bold"
+                        app:drawableTint="@color/Grey_600"
+                        android:drawablePadding="14dp"
                         android:focusableInTouchMode="false"
                         android:paddingTop="@dimen/half"
                         android:background="@drawable/dashed_line_bg"
@@ -148,6 +154,7 @@
 
 
     <com.google.android.material.button.MaterialButton
+            android:id="@+id/done"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/standard"
@@ -160,5 +167,7 @@
             app:icon="@drawable/round_done_outline_24"
     />
 
+
+    <include layout="@layout/this_month"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              app:layout_constraintTop_toBottomOf="@id/done"
+              app:layout_constraintEnd_toEndOf="@id/expense_input_card"
+>
+
+    <com.google.android.material.button.MaterialButton
+            android:id="@+id/current_month"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/google_sans"
+            android:textSize="14sp"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:textStyle="bold"
+            app:strokeColor="@color/colorPrimary"
+            app:strokeWidth="1dp"
+            app:cornerRadius="20dp"
+            android:textColor="@color/colorPrimary"
+            android:layout_marginStart="@dimen/double_standard"
+            android:layout_marginTop="@dimen/double_standard"
+            android:layout_marginEnd="@dimen/double_standard"
+    />
+
+    <com.google.android.material.card.MaterialCardView
+            android:layout_width="250dp"
+            android:layout_margin="@dimen/standard"
+            android:layout_height="120dp"
+            app:cardElevation="0dp"
+            app:strokeWidth="0.5dp"
+            app:cardCornerRadius="10dp"
+            app:strokeColor="@color/Grey_400"
+            app:cardBackgroundColor="@color/colorPrimary"
+    >
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:layout_gravity="center"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:fontFamily="@font/google_sans"
+                android:text="Expense 1"
+        />
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+            android:layout_width="280dp"
+            android:layout_margin="@dimen/standard"
+            android:layout_height="120dp"
+            app:cardElevation="0dp"
+            app:strokeWidth="0.5dp"
+            app:cardCornerRadius="10dp"
+            app:strokeColor="@color/Grey_400"
+            app:cardBackgroundColor="@color/colorAccent"
+    >
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:layout_gravity="center"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:fontFamily="@font/google_sans"
+                android:text="Expense 2"
+        />
+
+    </com.google.android.material.card.MaterialCardView>
+
+
+
+
+</LinearLayout>

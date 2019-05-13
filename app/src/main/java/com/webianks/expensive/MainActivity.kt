@@ -6,11 +6,14 @@ import android.os.Bundle
 import android.widget.DatePicker
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
+import java.text.SimpleDateFormat
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var currentMonthEt: MaterialButton
     private lateinit var dateEt: TextInputEditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -18,7 +21,13 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         dateEt = findViewById(R.id.date_et)
+        currentMonthEt = findViewById(R.id.current_month)
         dateEt.setOnClickListener { showDatePickerDialog() }
+
+        val cal = Calendar.getInstance()
+        val currentMonth = SimpleDateFormat("MMM YYYY").format(cal.time)
+
+        currentMonthEt.text = currentMonth
 
     }
 
