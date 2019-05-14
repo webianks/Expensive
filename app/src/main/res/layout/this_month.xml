@@ -25,55 +25,10 @@
             android:layout_marginEnd="@dimen/double_standard"
     />
 
-    <com.google.android.material.card.MaterialCardView
-            android:layout_width="250dp"
-            android:layout_margin="@dimen/standard"
-            android:layout_height="120dp"
-            app:cardElevation="0dp"
-            app:strokeWidth="0.5dp"
-            app:cardCornerRadius="10dp"
-            app:strokeColor="@color/Grey_400"
-            app:cardBackgroundColor="@color/colorPrimary"
-    >
-
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/white"
-                android:layout_gravity="center"
-                android:textStyle="bold"
-                android:textSize="18sp"
-                android:fontFamily="@font/google_sans"
-                android:text="Expense 1"
-        />
-
-    </com.google.android.material.card.MaterialCardView>
-
-    <com.google.android.material.card.MaterialCardView
-            android:layout_width="280dp"
-            android:layout_margin="@dimen/standard"
-            android:layout_height="120dp"
-            app:cardElevation="0dp"
-            app:strokeWidth="0.5dp"
-            app:cardCornerRadius="10dp"
-            app:strokeColor="@color/Grey_400"
-            app:cardBackgroundColor="@color/colorAccent"
-    >
-
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/white"
-                android:layout_gravity="center"
-                android:textStyle="bold"
-                android:textSize="18sp"
-                android:fontFamily="@font/google_sans"
-                android:text="Expense 2"
-        />
-
-    </com.google.android.material.card.MaterialCardView>
-
-
+    <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/month_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 
 
 </LinearLayout>
