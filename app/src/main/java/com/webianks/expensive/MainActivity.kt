@@ -39,12 +39,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getCurrentMonthData() {
-        val monthList = ArrayList<String>()
-        monthList.add("Cooler / 5500 / 1 May 2019")
-        monthList.add("Cooler / 5500 / 1 May 2019")
-        monthList.add("Cooler / 5500 / 1 May 2019")
-        monthList.add("Cooler / 5500 / 1 May 2019")
-        monthList.add("Cooler / 5500 / 1 May 2019")
+        val monthList = ArrayList<Expense>()
+
+        monthList.add(Expense(spentOn = "OnePlus 7Pro",date = "15 May 2019",amount = "₹49999"))
+        monthList.add(Expense(spentOn = "Some Cool Stuff",date = "14 May 2019",amount = "₹3289"))
+        monthList.add(Expense(spentOn = "Stuff",date = "10 May 2019",amount = "₹2422"))
+        monthList.add(Expense(spentOn = "Cloths",date = "02 May 2019",amount = "₹9535"))
+        monthList.add(Expense(spentOn = "Protein Powder",date = "01 May 2019",amount = "₹2482"))
+
         val adapter = MonthRecyclerViewAdapter(this,monthList)
         monthRecyclerView.adapter = adapter
     }

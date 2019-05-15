@@ -1,17 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/standard"
+                android:layout_marginBottom="@dimen/standard"
+                android:layout_marginStart="@dimen/double_standard"
+                android:layout_marginEnd="@dimen/double_standard"
+                xmlns:tools="http://schemas.android.com/tools">
 
     <TextView
-            android:id="@+id/title"
+            android:id="@+id/spent_on"
             android:fontFamily="@font/google_sans"
-            android:layout_marginStart="@dimen/double_standard"
-            android:layout_marginEnd="@dimen/double_standard"
-            android:layout_marginTop="@dimen/standard"
-            android:layout_marginBottom="@dimen/standard"
-            android:textColor="@color/Grey_800"
+            android:textColor="@color/Grey_900"
+            android:layout_width="wrap_content"
+            tools:text="OnePlus 7 Pro"
+            android:textSize="17sp"
+            android:layout_height="wrap_content"/>
+
+
+    <TextView
+            android:id="@+id/date"
+            android:fontFamily="@font/google_sans"
+            android:textColor="@color/Grey_600"
+            android:layout_width="wrap_content"
+            tools:text="12 Jun 2019"
+            android:layout_below="@id/spent_on"
+            android:layout_height="wrap_content"/>
+
+
+    <TextView
+            android:id="@+id/amount"
+            android:layout_alignParentEnd="true"
+            tools:text="₹50000"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:fontFamily="@font/google_sans"
+            android:textColor="@color/colorAccent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
-</LinearLayout>
+
+    <View
+            android:layout_marginTop="@dimen/double_standard"
+            android:layout_below="@id/amount"
+            android:layout_width="match_parent"
+            android:background="@color/Grey_200"
+            android:layout_height="1dp"/>
+</RelativeLayout>

@@ -13,9 +13,9 @@ import java.util.List;
 public class MonthRecyclerViewAdapter extends RecyclerView.Adapter<MonthRecyclerViewAdapter.VH> {
 
     private Context context;
-    private List<String> expenseList;
+    private List<Expense> expenseList;
 
-    public MonthRecyclerViewAdapter(Context context, List<String> expenseList) {
+    public MonthRecyclerViewAdapter(Context context, List<Expense> expenseList) {
         this.context = context;
         this.expenseList = expenseList;
     }
@@ -29,7 +29,7 @@ public class MonthRecyclerViewAdapter extends RecyclerView.Adapter<MonthRecycler
 
     @Override
     public void onBindViewHolder(@NonNull MonthRecyclerViewAdapter.VH holder, int position) {
-        holder.title.setText(expenseList.get(position));
+        holder.bind(expenseList.get(position));
     }
 
     @Override
@@ -38,11 +38,21 @@ public class MonthRecyclerViewAdapter extends RecyclerView.Adapter<MonthRecycler
     }
 
     class VH extends RecyclerView.ViewHolder {
-        private TextView title;
+        private TextView spentOn;
+        private TextView date;
+        private TextView amount;
 
         VH(@NonNull View itemView) {
             super(itemView);
-            title = itemView.findViewById(R.id.title);
+            spentOn = itemView.findViewById(R.id.spent_on);
+            date = itemView.findViewById(R.id.date);
+            amount = itemView.findViewById(R.id.amount);
+        }
+
+        void bind(Expense expense) {
+            spentOn.setText(expense.getSpentOn());
+            date.setText(expense.getDate());
+            amount.setText(expense.getAmount());
         }
     }
 }

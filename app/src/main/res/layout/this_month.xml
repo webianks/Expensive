@@ -18,17 +18,28 @@
             android:textStyle="bold"
             app:strokeColor="@color/colorPrimary"
             app:strokeWidth="1dp"
-            app:cornerRadius="20dp"
+            app:cornerRadius="5dp"
             android:textColor="@color/colorPrimary"
             android:layout_marginStart="@dimen/double_standard"
-            android:layout_marginTop="@dimen/double_standard"
+            android:layout_marginTop="@dimen/standard"
             android:layout_marginEnd="@dimen/double_standard"
     />
 
-    <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/month_recyclerview"
+    <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_marginTop="@dimen/standard"
+            app:strokeWidth="0.5dp"
+            app:cardCornerRadius="0dp"
+            app:strokeColor="@color/Grey_400"
+            app:cardElevation="4dp"
+            android:layout_height="wrap_content">
 
 
+        <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/month_recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+
+    </com.google.android.material.card.MaterialCardView>
 </LinearLayout>
