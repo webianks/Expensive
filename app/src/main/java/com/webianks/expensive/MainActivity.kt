@@ -1,29 +1,40 @@
 package com.webianks.expensive
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.Dialog
+import android.content.Context
+import android.content.DialogInterface
 import android.os.Bundle
 import android.os.UserHandle
 import android.util.Log
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.lottie.LottieAnimationView
 import com.bumptech.glide.Glide
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.firestore.FirebaseFirestore
 import com.mikhaellopez.circularimageview.CircularImageView
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.single_expense_layout.*
+import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListener {
 
+    private lateinit var monthList: ArrayList<Expense>
+    private lateinit var adapter: MonthRecyclerViewAdapter
     private lateinit var db: FirebaseFirestore
     private lateinit var currentMonthEt: MaterialButton
     private lateinit var dateEt: TextInputEditText
@@ -35,10 +46,21 @@ class MainActivity : AppCompatActivity() {
     private lateinit var addingProgress: ProgressBar
     private lateinit var noExpenses: TextView
     private lateinit var animationView: LottieAnimationView
+    private lateinit var expenseInputCard: View
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        initViews()
+
+        db = FirebaseFirestore.getInstance()
+
+        getCurrentMonthData()
+
+    }
+
+    private fun initViews() {
 
         userImage = findViewById(R.id.userImage)
         dateEt = findViewById(R.id.date_et)
@@ -49,13 +71,20 @@ class MainActivity : AppCompatActivity() {
         currentMonthEt = findViewById(R.id.current_month)
         addingProgress = findViewById(R.id.adding_progress)
         animationView = findViewById(R.id.animation_view)
+        expenseInputCard = findViewById(R.id.expense_input_card)
         monthRecyclerView = findViewById(R.id.month_recyclerview)
+
         dateEt.setOnClickListener { showDatePickerDialog() }
-        doneBt.setOnClickListener { validateAndSaveData() }
+
+        doneBt.setOnClickListener {
+            hideKeyboard(it)
+            validateAndSaveData()
+        }
+
         monthRecyclerView.layoutManager = LinearLayoutManager(this)
 
         val cal = Calendar.getInstance()
-        val currentMonth = SimpleDateFormat("MMM YYYY",Locale.getDefault()).format(cal.time)
+        val currentMonth = SimpleDateFormat("MMM YYYY", Locale.getDefault()).format(cal.time)
 
         currentMonthEt.text = currentMonth
 
@@ -63,23 +92,20 @@ class MainActivity : AppCompatActivity() {
 
         Glide.with(this).load(image).into(userImage)
 
-        db = FirebaseFirestore.getInstance()
-
-        getCurrentMonthData()
-
     }
+
 
     private fun validateAndSaveData() {
 
-
-        if(spentOnEt.text.toString() == "" || amountEt.text.toString() == "" || dateEt.text.toString() == ""){
-            Toast.makeText(this,"Please provide all data.",Toast.LENGTH_SHORT).show()
+        if (spentOnEt.text.toString() == "" || amountEt.text.toString() == "" || dateEt.text.toString() == "") {
+            showMessage("Please add all expense details.")
             return
         }
 
         doneBt.isEnabled = false
         doneBt.isActivated = false
         addingProgress.visibility = View.VISIBLE
+        expenseInputCard.alpha = 0.3f
 
         val expense = hashMapOf(
             "item" to spentOnEt.text.toString().trim(),
@@ -92,31 +118,43 @@ class MainActivity : AppCompatActivity() {
             .addOnSuccessListener { documentReference ->
 
                 Log.d(Util.TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
-                Toast.makeText(this, "Expense added successfully.",Toast.LENGTH_SHORT).show()
+                //showMessage("Expense added successfully.")
 
-                doneBt.isEnabled = true
-                doneBt.isActivated = true
-                addingProgress.visibility = View.GONE
-
+                expenseAfterSaveBehaviour(true)
 
                 getCurrentMonthData()
             }
-            .addOnFailureListener { e ->
-                Toast.makeText(this, "Error adding expense.",Toast.LENGTH_SHORT).show()
-
-                doneBt.isEnabled = true
-                doneBt.isActivated = true
-                addingProgress.visibility = View.GONE
-
+            .addOnFailureListener {
+                showMessage("Error adding expense.")
+                expenseAfterSaveBehaviour(false)
             }
+    }
+
+    private fun expenseAfterSaveBehaviour(resetData: Boolean) {
+
+        doneBt.isEnabled = true
+        doneBt.isActivated = true
+        addingProgress.visibility = View.GONE
+        expenseInputCard.alpha = 1.0f
+
+        if (resetData) {
+            spentOnEt.text = null
+            amountEt.text = null
+            dateEt.text = null
+            spentOnEt.clearFocus()
+            amountEt.clearFocus()
+            spentOnEt.isCursorVisible = false
+            amountEt.isCursorVisible = false
+        }
     }
 
     private fun getCurrentMonthData() {
 
         animationView.visibility = View.VISIBLE
         noExpenses.visibility = View.GONE
+        monthRecyclerView.visibility = View.GONE
 
-        val monthList = ArrayList<Expense>()
+        monthList = ArrayList<Expense>()
 
         db.collection(Util.EXPENSE_COLLECTION)
             .get()
@@ -125,15 +163,16 @@ class MainActivity : AppCompatActivity() {
 
                 animationView.visibility = View.GONE
 
-                if(result.size() == 0) {
+                if (result.size() == 0) {
                     noExpenses.visibility = View.VISIBLE
 
-                }else {
+                } else {
                     for (document in result) {
                         Log.d(Util.TAG, "${document.id} => ${document.data}")
                         val dataMap = document.data
                         monthList.add(
                             Expense(
+                                id = document.id,
                                 spentOn = dataMap["item"].toString(),
                                 date = dataMap["date"].toString(),
                                 amount = dataMap["date"].toString()
@@ -141,9 +180,11 @@ class MainActivity : AppCompatActivity() {
                         )
                     }
 
-                    val adapter = MonthRecyclerViewAdapter(this, monthList)
+                    adapter = MonthRecyclerViewAdapter(this, monthList)
+                    adapter.actionListener = this
                     monthRecyclerView.adapter = adapter
                     noExpenses.visibility = View.GONE
+                    monthRecyclerView.visibility = View.VISIBLE
 
                 }
             }
@@ -170,7 +211,7 @@ class MainActivity : AppCompatActivity() {
             val year: Int = c.get(Calendar.YEAR)
             val month: Int = c.get(Calendar.MONTH)
             val day: Int = c.get(Calendar.DAY_OF_MONTH)
-            val dialog = DatePickerDialog(activity, this, year, month, day)
+            val dialog = DatePickerDialog(context, this, year, month, day)
             dialog.datePicker.maxDate = c.timeInMillis
             return dialog
         }
@@ -181,5 +222,51 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun showMessage(s: String) {
+        val snackbar: Snackbar = Snackbar.make(userImage, s, Snackbar.LENGTH_SHORT)
+        //snackbar.view.setBackgroundColor(ContextCompat.getColor(this@MainActivity, R.color.colorPrimary))
+        snackbar.show()
+    }
+
+    override fun deleteClicked(pos: Int,expense: Expense) {
+        confirmAndDelete(pos,expense)
+    }
+
+    private fun confirmAndDelete(pos:Int,expense: Expense) {
+
+        MaterialAlertDialogBuilder(this@MainActivity)
+            .setMessage("Are you sure you want to delete this expense?")
+            .setTitle("Expensive")
+            .setPositiveButton("Delete") { _, _ -> deleteNow(pos,expense) }
+            .setNegativeButton("Cancel") { it, _ ->
+                it.dismiss()
+            }
+            .show()
+
+    }
+
+    private fun deleteNow(pos: Int,expense: Expense) {
+
+        val db = FirebaseFirestore.getInstance()
+        db.collection(Util.EXPENSE_COLLECTION).document(expense.id)
+            .delete()
+            .addOnSuccessListener {
+                showMessage("Expense deleted!")
+                //getCurrentMonthData()
+                monthList.removeAt(pos)
+                adapter.notifyItemRemoved(pos)
+                if (monthList.size == 0)
+                    noExpenses.visibility = View.VISIBLE
+            }
+            .addOnFailureListener { showMessage("Error deleting expense") }
+    }
+
+    private fun hideKeyboard(view: View) {
+        try {
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(view.windowToken, 0)
+        } catch (ignored: Exception) {
+        }
+    }
 }
 

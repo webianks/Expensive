@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="wrap_content" xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_marginTop="@dimen/standard"
                 android:layout_marginBottom="@dimen/standard"
                 android:layout_marginStart="@dimen/double_standard"
@@ -39,9 +39,24 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
+
+    <com.google.android.material.button.MaterialButton
+            android:id="@+id/deleteBt"
+            android:text="@string/delete"
+            android:layout_below="@id/date"
+            app:cornerRadius="5dp"
+            android:fontFamily="@font/google_sans"
+            android:textSize="12sp"
+            android:layout_alignParentEnd="true"
+            android:textStyle="bold"
+            android:layout_marginTop="4dp"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
     <View
             android:layout_marginTop="@dimen/double_standard"
-            android:layout_below="@id/amount"
+            android:layout_below="@id/deleteBt"
             android:layout_width="match_parent"
             android:background="@color/Grey_200"
             android:layout_height="1dp"/>

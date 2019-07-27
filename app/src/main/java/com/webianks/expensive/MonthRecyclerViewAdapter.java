@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,6 +15,8 @@ public class MonthRecyclerViewAdapter extends RecyclerView.Adapter<MonthRecycler
 
     private Context context;
     private List<Expense> expenseList;
+
+    public ActionListener actionListener;
 
     public MonthRecyclerViewAdapter(Context context, List<Expense> expenseList) {
         this.context = context;
@@ -37,6 +40,10 @@ public class MonthRecyclerViewAdapter extends RecyclerView.Adapter<MonthRecycler
         return expenseList.size();
     }
 
+    interface ActionListener{
+        void deleteClicked(int pos,Expense expense);
+    }
+
     class VH extends RecyclerView.ViewHolder {
         private TextView spentOn;
         private TextView date;
@@ -47,6 +54,11 @@ public class MonthRecyclerViewAdapter extends RecyclerView.Adapter<MonthRecycler
             spentOn = itemView.findViewById(R.id.spent_on);
             date = itemView.findViewById(R.id.date);
             amount = itemView.findViewById(R.id.amount);
+
+            itemView.findViewById(R.id.deleteBt).setOnClickListener( (view)-> {
+                        if (actionListener != null)
+                            actionListener.deleteClicked(getAdapterPosition(),expenseList.get(getAdapterPosition()));
+                    });
         }
 
         void bind(Expense expense) {
@@ -55,4 +67,5 @@ public class MonthRecyclerViewAdapter extends RecyclerView.Adapter<MonthRecycler
             amount.setText(expense.getAmount());
         }
     }
+
 }

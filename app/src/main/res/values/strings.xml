@@ -4,5 +4,6 @@
     <string name="spent_how_much">Amount</string>
     <string name="spent_on_date">Date</string>
     <string name="done">Done</string>
-    <string name="no_expenses">What ??\nNo expenses this month.</string>
+    <string name="no_expenses">What ??\nNo expenses for this month.</string>
+    <string name="delete">Delete</string>
 </resources>
