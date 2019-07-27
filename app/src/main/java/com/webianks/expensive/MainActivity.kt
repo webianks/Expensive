@@ -5,7 +5,10 @@ import android.app.Dialog
 import android.os.Bundle
 import android.os.UserHandle
 import android.util.Log
+import android.view.View
 import android.widget.DatePicker
+import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -29,6 +32,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var doneBt: MaterialButton
     private lateinit var monthRecyclerView: RecyclerView
     private lateinit var userImage: CircularImageView
+    private lateinit var addingProgress: ProgressBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +44,7 @@ class MainActivity : AppCompatActivity() {
         spentOnEt = findViewById(R.id.spent_on_et)
         doneBt = findViewById(R.id.done)
         currentMonthEt = findViewById(R.id.current_month)
+        addingProgress = findViewById(R.id.adding_progress)
         monthRecyclerView = findViewById(R.id.month_recyclerview)
         dateEt.setOnClickListener { showDatePickerDialog() }
         doneBt.setOnClickListener { validateAndSaveData() }
@@ -62,21 +67,43 @@ class MainActivity : AppCompatActivity() {
 
     private fun validateAndSaveData() {
 
-        // Create a new user with a first and last name
+
+        if(spentOnEt.text.toString() == "" || amountEt.text.toString() == "" || dateEt.text.toString() == ""){
+            Toast.makeText(this,"Please provide all data.",Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        doneBt.isEnabled = false
+        doneBt.isActivated = false
+        addingProgress.visibility = View.VISIBLE
+
         val expense = hashMapOf(
-            "item" to spentOnEt.text.toString(),
-            "amount" to amountEt.text.toString(),
-            "date" to dateEt.text.toString()
+            "item" to spentOnEt.text.toString().trim(),
+            "amount" to amountEt.text.toString().trim(),
+            "date" to dateEt.text.toString().trim()
         )
 
-
-        db.collection("expenses")
+        db.collection(Util.EXPENSE_COLLECTION)
             .add(expense)
             .addOnSuccessListener { documentReference ->
-                Log.d("expensive", "DocumentSnapshot added with ID: ${documentReference.id}")
+
+                Log.d(Util.TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
+                Toast.makeText(this, "Expense added successfully.",Toast.LENGTH_SHORT).show()
+
+                doneBt.isEnabled = true
+                doneBt.isActivated = true
+                addingProgress.visibility = View.GONE
+
+
+                getCurrentMonthData()
             }
             .addOnFailureListener { e ->
-                Log.w("expensive", "Error adding document", e)
+                Toast.makeText(this, "Error adding expense.",Toast.LENGTH_SHORT).show()
+
+                doneBt.isEnabled = true
+                doneBt.isActivated = true
+                addingProgress.visibility = View.GONE
+
             }
     }
 
@@ -84,11 +111,11 @@ class MainActivity : AppCompatActivity() {
 
         val monthList = ArrayList<Expense>()
 
-        db.collection("expenses")
+        db.collection(Util.EXPENSE_COLLECTION)
             .get()
             .addOnSuccessListener { result ->
                 for (document in result) {
-                    Log.d("expensive", "${document.id} => ${document.data}")
+                    Log.d(Util.TAG, "${document.id} => ${document.data}")
                     val dataMap = document.data
                     monthList.add(Expense(spentOn = dataMap["item"].toString(), date = dataMap["date"].toString(), amount = dataMap["date"].toString()))
                 }
@@ -97,7 +124,7 @@ class MainActivity : AppCompatActivity() {
                 monthRecyclerView.adapter = adapter
             }
             .addOnFailureListener { exception ->
-                Log.w("expensive", "Error getting documents.", exception)
+                Log.w(Util.TAG, "Error getting documents.", exception)
             }
 
     }
