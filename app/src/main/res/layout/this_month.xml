@@ -35,11 +35,37 @@
             app:cardElevation="4dp"
             android:layout_height="match_parent">
 
+        <FrameLayout android:layout_width="match_parent"
+                     android:layout_height="match_parent">
 
-        <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/month_recyclerview"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/month_recyclerview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+
+            <TextView
+                    android:id="@+id/no_expenses"
+                    android:fontFamily="@font/google_sans"
+                    android:layout_width="wrap_content"
+                    android:text="@string/no_expenses"
+                    android:gravity="center"
+                    android:textStyle="italic"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"/>
+
+
+            <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/animation_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:lottie_fileName="skeleton.json"
+                    android:layout_gravity="center"
+                    app:lottie_loop="true"
+                    app:lottie_autoPlay="true"/>
+
+        </FrameLayout>
 
 
     </com.google.android.material.card.MaterialCardView>

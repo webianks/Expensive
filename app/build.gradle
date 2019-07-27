@@ -37,6 +37,8 @@ dependencies {
     implementation 'com.google.android.gms:play-services-auth:17.0.0'
 
     implementation 'com.mikhaellopez:circularimageview:4.0.1'
+    implementation "com.airbnb.android:lottie:3.0.7"
+
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'

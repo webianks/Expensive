@@ -1,18 +1,18 @@
 package com.webianks.expensive
 
+import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.Dialog
 import android.os.Bundle
 import android.os.UserHandle
 import android.util.Log
 import android.view.View
-import android.widget.DatePicker
-import android.widget.ProgressBar
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.airbnb.lottie.LottieAnimationView
 import com.bumptech.glide.Glide
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
@@ -33,6 +33,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var monthRecyclerView: RecyclerView
     private lateinit var userImage: CircularImageView
     private lateinit var addingProgress: ProgressBar
+    private lateinit var noExpenses: TextView
+    private lateinit var animationView: LottieAnimationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,15 +45,17 @@ class MainActivity : AppCompatActivity() {
         amountEt = findViewById(R.id.amount_et)
         spentOnEt = findViewById(R.id.spent_on_et)
         doneBt = findViewById(R.id.done)
+        noExpenses = findViewById(R.id.no_expenses)
         currentMonthEt = findViewById(R.id.current_month)
         addingProgress = findViewById(R.id.adding_progress)
+        animationView = findViewById(R.id.animation_view)
         monthRecyclerView = findViewById(R.id.month_recyclerview)
         dateEt.setOnClickListener { showDatePickerDialog() }
         doneBt.setOnClickListener { validateAndSaveData() }
         monthRecyclerView.layoutManager = LinearLayoutManager(this)
 
         val cal = Calendar.getInstance()
-        val currentMonth = SimpleDateFormat("MMM YYYY").format(cal.time)
+        val currentMonth = SimpleDateFormat("MMM YYYY",Locale.getDefault()).format(cal.time)
 
         currentMonthEt.text = currentMonth
 
@@ -109,21 +113,42 @@ class MainActivity : AppCompatActivity() {
 
     private fun getCurrentMonthData() {
 
+        animationView.visibility = View.VISIBLE
+        noExpenses.visibility = View.GONE
+
         val monthList = ArrayList<Expense>()
 
         db.collection(Util.EXPENSE_COLLECTION)
             .get()
             .addOnSuccessListener { result ->
-                for (document in result) {
-                    Log.d(Util.TAG, "${document.id} => ${document.data}")
-                    val dataMap = document.data
-                    monthList.add(Expense(spentOn = dataMap["item"].toString(), date = dataMap["date"].toString(), amount = dataMap["date"].toString()))
-                }
 
-                val adapter = MonthRecyclerViewAdapter(this, monthList)
-                monthRecyclerView.adapter = adapter
+
+                animationView.visibility = View.GONE
+
+                if(result.size() == 0) {
+                    noExpenses.visibility = View.VISIBLE
+
+                }else {
+                    for (document in result) {
+                        Log.d(Util.TAG, "${document.id} => ${document.data}")
+                        val dataMap = document.data
+                        monthList.add(
+                            Expense(
+                                spentOn = dataMap["item"].toString(),
+                                date = dataMap["date"].toString(),
+                                amount = dataMap["date"].toString()
+                            )
+                        )
+                    }
+
+                    val adapter = MonthRecyclerViewAdapter(this, monthList)
+                    monthRecyclerView.adapter = adapter
+                    noExpenses.visibility = View.GONE
+
+                }
             }
             .addOnFailureListener { exception ->
+                animationView.visibility = View.GONE
                 Log.w(Util.TAG, "Error getting documents.", exception)
             }
 
@@ -137,6 +162,7 @@ class MainActivity : AppCompatActivity() {
 
     companion object DatePickerFragment : DialogFragment(), DatePickerDialog.OnDateSetListener {
 
+        @SuppressLint("StaticFieldLeak")
         lateinit var instance: MainActivity
 
         override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -149,6 +175,7 @@ class MainActivity : AppCompatActivity() {
             return dialog
         }
 
+        @SuppressLint("SetTextI18n")
         override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
             instance.dateEt.setText("$dayOfMonth-${month + 1}-$year")
         }
