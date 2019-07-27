@@ -12,8 +12,6 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
-import kotlinx.android.synthetic.main.login_activity_layout.*
-import java.net.Inet4Address
 
 class LoginActivity : AppCompatActivity() {
 
@@ -28,7 +26,7 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.login_activity_layout)
 
         frame = findViewById(R.id.loginFrame)
-        val  signInButton : SignInButton = findViewById(R.id.signInButton)
+        val signInButton: SignInButton = findViewById(R.id.signInButton)
 
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
@@ -66,12 +64,11 @@ class LoginActivity : AppCompatActivity() {
     }
 
 
-
-
     public override fun onStart() {
         super.onStart()
-        val currentUser = auth.currentUser
-        updateUI(currentUser)
+        val currentUser: FirebaseUser? = auth.currentUser
+        if (currentUser != null)
+            updateUI(currentUser)
     }
 
     private fun firebaseAuthWithGoogle(acct: GoogleSignInAccount) {
@@ -85,12 +82,9 @@ class LoginActivity : AppCompatActivity() {
                     Log.d(TAG, "signInWithCredential:success")
                     val user = auth.currentUser
                     updateUI(user)
-
-                    startActivity(Intent(this,MainActivity::class.java))
-
                 } else {
                     Log.w(TAG, "signInWithCredential:failure", task.exception)
-                    Snackbar.make(loginFrame, "Authentication Failed.", Snackbar.LENGTH_SHORT).show()
+                    Snackbar.make(frame, "Authentication Failed.", Snackbar.LENGTH_SHORT).show()
                     updateUI(null)
                 }
             }
@@ -98,7 +92,10 @@ class LoginActivity : AppCompatActivity() {
 
 
     private fun updateUI(currentUser: FirebaseUser?) {
-        currentUser.hashCode()
+        val intent = Intent(this, MainActivity::class.java);
+        intent.putExtra("photo_url", currentUser?.photoUrl?.toString())
+        startActivity(intent)
+        finish()
     }
 
 }

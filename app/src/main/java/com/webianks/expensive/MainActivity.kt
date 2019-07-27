@@ -3,13 +3,17 @@ package com.webianks.expensive
 import android.app.DatePickerDialog
 import android.app.Dialog
 import android.os.Bundle
+import android.os.UserHandle
 import android.widget.DatePicker
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
+import com.mikhaellopez.circularimageview.CircularImageView
+import kotlinx.android.synthetic.main.activity_main.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -18,11 +22,13 @@ class MainActivity : AppCompatActivity() {
     private lateinit var currentMonthEt: MaterialButton
     private lateinit var dateEt: TextInputEditText
     private lateinit var monthRecyclerView: RecyclerView
+    private lateinit var userImage: CircularImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        userImage = findViewById(R.id.userImage)
         dateEt = findViewById(R.id.date_et)
         currentMonthEt = findViewById(R.id.current_month)
         monthRecyclerView = findViewById(R.id.month_recyclerview)
@@ -33,6 +39,10 @@ class MainActivity : AppCompatActivity() {
         val currentMonth = SimpleDateFormat("MMM YYYY").format(cal.time)
 
         currentMonthEt.text = currentMonth
+
+        val image: String? = intent.getStringExtra("photo_url")
+
+        Glide.with(this).load(image).into(userImage)
 
         getCurrentMonthData()
 
