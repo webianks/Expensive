@@ -40,24 +40,21 @@
             android:layout_height="wrap_content"/>
 
 
-    <com.google.android.material.button.MaterialButton
+    <ImageView
             android:id="@+id/deleteBt"
-            android:text="@string/delete"
-            android:layout_below="@id/date"
-            app:cornerRadius="5dp"
+            android:layout_below="@id/amount"
+            android:src="@drawable/outline_more_horiz_24"
             android:fontFamily="@font/google_sans"
             android:textSize="12sp"
             android:layout_alignParentEnd="true"
             android:textStyle="bold"
-            android:layout_marginTop="4dp"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
     <View
-            android:layout_marginTop="@dimen/double_standard"
+            android:layout_marginTop="@dimen/standard"
             android:layout_below="@id/deleteBt"
             android:layout_width="match_parent"
-            android:background="@color/Grey_200"
+            android:background="@drawable/dashed_line_bg"
             android:layout_height="1dp"/>
 </RelativeLayout>

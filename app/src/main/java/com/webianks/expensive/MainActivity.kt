@@ -65,7 +65,7 @@ class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListene
     private lateinit var userimageSheet: CircularImageView
     private lateinit var uid: String
     private lateinit var totalAmount: TextView
-
+    private  var total: Long = 0L
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -269,7 +269,6 @@ class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListene
                     noExpenses.visibility = View.VISIBLE
 
                 } else {
-                    var total = 0L
                     for (document in result) {
                         Log.d(Util.TAG, "${document.id} => ${document.data}")
                         val dataMap = document.data
@@ -288,7 +287,7 @@ class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListene
                     adapter.actionListener = this
                     monthRecyclerView.adapter = adapter
                     noExpenses.visibility = View.GONE
-                    totalAmount.text = "Total: $total in"
+                    totalAmount.text = "Total: $total"
                     monthRecyclerView.visibility = View.VISIBLE
 
                 }
@@ -350,6 +349,7 @@ class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListene
 
     }
 
+    @SuppressLint("SetTextI18n")
     private fun deleteNow(pos: Int, expense: Expense) {
 
         val db = FirebaseFirestore.getInstance()
@@ -360,6 +360,12 @@ class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListene
                 //getCurrentMonthData()
                 monthList.removeAt(pos)
                 adapter.notifyItemRemoved(pos)
+                total -=  expense.amount.toLong()
+                totalAmount.text = "Total $total"
+
+                if(total == 0L)
+                    totalAmount.visibility = View.GONE
+
                 if (monthList.size == 0)
                     noExpenses.visibility = View.VISIBLE
             }

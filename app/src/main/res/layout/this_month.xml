@@ -19,7 +19,6 @@
             app:strokeColor="@color/colorPrimary"
             app:strokeWidth="1dp"
             app:cornerRadius="5dp"
-            android:layout_alignParentEnd="true"
             android:textStyle="bold"
             android:textColor="@color/colorPrimary"
             android:layout_marginStart="@dimen/standard"
@@ -31,10 +30,11 @@
             android:id="@+id/totalAmount"
             android:fontFamily="@font/google_sans"
             android:textColor="@color/Grey_900"
-            android:textSize="19sp"
             android:textStyle="bold"
+            android:textSize="17sp"
+            android:layout_alignParentEnd="true"
             android:layout_marginTop="30dp"
-            android:layout_marginStart="@dimen/double_standard"
+            android:layout_marginEnd="@dimen/double_standard"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
