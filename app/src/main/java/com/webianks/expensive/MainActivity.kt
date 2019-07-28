@@ -64,6 +64,7 @@ class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListene
     private lateinit var logoutBt: MaterialButton
     private lateinit var userimageSheet: CircularImageView
     private lateinit var uid: String
+    private lateinit var totalAmount: TextView
 
 
 
@@ -101,6 +102,7 @@ class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListene
         monthRecyclerView = findViewById(R.id.month_recyclerview)
         userimageSheet = findViewById(R.id.userImageSheet)
         logoutBt = findViewById(R.id.logoutBt)
+        totalAmount = findViewById(R.id.totalAmount)
 
         val userName = findViewById<TextView>(R.id.user_name)
         val email = findViewById<TextView>(R.id.user_email)
@@ -267,15 +269,17 @@ class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListene
                     noExpenses.visibility = View.VISIBLE
 
                 } else {
+                    var total = 0L
                     for (document in result) {
                         Log.d(Util.TAG, "${document.id} => ${document.data}")
                         val dataMap = document.data
+                        total += dataMap["amount"].toString().toLong()
                         monthList.add(
                             Expense(
                                 id = document.id,
                                 spentOn = dataMap["item"].toString(),
                                 date = dataMap["date"].toString(),
-                                amount = dataMap["date"].toString()
+                                amount = dataMap["amount"].toString()
                             )
                         )
                     }
@@ -284,6 +288,7 @@ class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListene
                     adapter.actionListener = this
                     monthRecyclerView.adapter = adapter
                     noExpenses.visibility = View.GONE
+                    totalAmount.text = "Total: $total in"
                     monthRecyclerView.visibility = View.VISIBLE
 
                 }

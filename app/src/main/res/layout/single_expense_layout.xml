@@ -32,7 +32,7 @@
             android:id="@+id/amount"
             android:layout_alignParentEnd="true"
             tools:text="₹50000"
-            android:textSize="18sp"
+            android:textSize="17sp"
             android:textStyle="bold"
             android:fontFamily="@font/google_sans"
             android:textColor="@color/colorAccent"
