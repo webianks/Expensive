@@ -18,6 +18,8 @@
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             app:strokeColor="@color/colorPrimary"
             app:strokeWidth="1dp"
+            app:iconTint="@color/colorPrimary"
+            app:icon="@drawable/outline_keyboard_arrow_down_24"
             app:cornerRadius="5dp"
             android:textStyle="bold"
             android:textColor="@color/colorPrimary"

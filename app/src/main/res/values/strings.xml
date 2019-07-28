@@ -8,4 +8,6 @@
     <string name="delete">Delete</string>
     <string name="logout">Logout</string>
     <string name="google_sign_in">Sign in with Google</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">Okay</string>
 </resources>

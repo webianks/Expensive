@@ -205,10 +205,7 @@
                 app:icon="@drawable/round_done_outline_24"
         />
 
-
-
         <include layout="@layout/this_month"/>
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

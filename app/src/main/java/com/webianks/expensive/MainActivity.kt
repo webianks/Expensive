@@ -35,6 +35,7 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.mikhaellopez.circularimageview.CircularImageView
+import com.twinkle94.monthyearpicker.picker.YearMonthPickerDialog
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.single_expense_layout.*
 import java.lang.Exception
@@ -65,6 +66,7 @@ class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListene
     private lateinit var userimageSheet: CircularImageView
     private lateinit var uid: String
     private lateinit var totalAmount: TextView
+    private lateinit var currentMonthBt: MaterialButton
     private  var total: Long = 0L
 
 
@@ -103,6 +105,7 @@ class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListene
         userimageSheet = findViewById(R.id.userImageSheet)
         logoutBt = findViewById(R.id.logoutBt)
         totalAmount = findViewById(R.id.totalAmount)
+        currentMonthBt = findViewById(R.id.current_month)
 
         val userName = findViewById<TextView>(R.id.user_name)
         val email = findViewById<TextView>(R.id.user_email)
@@ -121,6 +124,10 @@ class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListene
 
         logoutBt.setOnClickListener {
             confirmAndLogout()
+        }
+
+        currentMonthBt.setOnClickListener{
+            showMonthYearPicker()
         }
 
         bottomSheet = findViewById(R.id.profile_bottom_sheet)
@@ -169,6 +176,24 @@ class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListene
 
     }
 
+    private fun showMonthYearPicker() {
+
+        val calendar: Calendar = Calendar.getInstance()
+        val yearMonthPickerDialog = YearMonthPickerDialog(this,
+            YearMonthPickerDialog.OnDateSetListener { year, month ->
+                val calendarNew: Calendar = Calendar.getInstance()
+                calendarNew.set(Calendar.YEAR, year)
+                calendarNew.set(Calendar.MONTH, month)
+                val dateFormat =  SimpleDateFormat("MMM yyyy",Locale.getDefault())
+                currentMonthBt.text = (dateFormat.format(calendarNew.time))
+
+                getCurrentMonthData()
+
+            },R.style.DialogTheme)
+
+        yearMonthPickerDialog.show()
+    }
+
     private fun confirmAndLogout() {
 
         MaterialAlertDialogBuilder(this@MainActivity)
@@ -205,6 +230,9 @@ class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListene
         doneBt.isActivated = false
         addingProgress.visibility = View.VISIBLE
         expenseInputCard.alpha = 0.3f
+        spentOnEt.isEnabled = false
+        amountEt.isEnabled = false
+        dateEt.isEnabled = false
 
 
         val expense = hashMapOf(
@@ -238,14 +266,17 @@ class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListene
         addingProgress.visibility = View.GONE
         expenseInputCard.alpha = 1.0f
 
+        spentOnEt.isEnabled = true
+        amountEt.isEnabled = true
+        dateEt.isEnabled = true
+
+
         if (resetData) {
             spentOnEt.text = null
             amountEt.text = null
             dateEt.text = null
             spentOnEt.clearFocus()
             amountEt.clearFocus()
-            spentOnEt.isCursorVisible = false
-            amountEt.isCursorVisible = false
         }
     }
 
@@ -269,6 +300,7 @@ class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListene
                     noExpenses.visibility = View.VISIBLE
 
                 } else {
+                    total = 0L
                     for (document in result) {
                         Log.d(Util.TAG, "${document.id} => ${document.data}")
                         val dataMap = document.data
@@ -358,10 +390,11 @@ class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListene
             .addOnSuccessListener {
                 showMessage("Expense deleted!")
                 //getCurrentMonthData()
+                total -= expense.amount.toLong()
+                totalAmount.text = "Total $total"
+
                 monthList.removeAt(pos)
                 adapter.notifyItemRemoved(pos)
-                total -=  expense.amount.toLong()
-                totalAmount.text = "Total $total"
 
                 if(total == 0L)
                     totalAmount.visibility = View.GONE
