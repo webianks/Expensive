@@ -6,4 +6,6 @@
     <string name="done">Done</string>
     <string name="no_expenses">What ??\nNo expenses for this month.</string>
     <string name="delete">Delete</string>
+    <string name="logout">Logout</string>
+    <string name="google_sign_in">Sign in with Google</string>
 </resources>

@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.auth.api.signin.*
 import com.google.android.gms.common.SignInButton
 import com.google.android.gms.common.api.ApiException
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -26,14 +27,14 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.login_activity_layout)
 
         frame = findViewById(R.id.loginFrame)
-        val signInButton: SignInButton = findViewById(R.id.signInButton)
+        val signInButton: MaterialButton = findViewById(R.id.signInButton)
 
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
             .build()
 
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
 
 
         auth = FirebaseAuth.getInstance()
@@ -92,8 +93,10 @@ class LoginActivity : AppCompatActivity() {
 
 
     private fun updateUI(currentUser: FirebaseUser?) {
-        val intent = Intent(this, MainActivity::class.java);
+        val intent = Intent(this, MainActivity::class.java)
         intent.putExtra("photo_url", currentUser?.photoUrl?.toString())
+        intent.putExtra("name", currentUser?.displayName)
+        intent.putExtra("email", currentUser?.email)
         startActivity(intent)
         finish()
     }
