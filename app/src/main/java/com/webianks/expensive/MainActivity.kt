@@ -63,6 +63,9 @@ class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListene
     private lateinit var expenseInputCard: View
     private lateinit var logoutBt: MaterialButton
     private lateinit var userimageSheet: CircularImageView
+    private lateinit var uid: String
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -104,6 +107,7 @@ class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListene
 
         userName.text = intent.getStringExtra("name")
         email.text = intent.getStringExtra("email")
+        uid = intent.getStringExtra("uid")
 
         dateEt.setOnClickListener { showDatePickerDialog() }
         userImage.setOnClickListener { showUserProfileSheet() }
@@ -200,7 +204,9 @@ class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListene
         addingProgress.visibility = View.VISIBLE
         expenseInputCard.alpha = 0.3f
 
+
         val expense = hashMapOf(
+            "uid" to uid,
             "item" to spentOnEt.text.toString().trim(),
             "amount" to amountEt.text.toString().trim(),
             "date" to dateEt.text.toString().trim()
@@ -247,9 +253,10 @@ class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListene
         noExpenses.visibility = View.GONE
         monthRecyclerView.visibility = View.GONE
 
-        monthList = ArrayList<Expense>()
+        monthList = ArrayList()
 
         db.collection(Util.EXPENSE_COLLECTION)
+            .whereEqualTo("uid",uid)
             .get()
             .addOnSuccessListener { result ->
 

@@ -10,9 +10,13 @@ import com.google.android.gms.common.SignInButton
 import com.google.android.gms.common.api.ApiException
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.FirebaseError
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.auth.AuthCredential
+
+
 
 class LoginActivity : AppCompatActivity() {
 
@@ -94,6 +98,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun updateUI(currentUser: FirebaseUser?) {
         val intent = Intent(this, MainActivity::class.java)
+        intent.putExtra("uid",currentUser?.uid)
         intent.putExtra("photo_url", currentUser?.photoUrl?.toString())
         intent.putExtra("name", currentUser?.displayName)
         intent.putExtra("email", currentUser?.email)
