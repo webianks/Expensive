@@ -32,6 +32,7 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.mikhaellopez.circularimageview.CircularImageView
@@ -67,7 +68,7 @@ class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListene
     private lateinit var uid: String
     private lateinit var totalAmount: TextView
     private lateinit var currentMonthBt: MaterialButton
-    private  var total: Long = 0L
+    private var total: Long = 0L
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -126,7 +127,7 @@ class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListene
             confirmAndLogout()
         }
 
-        currentMonthBt.setOnClickListener{
+        currentMonthBt.setOnClickListener {
             showMonthYearPicker()
         }
 
@@ -184,12 +185,13 @@ class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListene
                 val calendarNew: Calendar = Calendar.getInstance()
                 calendarNew.set(Calendar.YEAR, year)
                 calendarNew.set(Calendar.MONTH, month)
-                val dateFormat =  SimpleDateFormat("MMM yyyy",Locale.getDefault())
+                val dateFormat = SimpleDateFormat("MMM yyyy", Locale.getDefault())
                 currentMonthBt.text = (dateFormat.format(calendarNew.time))
 
                 getCurrentMonthData()
 
-            },R.style.DialogTheme)
+            }, R.style.DialogTheme
+        )
 
         yearMonthPickerDialog.show()
     }
@@ -234,12 +236,15 @@ class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListene
         amountEt.isEnabled = false
         dateEt.isEnabled = false
 
+        val date = SimpleDateFormat("dd-MM-yyyy",Locale.getDefault())
+            .parse(dateEt.text.toString().trim())
+
 
         val expense = hashMapOf(
             "uid" to uid,
             "item" to spentOnEt.text.toString().trim(),
             "amount" to amountEt.text.toString().trim(),
-            "date" to dateEt.text.toString().trim()
+            "date" to date
         )
 
         db.collection(Util.EXPENSE_COLLECTION)
@@ -289,7 +294,7 @@ class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListene
         monthList = ArrayList()
 
         db.collection(Util.EXPENSE_COLLECTION)
-            .whereEqualTo("uid",uid)
+            .whereEqualTo("uid", uid)
             .get()
             .addOnSuccessListener { result ->
 
@@ -305,12 +310,18 @@ class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListene
                         Log.d(Util.TAG, "${document.id} => ${document.data}")
                         val dataMap = document.data
                         total += dataMap["amount"].toString().toLong()
+
+                        val timestamp =  dataMap["date"] as Timestamp
+
+                        val date = SimpleDateFormat("dd-MMM-yyyy",Locale.getDefault())
+                            .format(timestamp.toDate())
+
                         monthList.add(
                             Expense(
                                 id = document.id,
                                 spentOn = dataMap["item"].toString(),
-                                date = dataMap["date"].toString(),
-                                amount = dataMap["amount"].toString()
+                                amount = dataMap["amount"].toString(),
+                                date = date
                             )
                         )
                     }
@@ -354,7 +365,18 @@ class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListene
 
         @SuppressLint("SetTextI18n")
         override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
-            instance.dateEt.setText("$dayOfMonth-${month + 1}-$year")
+
+            val actualMonth = month + 1
+
+            var finalMonthString: String = actualMonth.toString()
+            var finalDayString: String = dayOfMonth.toString()
+
+            if (month < 10)
+                finalMonthString = "0$actualMonth"
+            if (dayOfMonth < 10)
+                finalDayString = "0$dayOfMonth"
+
+            instance.dateEt.setText("$finalDayString-$finalMonthString-$year")
         }
     }
 
@@ -396,7 +418,7 @@ class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListene
                 monthList.removeAt(pos)
                 adapter.notifyItemRemoved(pos)
 
-                if(total == 0L)
+                if (total == 0L)
                     totalAmount.visibility = View.GONE
 
                 if (monthList.size == 0)
