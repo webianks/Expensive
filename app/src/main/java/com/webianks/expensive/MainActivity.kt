@@ -45,6 +45,9 @@ import java.util.*
 
 class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListener {
 
+    private lateinit var firstDateOfThisMonth: Date
+    private lateinit var lastDateOfThisMonth: Date
+    private lateinit var currentDate: String
     private lateinit var auth: FirebaseAuth
     private lateinit var mGoogleSignInClient: GoogleSignInClient
     private lateinit var sheetBehavior: BottomSheetBehavior<View>
@@ -166,9 +169,21 @@ class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListene
         monthRecyclerView.layoutManager = LinearLayoutManager(this)
 
         val cal = Calendar.getInstance()
-        val currentMonth = SimpleDateFormat("MMM YYYY", Locale.getDefault()).format(cal.time)
 
+        val monthYearFormat = SimpleDateFormat("MMM yyyy", Locale.getDefault())
+        val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+        val currentTime = cal.time
+
+        val currentMonth = monthYearFormat.format(currentTime)
+        currentDate = dateFormat.format(currentTime)
         currentMonthEt.text = currentMonth
+
+        val lastDate = cal.getActualMaximum(Calendar.DATE)
+        cal.set(Calendar.DATE, lastDate)
+        lastDateOfThisMonth = dateFormat.parse(dateFormat.format(cal.time))
+        cal.set(Calendar.DAY_OF_MONTH, 1)
+        firstDateOfThisMonth = dateFormat.parse(dateFormat.format(cal.time))
+
 
         val image: String? = intent.getStringExtra("photo_url")
 
@@ -179,19 +194,31 @@ class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListene
 
     private fun showMonthYearPicker() {
 
-        val calendar: Calendar = Calendar.getInstance()
-        val yearMonthPickerDialog = YearMonthPickerDialog(this,
+        val yearMonthPickerDialog = YearMonthPickerDialog(
+            this,
             YearMonthPickerDialog.OnDateSetListener { year, month ->
-                val calendarNew: Calendar = Calendar.getInstance()
-                calendarNew.set(Calendar.YEAR, year)
-                calendarNew.set(Calendar.MONTH, month)
-                val dateFormat = SimpleDateFormat("MMM yyyy", Locale.getDefault())
-                currentMonthBt.text = (dateFormat.format(calendarNew.time))
+                val calendar: Calendar = Calendar.getInstance()
+                calendar.set(Calendar.YEAR, year)
+                calendar.set(Calendar.MONTH, month)
+
+
+                val monthYearFormat = SimpleDateFormat("MMM yyyy", Locale.getDefault())
+                val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+                val currentTime = calendar.time
+
+                val currentMonth = monthYearFormat.format(currentTime)
+                currentDate = dateFormat.format(currentTime)
+                currentMonthBt.text = currentMonth
+
+                val lastDate = calendar.getActualMaximum(Calendar.DATE)
+                calendar.set(Calendar.DATE, lastDate)
+                lastDateOfThisMonth = dateFormat.parse(dateFormat.format(calendar.time))
+                calendar.set(Calendar.DAY_OF_MONTH, 1)
+                firstDateOfThisMonth = dateFormat.parse(dateFormat.format(calendar.time))
 
                 getCurrentMonthData()
 
-            }, R.style.DialogTheme
-        )
+            }, R.style.DialogTheme)
 
         yearMonthPickerDialog.show()
     }
@@ -236,7 +263,7 @@ class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListene
         amountEt.isEnabled = false
         dateEt.isEnabled = false
 
-        val date = SimpleDateFormat("dd-MM-yyyy",Locale.getDefault())
+        val date = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
             .parse(dateEt.text.toString().trim())
 
 
@@ -295,6 +322,8 @@ class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListene
 
         db.collection(Util.EXPENSE_COLLECTION)
             .whereEqualTo("uid", uid)
+            .whereGreaterThanOrEqualTo("date",firstDateOfThisMonth)
+            .whereLessThanOrEqualTo("date",lastDateOfThisMonth)
             .get()
             .addOnSuccessListener { result ->
 
@@ -303,6 +332,7 @@ class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListene
 
                 if (result.size() == 0) {
                     noExpenses.visibility = View.VISIBLE
+                    totalAmount.visibility = View.GONE
 
                 } else {
                     total = 0L
@@ -311,10 +341,8 @@ class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListene
                         val dataMap = document.data
                         total += dataMap["amount"].toString().toLong()
 
-                        val timestamp =  dataMap["date"] as Timestamp
-
-                        val date = SimpleDateFormat("dd-MMM-yyyy",Locale.getDefault())
-                            .format(timestamp.toDate())
+                        val date = SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault())
+                            .format((dataMap["date"] as Timestamp).toDate())
 
                         monthList.add(
                             Expense(
@@ -331,6 +359,7 @@ class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListene
                     monthRecyclerView.adapter = adapter
                     noExpenses.visibility = View.GONE
                     totalAmount.text = "Total: $total"
+                    totalAmount.visibility = View.VISIBLE
                     monthRecyclerView.visibility = View.VISIBLE
 
                 }
