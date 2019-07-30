@@ -12,21 +12,18 @@ import android.os.UserHandle
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.*
-import androidx.annotation.NonNull
+import android.widget.DatePicker
+import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.lottie.LottieAnimationView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.android.gms.tasks.Task
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -36,9 +33,7 @@ import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.mikhaellopez.circularimageview.CircularImageView
-import com.twinkle94.monthyearpicker.picker.YearMonthPickerDialog
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.single_expense_layout.*
+import com.webianks.expensive.monthyearpicker.picker.YearMonthPickerDialog
 import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
@@ -219,7 +214,6 @@ class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListene
                 getCurrentMonthData()
 
             }, R.style.DialogTheme)
-
         yearMonthPickerDialog.show()
     }
 
