@@ -200,13 +200,13 @@ public class YearMonthPickerDialog implements Dialog.OnClickListener {
         final View contentView = layoutInflater.inflate(R.layout.view_month_year_picker, null, false);
 
         //Initializing year and month pickers.
-        mYearPicker = (NumberPickerWithColor) contentView.findViewById(R.id.year_picker);
+        mYearPicker =  contentView.findViewById(R.id.year_picker);
         final NumberPickerWithColor monthPicker =
-                (NumberPickerWithColor) contentView.findViewById(R.id.month_picker);
+                 contentView.findViewById(R.id.month_picker);
 
         //Initializing title text views
-        final TextView monthName = (TextView) titleView.findViewById(R.id.month_name);
-        mYearValue = (TextView) titleView.findViewById(R.id.year_name);
+        final TextView monthName =  titleView.findViewById(R.id.month_name);
+        mYearValue =  titleView.findViewById(R.id.year_name);
 
         //If there is user's title color,
         if (mTextTitleColor != -1) {

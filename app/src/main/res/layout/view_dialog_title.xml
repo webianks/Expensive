@@ -12,7 +12,8 @@
         android:layout_height="wrap_content"
         android:padding="16dp"
         android:text=""
-        android:textColor="@color/colorMainBackground"
+        android:fontFamily="@font/google_sans"
+        android:textColor="@color/white"
         android:textSize="22sp" />
 
     <TextView
@@ -24,7 +25,8 @@
         android:alpha="0.39"
         android:padding="16dp"
         android:text=""
-        android:textColor="@color/colorMainBackground"
+        android:fontFamily="@font/google_sans"
+        android:textColor="@color/white"
         android:textSize="22sp" />
 
 </RelativeLayout>

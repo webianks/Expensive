@@ -189,13 +189,14 @@ class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListene
 
     private fun showMonthYearPicker() {
 
-        val yearMonthPickerDialog = YearMonthPickerDialog(
+        val calendar: Calendar = Calendar.getInstance()
+
+        val yearMonthPickerDialog =  YearMonthPickerDialog(
             this,
             YearMonthPickerDialog.OnDateSetListener { year, month ->
-                val calendar: Calendar = Calendar.getInstance()
+
                 calendar.set(Calendar.YEAR, year)
                 calendar.set(Calendar.MONTH, month)
-
 
                 val monthYearFormat = SimpleDateFormat("MMM yyyy", Locale.getDefault())
                 val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
@@ -213,7 +214,7 @@ class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListene
 
                 getCurrentMonthData()
 
-            }, R.style.DialogTheme)
+            },  calendar)
         yearMonthPickerDialog.show()
     }
 
