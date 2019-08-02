@@ -97,6 +97,7 @@ public class YearMonthPickerDialog implements Dialog.OnClickListener {
      */
     private NumberPickerWithColor mYearPicker;
     private TextView mYearValue;
+    private NumberPickerWithColor monthPicker;
 
     /**
      * Creates a new YearMonthPickerDialog object that represents the dialog for
@@ -201,7 +202,7 @@ public class YearMonthPickerDialog implements Dialog.OnClickListener {
 
         //Initializing year and month pickers.
         mYearPicker =  contentView.findViewById(R.id.year_picker);
-        final NumberPickerWithColor monthPicker =
+        monthPicker =
                  contentView.findViewById(R.id.month_picker);
 
         //Initializing title text views
@@ -278,6 +279,16 @@ public class YearMonthPickerDialog implements Dialog.OnClickListener {
         monthPicker.setValue(mMonth);
         yearPicker.setValue(mYear);
     }
+
+    public void setmCurrentDate(Calendar calendar){
+
+        mMonth = calendar.get(Calendar.MONTH);
+        mYear = calendar.get(Calendar.YEAR);
+
+        monthPicker.setValue(mMonth);
+        mYearPicker.setValue(mYear);
+    }
+
 
     /**
      * Sets current date for title and pickers.

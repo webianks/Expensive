@@ -28,14 +28,17 @@ public class NumberPickerWithColor extends NumberPicker {
 
         Field selectionDivider = null;
         try {
-            selectionDivider = numberPickerClass.getDeclaredField("mSelectionDivider");
+            if (numberPickerClass != null)
+                selectionDivider = numberPickerClass.getDeclaredField("mSelectionDivider");
         } catch (NoSuchFieldException e) {
             e.printStackTrace();
         }
 
         try {
-            selectionDivider.setAccessible(true);
-            selectionDivider.set(this, AppCompatResources.getDrawable(context, R.drawable.picker_divider_color));
+            if (selectionDivider != null) {
+                selectionDivider.setAccessible(true);
+                selectionDivider.set(this, AppCompatResources.getDrawable(context, R.drawable.picker_divider_color));
+            }
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
         } catch (Resources.NotFoundException e) {
