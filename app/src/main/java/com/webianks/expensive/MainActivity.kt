@@ -40,6 +40,7 @@ import java.util.*
 
 class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListener {
 
+    private lateinit var calendarCurrent: Calendar
     private lateinit var firstDateOfThisMonth: Date
     private lateinit var lastDateOfThisMonth: Date
     private lateinit var currentDate: String
@@ -182,6 +183,8 @@ class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListene
 
         val image: String? = intent.getStringExtra("photo_url")
 
+        calendarCurrent = Calendar.getInstance()
+
         Glide.with(this).load(image).into(userImage)
         Glide.with(this).load(image).into(userimageSheet)
 
@@ -189,32 +192,32 @@ class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListene
 
     private fun showMonthYearPicker() {
 
-        val calendar: Calendar = Calendar.getInstance()
-
         val yearMonthPickerDialog =  YearMonthPickerDialog(
             this,
             YearMonthPickerDialog.OnDateSetListener { year, month ->
 
-                calendar.set(Calendar.YEAR, year)
-                calendar.set(Calendar.MONTH, month)
+                calendarCurrent.set(Calendar.YEAR, year)
+                calendarCurrent.set(Calendar.MONTH, month)
+
 
                 val monthYearFormat = SimpleDateFormat("MMM yyyy", Locale.getDefault())
                 val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
-                val currentTime = calendar.time
+                val currentTime = calendarCurrent.time
 
                 val currentMonth = monthYearFormat.format(currentTime)
                 currentDate = dateFormat.format(currentTime)
                 currentMonthBt.text = currentMonth
 
-                val lastDate = calendar.getActualMaximum(Calendar.DATE)
-                calendar.set(Calendar.DATE, lastDate)
-                lastDateOfThisMonth = dateFormat.parse(dateFormat.format(calendar.time))
-                calendar.set(Calendar.DAY_OF_MONTH, 1)
-                firstDateOfThisMonth = dateFormat.parse(dateFormat.format(calendar.time))
+                val lastDate = calendarCurrent.getActualMaximum(Calendar.DATE)
+                calendarCurrent.set(Calendar.DATE, lastDate)
+                lastDateOfThisMonth = dateFormat.parse(dateFormat.format(calendarCurrent.time))
+                calendarCurrent.set(Calendar.DAY_OF_MONTH, 1)
+                firstDateOfThisMonth = dateFormat.parse(dateFormat.format(calendarCurrent.time))
 
                 getCurrentMonthData()
 
-            },  calendar)
+            },  calendarCurrent)
+        yearMonthPickerDialog.setMaxYear(calendarCurrent.get(Calendar.YEAR))
         yearMonthPickerDialog.show()
     }
 

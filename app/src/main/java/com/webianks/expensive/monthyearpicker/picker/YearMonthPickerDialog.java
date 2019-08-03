@@ -1,12 +1,12 @@
 package com.webianks.expensive.monthyearpicker.picker;
 
+import android.annotation.SuppressLint;
 import android.os.Build;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.NumberPicker;
 import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
@@ -280,15 +280,6 @@ public class YearMonthPickerDialog implements Dialog.OnClickListener {
         yearPicker.setValue(mYear);
     }
 
-    public void setmCurrentDate(Calendar calendar){
-
-        mMonth = calendar.get(Calendar.MONTH);
-        mYear = calendar.get(Calendar.YEAR);
-
-        monthPicker.setValue(mMonth);
-        mYearPicker.setValue(mYear);
-    }
-
 
     /**
      * Sets current date for title and pickers.
@@ -298,65 +289,54 @@ public class YearMonthPickerDialog implements Dialog.OnClickListener {
      * @param monthName   month name in the dialog title.
      * @param yearValue   year value in the dialog title.
      */
+    @SuppressLint("SetTextI18n")
     private void setListeners(final NumberPickerWithColor yearPicker, final NumberPickerWithColor monthPicker, final TextView monthName, final TextView yearValue) {
         //Setting listener to month name view.
-        monthName.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //If there's no month picker visible
-                if (monthPicker.getVisibility() == View.GONE) {
-                    //Set it visible
-                    monthPicker.setVisibility(View.VISIBLE);
+        monthName.setOnClickListener(v -> {
+            //If there's no month picker visible
+            if (monthPicker.getVisibility() == View.GONE) {
+                //Set it visible
+                monthPicker.setVisibility(View.VISIBLE);
 
-                    //And hide year picker.
-                    yearPicker.setVisibility(View.GONE);
+                //And hide year picker.
+                yearPicker.setVisibility(View.GONE);
 
-                    //Change title views alpha to picking effect.
-                    yearValue.setAlpha(0.39f);
-                    monthName.setAlpha(1f);
-                }
+                //Change title views alpha to picking effect.
+                yearValue.setAlpha(0.39f);
+                monthName.setAlpha(1f);
             }
         });
 
         //Setting listener to year value view.
-        yearValue.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //If there's no year picker visible
-                if (yearPicker.getVisibility() == View.GONE) {
-                    //Set it visible
-                    yearPicker.setVisibility(View.VISIBLE);
+        yearValue.setOnClickListener(v -> {
+            //If there's no year picker visible
+            if (yearPicker.getVisibility() == View.GONE) {
+                //Set it visible
+                yearPicker.setVisibility(View.VISIBLE);
 
-                    //And hide year picker.
-                    monthPicker.setVisibility(View.GONE);
+                //And hide year picker.
+                monthPicker.setVisibility(View.GONE);
 
-                    //Change title views alpha to picking effect.
-                    monthName.setAlpha(0.39f);
-                    yearValue.setAlpha(1f);
-                }
+                //Change title views alpha to picking effect.
+                monthName.setAlpha(0.39f);
+                yearValue.setAlpha(1f);
             }
         });
 
         //Setting listener to month picker. So it can change title text value.
-        monthPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-            @Override
-            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                mMonth = newVal;
+        monthPicker.setOnValueChangedListener((picker, oldVal, newVal) -> {
+            mMonth = newVal;
 
-                //Set title month text to picked month.
-                monthName.setText(monthsList()[newVal]);
-            }
+            //Set title month text to picked month.
+            monthName.setText(monthsList()[newVal]);
         });
 
         //Setting listener to year picker. So it can change title text value.
-        yearPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-            @Override
-            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                mYear = newVal;
+        yearPicker.setOnValueChangedListener((picker, oldVal, newVal) -> {
+            mYear = newVal;
 
-                //Set title year text to picked year.
-                yearValue.setText(Integer.toString(newVal));
-            }
+            //Set title year text to picked year.
+            yearValue.setText(Integer.toString(newVal));
         });
     }
 

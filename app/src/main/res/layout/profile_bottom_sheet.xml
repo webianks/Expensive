@@ -58,7 +58,6 @@
     />
 
 
-
     <com.google.android.material.button.MaterialButton
             android:id="@+id/logoutBt"
             android:layout_width="wrap_content"
@@ -73,7 +72,7 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="@dimen/half"
             android:layout_marginEnd="@dimen/double_standard"
-            android:layout_marginBottom="80dp"
+            android:layout_marginBottom="60dp"
     />
 
 </RelativeLayout>
