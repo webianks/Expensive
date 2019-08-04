@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.Dialog
+import android.app.ProgressDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -192,7 +193,7 @@ class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListene
 
     private fun showMonthYearPicker() {
 
-        val yearMonthPickerDialog =  YearMonthPickerDialog(
+        val yearMonthPickerDialog = YearMonthPickerDialog(
             this,
             YearMonthPickerDialog.OnDateSetListener { year, month ->
 
@@ -216,7 +217,8 @@ class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListene
 
                 getCurrentMonthData()
 
-            },  calendarCurrent)
+            }, calendarCurrent
+        )
         yearMonthPickerDialog.setMaxYear(calendarCurrent.get(Calendar.YEAR))
         yearMonthPickerDialog.show()
     }
@@ -234,8 +236,18 @@ class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListene
     }
 
     private fun revokeAccess() {
+
+        sheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+
+        val dialog = ProgressDialog(this)
+        dialog.setMessage("Logging out...Please wait.")
+        dialog.setCancelable(false)
+        dialog.show()
+
         auth.signOut()
         mGoogleSignInClient.revokeAccess().addOnCompleteListener(this) {
+
+            dialog.dismiss()
 
             startActivity(
                 Intent(this@MainActivity, LoginActivity::class.java)
@@ -320,8 +332,8 @@ class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListene
 
         db.collection(Util.EXPENSE_COLLECTION)
             .whereEqualTo("uid", uid)
-            .whereGreaterThanOrEqualTo("date",firstDateOfThisMonth)
-            .whereLessThanOrEqualTo("date",lastDateOfThisMonth)
+            .whereGreaterThanOrEqualTo("date", firstDateOfThisMonth)
+            .whereLessThanOrEqualTo("date", lastDateOfThisMonth)
             .get()
             .addOnSuccessListener { result ->
 
@@ -433,10 +445,18 @@ class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListene
     @SuppressLint("SetTextI18n")
     private fun deleteNow(pos: Int, expense: Expense) {
 
+        val dialog = ProgressDialog(this)
+        dialog.setMessage("Deleting Expense...Please wait.")
+        dialog.setCancelable(false)
+        dialog.show()
+
         val db = FirebaseFirestore.getInstance()
         db.collection(Util.EXPENSE_COLLECTION).document(expense.id)
             .delete()
             .addOnSuccessListener {
+
+                dialog.dismiss()
+
                 showMessage("Expense deleted!")
                 //getCurrentMonthData()
                 total -= expense.amount.toLong()
