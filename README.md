@@ -18,6 +18,8 @@ For Google login functionality to work follow this tutorial - <a href="https://f
   <li>Architecture Code</li>
   <li>Offline Functionality</li>
   <li>Edit Expense Functionality</li>
+  <li>Currency Type Selection</li>
+  <li>Default Sorting in Expense List</li>
   <li>Remove ui blocking progress indicators</li>
 </ul>
 
