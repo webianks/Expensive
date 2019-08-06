@@ -32,7 +32,9 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.mikhaellopez.circularimageview.CircularImageView
 import com.webianks.expensive.monthyearpicker.picker.YearMonthPickerDialog
 import java.lang.Exception
@@ -279,6 +281,8 @@ class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListene
 
         val expense = hashMapOf(
             "uid" to uid,
+            "created_at" to FieldValue.serverTimestamp(),
+            "updated_at" to FieldValue.serverTimestamp(),
             "item" to spentOnEt.text.toString().trim(),
             "amount" to amountEt.text.toString().trim(),
             "date" to date
@@ -334,6 +338,8 @@ class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListene
             .whereEqualTo("uid", uid)
             .whereGreaterThanOrEqualTo("date", firstDateOfThisMonth)
             .whereLessThanOrEqualTo("date", lastDateOfThisMonth)
+            .orderBy("date")
+            .orderBy("created_at",Query.Direction.DESCENDING)
             .get()
             .addOnSuccessListener { result ->
 
