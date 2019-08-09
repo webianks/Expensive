@@ -338,8 +338,8 @@ class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListene
             .whereEqualTo("uid", uid)
             .whereGreaterThanOrEqualTo("date", firstDateOfThisMonth)
             .whereLessThanOrEqualTo("date", lastDateOfThisMonth)
-            .orderBy("date")
-            .orderBy("created_at",Query.Direction.DESCENDING)
+            .orderBy("date", Query.Direction.DESCENDING)
+            .orderBy("created_at", Query.Direction.DESCENDING)
             .get()
             .addOnSuccessListener { result ->
 
