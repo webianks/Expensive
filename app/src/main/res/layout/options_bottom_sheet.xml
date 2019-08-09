@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
+        android:orientation="vertical"
+        android:id="@+id/options_bottom_sheet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:behavior_hideable="true"
+        app:behavior_peekHeight="0dp"
+        android:elevation="2dp"
+        android:background="@color/Grey_100"
+        app:layout_behavior="@string/bottom_sheet_behavior">
+
+
+    <TextView
+            android:id="@+id/editOption"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/edit"
+            android:fontFamily="@font/google_sans"
+            android:layout_marginTop="20dp"
+            android:textSize="17sp"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?selectableItemBackground"
+            android:paddingTop="@dimen/standard"
+            android:paddingBottom="@dimen/standard"
+            android:paddingStart="@dimen/double_standard"
+            android:drawableStart="@drawable/round_notes_24"
+            android:paddingEnd="@dimen/double_standard"
+            android:textStyle="bold"
+            android:drawablePadding="@dimen/double_standard"
+            android:textColor="@color/Grey_800"
+    />
+
+
+    <TextView
+            android:id="@+id/user_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/google_sans"
+            android:textSize="17sp"
+            android:drawablePadding="@dimen/double_standard"
+            android:drawableStart="@drawable/round_delete_24"
+            android:background="?selectableItemBackground"
+            android:paddingTop="@dimen/standard"
+            android:paddingBottom="@dimen/standard"
+            android:paddingStart="@dimen/double_standard"
+            android:clickable="true"
+            android:focusable="true"
+            android:paddingEnd="@dimen/double_standard"
+            android:textStyle="bold"
+            android:text="@string/delete"
+            android:layout_marginBottom="@dimen/double_standard"
+            android:textColor="@color/Grey_800"/>
+
+
+</LinearLayout>

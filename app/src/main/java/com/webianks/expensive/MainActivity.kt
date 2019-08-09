@@ -11,6 +11,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.UserHandle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.DatePicker
@@ -26,6 +27,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
@@ -143,6 +145,7 @@ class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListene
             else
                 sheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         }
+
 
         sheetBehavior.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
             @SuppressLint("SwitchIntDef")
@@ -374,7 +377,7 @@ class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListene
                     adapter.actionListener = this
                     monthRecyclerView.adapter = adapter
                     noExpenses.visibility = View.GONE
-                    totalAmount.text = "Total: $total"
+                    totalAmount.text = "Total: \u20B9 $total"
                     totalAmount.visibility = View.VISIBLE
                     monthRecyclerView.visibility = View.VISIBLE
 
@@ -431,7 +434,17 @@ class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListene
         snackbar.show()
     }
 
-    override fun deleteClicked(pos: Int, expense: Expense) {
+
+    override fun optionsClicked(pos: Int, expense: Expense?) {
+
+        val dialogView = LayoutInflater.from(this).inflate(R.layout.options_bottom_sheet, null)
+        val dialog = BottomSheetDialog(this)
+        dialog.setContentView(dialogView)
+        dialog.show()
+
+    }
+
+    fun deleteClicked(pos: Int, expense: Expense) {
         confirmAndDelete(pos, expense)
     }
 

@@ -41,7 +41,7 @@ public class MonthRecyclerViewAdapter extends RecyclerView.Adapter<MonthRecycler
     }
 
     interface ActionListener{
-        void deleteClicked(int pos,Expense expense);
+        void optionsClicked(int pos,Expense expense);
     }
 
     class VH extends RecyclerView.ViewHolder {
@@ -57,14 +57,14 @@ public class MonthRecyclerViewAdapter extends RecyclerView.Adapter<MonthRecycler
 
             itemView.findViewById(R.id.deleteBt).setOnClickListener( (view)-> {
                         if (actionListener != null)
-                            actionListener.deleteClicked(getAdapterPosition(),expenseList.get(getAdapterPosition()));
+                            actionListener.optionsClicked(getAdapterPosition(),expenseList.get(getAdapterPosition()));
                     });
         }
 
         void bind(Expense expense) {
             spentOn.setText(expense.getSpentOn());
             date.setText(expense.getDate());
-            amount.setText(expense.getAmount());
+            amount.setText("\u20B9 "+expense.getAmount());
         }
     }
 
