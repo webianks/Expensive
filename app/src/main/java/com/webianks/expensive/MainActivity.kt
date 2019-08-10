@@ -43,7 +43,8 @@ import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
 
-class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListener {
+class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListener, EditFragment.OnDismissListener {
+
 
     private var optionsDialog: BottomSheetDialog? = null
     private lateinit var calendarCurrent: Calendar
@@ -121,8 +122,6 @@ class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListene
         uid = intent.getStringExtra("uid")
 
         dateEt.setOnClickListener { showDatePickerDialog() }
-        userImage.setOnClickListener { showUserProfileSheet() }
-
         doneBt.setOnClickListener {
             hideKeyboard(it)
             validateAndSaveData()
@@ -465,10 +464,12 @@ class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListene
         val dialog = EditFragment()
         val ft = supportFragmentManager.beginTransaction()
         val bundle = Bundle()
+        bundle.putString("id",expense.id)
         bundle.putString("item",expense.spentOn)
         bundle.putString("amount",expense.amount)
         bundle.putString("date",expense.date)
         dialog.arguments = bundle
+        dialog.setOnDismissListener(this)
         dialog.show(ft, "EditFragment")
     }
 
@@ -529,9 +530,9 @@ class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListene
         }
     }
 
-    private fun showUserProfileSheet() {
 
-
+    override fun dismissed() {
+        getCurrentMonthData()
     }
 
 }

@@ -55,6 +55,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="android:windowFullscreen">false</item>
         <item name="android:windowIsFloating">false</item>
+        <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowBackground">@color/white</item>
     </style>
 

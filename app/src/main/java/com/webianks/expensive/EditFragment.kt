@@ -39,6 +39,7 @@ class EditFragment : DialogFragment() {
     private lateinit var userImage: CircularImageView
     private lateinit var addingProgress: ProgressBar
     private lateinit var expenseInputCard: View
+    private var documentId: String? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -78,6 +79,7 @@ class EditFragment : DialogFragment() {
         }
 
 
+        documentId = arguments?.getString("id")
         item = arguments?.getString("item")
         amount = arguments?.getString("amount")
         val mDate = arguments?.getString("date")
@@ -121,20 +123,23 @@ class EditFragment : DialogFragment() {
             "date" to date
         )
 
-        db.collection(Util.EXPENSE_COLLECTION)
-            .document("")
-            .update(expense)
-            .addOnSuccessListener {
-                Log.d(Util.TAG, "DocumentSnapshot Updated.")
-                //showMessage("Expense added successfully.")
+        documentId?.let {
+            db.collection(Util.EXPENSE_COLLECTION)
+                .document(it)
+                .update(expense)
+                .addOnSuccessListener {
+                    Log.d(Util.TAG, "DocumentSnapshot Updated.")
+                    //showMessage("Expense added successfully.")
+                    expenseAfterSaveBehaviour()
 
-            }
-            .addOnFailureListener {
-                showMessage("Error updating expense.")
-            }
+                }
+                .addOnFailureListener {
+                    showMessage("Error updating expense.")
+                }
+        }
     }
 
-    private fun expenseAfterSaveBehaviour(resetData: Boolean) {
+    private fun expenseAfterSaveBehaviour() {
 
         doneBt.isEnabled = true
         doneBt.isActivated = true
@@ -145,14 +150,10 @@ class EditFragment : DialogFragment() {
         amountEt.isEnabled = true
         dateEt.isEnabled = true
 
+        onDismissListener?.dismissed()
 
-        if (resetData) {
-            spentOnEt.text = null
-            amountEt.text = null
-            dateEt.text = null
-            spentOnEt.clearFocus()
-            amountEt.clearFocus()
-        }
+        dismiss()
+
     }
 
 
@@ -206,6 +207,17 @@ class EditFragment : DialogFragment() {
             imm.hideSoftInputFromWindow(view.windowToken, 0)
         } catch (ignored: Exception) {
         }
+    }
+
+    interface OnDismissListener {
+        fun dismissed()
+    }
+
+
+    private var onDismissListener: OnDismissListener? = null
+
+    fun setOnDismissListener(onDismissListener: OnDismissListener) {
+        this.onDismissListener = onDismissListener
     }
 
 
