@@ -49,6 +49,15 @@
         <item name="android:textSize">14sp</item>
     </style>
 
+    <style name="FullScreenDialogStyle" parent="Theme.MaterialComponents.Light.Dialog">
+        <item name="android:windowNoTitle">true</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="android:windowFullscreen">false</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowBackground">@color/white</item>
+    </style>
+
     <color name="transparent">#00FFFFFF</color>
     <color name="gray_dark">#757575</color>
 

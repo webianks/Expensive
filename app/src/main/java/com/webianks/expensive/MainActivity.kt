@@ -45,6 +45,7 @@ import java.util.*
 
 class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListener {
 
+    private var optionsDialog: BottomSheetDialog? = null
     private lateinit var calendarCurrent: Calendar
     private lateinit var firstDateOfThisMonth: Date
     private lateinit var lastDateOfThisMonth: Date
@@ -435,16 +436,43 @@ class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListene
     }
 
 
-    override fun optionsClicked(pos: Int, expense: Expense?) {
 
-        val dialogView = LayoutInflater.from(this).inflate(R.layout.options_bottom_sheet, null)
-        val dialog = BottomSheetDialog(this)
-        dialog.setContentView(dialogView)
-        dialog.show()
+    override fun optionsClicked(pos: Int, expense: Expense) {
+
+
+        if(optionsDialog  == null) {
+            val dialogView = LayoutInflater.from(this).inflate(R.layout.options_bottom_sheet, null)
+            optionsDialog = BottomSheetDialog(this)
+            optionsDialog?.setContentView(dialogView)
+            dialogView.findViewById<TextView>(R.id.editOption).setOnClickListener{
+                optionsDialog?.dismiss()
+                editClicked(pos,expense)
+            }
+            dialogView.findViewById<TextView>(R.id.deleteBt).setOnClickListener{
+                optionsDialog?.dismiss()
+                deleteClicked(pos,expense)
+            }
+        }
+
+
+        optionsDialog?.show()
 
     }
 
-    fun deleteClicked(pos: Int, expense: Expense) {
+
+    private fun editClicked(pos: Int, expense: Expense) {
+
+        val dialog = EditFragment()
+        val ft = supportFragmentManager.beginTransaction()
+        val bundle = Bundle()
+        bundle.putString("item",expense.spentOn)
+        bundle.putString("amount",expense.amount)
+        bundle.putString("date",expense.date)
+        dialog.arguments = bundle
+        dialog.show(ft, "EditFragment")
+    }
+
+    private fun deleteClicked(pos: Int, expense: Expense) {
         confirmAndDelete(pos, expense)
     }
 
