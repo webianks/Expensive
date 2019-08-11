@@ -8,16 +8,17 @@ import android.app.ProgressDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
 import android.os.UserHandle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
+import android.view.*
 import android.view.inputmethod.InputMethodManager
-import android.widget.DatePicker
-import android.widget.ProgressBar
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.browser.customtabs.CustomTabsIntent
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -133,6 +134,16 @@ class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListene
 
         currentMonthBt.setOnClickListener {
             showMonthYearPicker()
+        }
+
+        findViewById<ImageView>(R.id.optionsBt).setOnClickListener {
+            val popup = PopupMenu(MainActivity@ this, findViewById<ImageView>(R.id.optionsBt))
+            popup.menuInflater.inflate(R.menu.main_menu, popup.menu)
+            popup.setOnMenuItemClickListener {
+                openPrivacyTab()
+                true
+            }
+            popup.show()
         }
 
         bottomSheet = findViewById(R.id.profile_bottom_sheet)
@@ -435,21 +446,20 @@ class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListene
     }
 
 
-
     override fun optionsClicked(pos: Int, expense: Expense) {
 
 
-        if(optionsDialog  == null) {
+        if (optionsDialog == null) {
             val dialogView = LayoutInflater.from(this).inflate(R.layout.options_bottom_sheet, null)
             optionsDialog = BottomSheetDialog(this)
             optionsDialog?.setContentView(dialogView)
-            dialogView.findViewById<TextView>(R.id.editOption).setOnClickListener{
+            dialogView.findViewById<TextView>(R.id.editOption).setOnClickListener {
                 optionsDialog?.dismiss()
-                editClicked(pos,expense)
+                editClicked(pos, expense)
             }
-            dialogView.findViewById<TextView>(R.id.deleteBt).setOnClickListener{
+            dialogView.findViewById<TextView>(R.id.deleteBt).setOnClickListener {
                 optionsDialog?.dismiss()
-                deleteClicked(pos,expense)
+                deleteClicked(pos, expense)
             }
         }
 
@@ -464,10 +474,10 @@ class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListene
         val dialog = EditFragment()
         val ft = supportFragmentManager.beginTransaction()
         val bundle = Bundle()
-        bundle.putString("id",expense.id)
-        bundle.putString("item",expense.spentOn)
-        bundle.putString("amount",expense.amount)
-        bundle.putString("date",expense.date)
+        bundle.putString("id", expense.id)
+        bundle.putString("item", expense.spentOn)
+        bundle.putString("amount", expense.amount)
+        bundle.putString("date", expense.date)
         dialog.arguments = bundle
         dialog.setOnDismissListener(this)
         dialog.show(ft, "EditFragment")
@@ -533,6 +543,12 @@ class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListene
 
     override fun dismissed() {
         getCurrentMonthData()
+    }
+
+    private fun openPrivacyTab() {
+        val builder = CustomTabsIntent.Builder()
+        val customTabsIntent = builder.build()
+        customTabsIntent.launchUrl(this, Uri.parse(Util.PRIVACY_URL))
     }
 
 }
