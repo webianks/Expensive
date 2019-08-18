@@ -16,7 +16,6 @@ For Google login functionality to work follow this tutorial - <a href="https://f
 
 <ul>
   <li>Architecture Code</li>
-  <li>Offline Functionality</li>
   <li>Currency Type Selection</li>
   <li>Remove ui blocking progress indicators</li>
 </ul>
