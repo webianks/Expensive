@@ -20,6 +20,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.lottie.LottieAnimationView
@@ -38,15 +40,18 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.QuerySnapshot
 import com.mikhaellopez.circularimageview.CircularImageView
 import com.webianks.expensive.monthyearpicker.picker.YearMonthPickerDialog
 import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
 
+
 class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListener, EditFragment.OnDismissListener {
 
 
+    private lateinit var mViewModel: DashboardViewModel
     private var optionsDialog: BottomSheetDialog? = null
     private lateinit var calendarCurrent: Calendar
     private lateinit var firstDateOfThisMonth: Date
@@ -92,6 +97,9 @@ class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListene
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
         db = FirebaseFirestore.getInstance()
         auth = FirebaseAuth.getInstance()
+
+
+        mViewModel = ViewModelProviders.of(this).get(DashboardViewModel::class.java)
 
         getCurrentMonthData()
 
@@ -348,56 +356,37 @@ class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListene
 
         monthList = ArrayList()
 
-        db.collection(Util.EXPENSE_COLLECTION)
-            .whereEqualTo("uid", uid)
-            .whereGreaterThanOrEqualTo("date", firstDateOfThisMonth)
-            .whereLessThanOrEqualTo("date", lastDateOfThisMonth)
-            .orderBy("date", Query.Direction.DESCENDING)
-            .orderBy("created_at", Query.Direction.DESCENDING)
-            .get()
-            .addOnSuccessListener { result ->
+        mViewModel.getCurrentMonthData(uid, firstDateOfThisMonth, lastDateOfThisMonth)
+            ?.observe(this, Observer<QuerySnapshot> { result ->
 
+                for (document in result) {
+                    Log.d(Util.TAG, "${document.id} => ${document.data}")
+                    val dataMap = document.data
+                    total += dataMap["amount"].toString().toLong()
 
-                animationView.visibility = View.GONE
+                    val date = SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault())
+                        .format((dataMap["date"] as Timestamp).toDate())
 
-                if (result.size() == 0) {
-                    noExpenses.visibility = View.VISIBLE
-                    totalAmount.visibility = View.GONE
-
-                } else {
-                    total = 0L
-                    for (document in result) {
-                        Log.d(Util.TAG, "${document.id} => ${document.data}")
-                        val dataMap = document.data
-                        total += dataMap["amount"].toString().toLong()
-
-                        val date = SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault())
-                            .format((dataMap["date"] as Timestamp).toDate())
-
-                        monthList.add(
-                            Expense(
-                                id = document.id,
-                                spentOn = dataMap["item"].toString(),
-                                amount = dataMap["amount"].toString(),
-                                date = date
-                            )
+                    monthList.add(
+                        Expense(
+                            id = document.id,
+                            spentOn = dataMap["item"].toString(),
+                            amount = dataMap["amount"].toString(),
+                            date = date
                         )
-                    }
-
-                    adapter = MonthRecyclerViewAdapter(this, monthList)
-                    adapter.actionListener = this
-                    monthRecyclerView.adapter = adapter
-                    noExpenses.visibility = View.GONE
-                    totalAmount.text = "Total: \u20B9 $total"
-                    totalAmount.visibility = View.VISIBLE
-                    monthRecyclerView.visibility = View.VISIBLE
-
+                    )
                 }
-            }
-            .addOnFailureListener { exception ->
+
+                adapter = MonthRecyclerViewAdapter(this, monthList)
+                adapter.actionListener = this
+                monthRecyclerView.adapter = adapter
+                noExpenses.visibility = View.GONE
+                totalAmount.text = "Total: \u20B9 $total"
+                totalAmount.visibility = View.VISIBLE
+                monthRecyclerView.visibility = View.VISIBLE
                 animationView.visibility = View.GONE
-                Log.w(Util.TAG, "Error getting documents.", exception)
-            }
+              }
+        )
 
     }
 
