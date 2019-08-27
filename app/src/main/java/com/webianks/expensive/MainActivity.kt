@@ -345,6 +345,9 @@ class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListene
         animationView.visibility = View.VISIBLE
         noExpenses.visibility = View.GONE
         monthRecyclerView.visibility = View.GONE
+        total = 0L
+        totalAmount.visibility = View.GONE
+
 
         monthList = ArrayList()
 
@@ -517,7 +520,9 @@ class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListene
 
                 showMessage("Expense deleted!")
                 //getCurrentMonthData()
+
                 total -= expense.amount.toLong()
+
                 totalAmount.text = "Total $total"
 
                 monthList.removeAt(pos)
