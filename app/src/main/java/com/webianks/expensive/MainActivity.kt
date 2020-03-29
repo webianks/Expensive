@@ -1,50 +1,45 @@
 package com.webianks.expensive
 
 import android.annotation.SuppressLint
-import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.Dialog
 import android.app.ProgressDialog
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
-import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
-import android.os.UserHandle
 import android.util.Log
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.browser.customtabs.CustomTabsIntent
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.airbnb.lottie.LottieAnimationView
 import com.bumptech.glide.Glide
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
-import com.mikhaellopez.circularimageview.CircularImageView
 import com.webianks.expensive.monthyearpicker.picker.YearMonthPickerDialog
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.profile_bottom_sheet.*
+import kotlinx.android.synthetic.main.this_month.*
 import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
 
-class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListener, EditFragment.OnDismissListener {
+class MainActivity : AppCompatActivity(),
+    MonthRecyclerViewAdapter.ActionListener,
+    EditFragment.OnDismissListener {
 
 
     private var optionsDialog: BottomSheetDialog? = null
@@ -55,26 +50,10 @@ class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListene
     private lateinit var auth: FirebaseAuth
     private lateinit var mGoogleSignInClient: GoogleSignInClient
     private lateinit var sheetBehavior: BottomSheetBehavior<View>
-    private lateinit var bottomSheet: View
     private lateinit var monthList: ArrayList<Expense>
     private lateinit var adapter: MonthRecyclerViewAdapter
     private lateinit var db: FirebaseFirestore
-    private lateinit var currentMonthEt: MaterialButton
-    private lateinit var dateEt: TextInputEditText
-    private lateinit var spentOnEt: TextInputEditText
-    private lateinit var amountEt: TextInputEditText
-    private lateinit var doneBt: MaterialButton
-    private lateinit var monthRecyclerView: RecyclerView
-    private lateinit var userImage: CircularImageView
-    private lateinit var addingProgress: ProgressBar
-    private lateinit var noExpenses: TextView
-    private lateinit var animationView: LottieAnimationView
-    private lateinit var expenseInputCard: View
-    private lateinit var logoutBt: MaterialButton
-    private lateinit var userimageSheet: CircularImageView
     private lateinit var uid: String
-    private lateinit var totalAmount: TextView
-    private lateinit var currentMonthBt: MaterialButton
     private var total: Long = 0L
 
 
@@ -99,31 +78,14 @@ class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListene
 
     private fun initViews() {
 
-        userImage = findViewById(R.id.userImage)
-        dateEt = findViewById(R.id.date_et)
-        amountEt = findViewById(R.id.amount_et)
-        spentOnEt = findViewById(R.id.spent_on_et)
-        doneBt = findViewById(R.id.done)
-        noExpenses = findViewById(R.id.no_expenses)
-        currentMonthEt = findViewById(R.id.current_month)
-        addingProgress = findViewById(R.id.adding_progress)
-        animationView = findViewById(R.id.animation_view)
-        expenseInputCard = findViewById(R.id.expense_input_card)
-        monthRecyclerView = findViewById(R.id.month_recyclerview)
-        userimageSheet = findViewById(R.id.userImageSheet)
-        logoutBt = findViewById(R.id.logoutBt)
-        totalAmount = findViewById(R.id.totalAmount)
-        currentMonthBt = findViewById(R.id.current_month)
 
-        val userName = findViewById<TextView>(R.id.user_name)
-        val email = findViewById<TextView>(R.id.user_email)
-
-        userName.text = intent.getStringExtra("name")
-        email.text = intent.getStringExtra("email")
+        user_name.text = intent.getStringExtra("name")
+        user_email.text = intent.getStringExtra("email")
         uid = intent.getStringExtra("uid")
 
-        dateEt.setOnClickListener { showDatePickerDialog() }
-        doneBt.setOnClickListener {
+        date_et.setOnClickListener { showDatePickerDialog() }
+
+        done.setOnClickListener {
             hideKeyboard(it)
             validateAndSaveData()
         }
@@ -132,7 +94,7 @@ class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListene
             confirmAndLogout()
         }
 
-        currentMonthBt.setOnClickListener {
+        current_month.setOnClickListener {
             showMonthYearPicker()
         }
 
@@ -146,8 +108,7 @@ class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListene
             popup.show()
         }
 
-        bottomSheet = findViewById(R.id.profile_bottom_sheet)
-        sheetBehavior = BottomSheetBehavior.from(bottomSheet)
+        sheetBehavior = BottomSheetBehavior.from(profile_bottom_sheet)
         sheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
 
         userImage.setOnClickListener {
@@ -179,7 +140,8 @@ class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListene
 
             }
         })
-        monthRecyclerView.layoutManager = LinearLayoutManager(this)
+
+        month_recyclerview.layoutManager = LinearLayoutManager(this)
 
         val cal = Calendar.getInstance()
 
@@ -189,7 +151,7 @@ class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListene
 
         val currentMonth = monthYearFormat.format(currentTime)
         currentDate = dateFormat.format(currentTime)
-        currentMonthEt.text = currentMonth
+        current_month.text = currentMonth
 
         val lastDate = cal.getActualMaximum(Calendar.DATE)
         cal.set(Calendar.DATE, lastDate)
@@ -203,7 +165,7 @@ class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListene
         calendarCurrent = Calendar.getInstance()
 
         Glide.with(this).load(image).into(userImage)
-        Glide.with(this).load(image).into(userimageSheet)
+        Glide.with(this).load(image).into(userImageSheet)
 
     }
 
@@ -223,7 +185,7 @@ class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListene
 
                 val currentMonth = monthYearFormat.format(currentTime)
                 currentDate = dateFormat.format(currentTime)
-                currentMonthBt.text = currentMonth
+                current_month.text = currentMonth
 
                 val lastDate = calendarCurrent.getActualMaximum(Calendar.DATE)
                 calendarCurrent.set(Calendar.DATE, lastDate)
@@ -276,29 +238,29 @@ class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListene
 
     private fun validateAndSaveData() {
 
-        if (spentOnEt.text.toString() == "" || amountEt.text.toString() == "" || dateEt.text.toString() == "") {
+        if (spent_on_et.text.toString() == "" || amount_et.text.toString() == "" || date_et.text.toString() == "") {
             showMessage("Please add all expense details.")
             return
         }
 
-        doneBt.isEnabled = false
-        doneBt.isActivated = false
-        addingProgress.visibility = View.VISIBLE
-        expenseInputCard.alpha = 0.3f
-        spentOnEt.isEnabled = false
-        amountEt.isEnabled = false
-        dateEt.isEnabled = false
+        done.isEnabled = false
+        done.isActivated = false
+        adding_progress.visibility = View.VISIBLE
+        expense_input_card.alpha = 0.3f
+        spent_on_et.isEnabled = false
+        amount_et.isEnabled = false
+        date_et.isEnabled = false
 
         val date = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
-            .parse(dateEt.text.toString().trim())
+            .parse(date_et.text.toString().trim())
 
 
         val expense = hashMapOf(
             "uid" to uid,
             "created_at" to FieldValue.serverTimestamp(),
             "updated_at" to FieldValue.serverTimestamp(),
-            "item" to spentOnEt.text.toString().trim(),
-            "amount" to amountEt.text.toString().trim(),
+            "item" to spent_on_et.text.toString().trim(),
+            "amount" to amount_et.text.toString().trim(),
             "date" to date
         )
 
@@ -321,30 +283,30 @@ class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListene
 
     private fun expenseAfterSaveBehaviour(resetData: Boolean) {
 
-        doneBt.isEnabled = true
-        doneBt.isActivated = true
-        addingProgress.visibility = View.GONE
-        expenseInputCard.alpha = 1.0f
+        done.isEnabled = true
+        done.isActivated = true
+        adding_progress.visibility = View.GONE
+        expense_input_card.alpha = 1.0f
 
-        spentOnEt.isEnabled = true
-        amountEt.isEnabled = true
-        dateEt.isEnabled = true
+        spent_on_et.isEnabled = true
+        amount_et.isEnabled = true
+        date_et.isEnabled = true
 
 
         if (resetData) {
-            spentOnEt.text = null
-            amountEt.text = null
-            dateEt.text = null
-            spentOnEt.clearFocus()
-            amountEt.clearFocus()
+            spent_on_et.text = null
+            amount_et.text = null
+            date_et.text = null
+            spent_on_et.clearFocus()
+            amount_et.clearFocus()
         }
     }
 
     private fun getCurrentMonthData() {
 
-        animationView.visibility = View.VISIBLE
-        noExpenses.visibility = View.GONE
-        monthRecyclerView.visibility = View.GONE
+        animation_view.visibility = View.VISIBLE
+        no_expenses.visibility = View.GONE
+        month_recyclerview.visibility = View.GONE
         total = 0L
         totalAmount.visibility = View.GONE
 
@@ -361,10 +323,10 @@ class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListene
             .addOnSuccessListener { result ->
 
 
-                animationView.visibility = View.GONE
+                animation_view.visibility = View.GONE
 
                 if (result.size() == 0) {
-                    noExpenses.visibility = View.VISIBLE
+                    no_expenses.visibility = View.VISIBLE
                     totalAmount.visibility = View.GONE
 
                 } else {
@@ -389,16 +351,16 @@ class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListene
 
                     adapter = MonthRecyclerViewAdapter(this, monthList)
                     adapter.actionListener = this
-                    monthRecyclerView.adapter = adapter
-                    noExpenses.visibility = View.GONE
+                    month_recyclerview.adapter = adapter
+                    no_expenses.visibility = View.GONE
                     totalAmount.text = "Total: \u20B9 $total"
                     totalAmount.visibility = View.VISIBLE
-                    monthRecyclerView.visibility = View.VISIBLE
+                    month_recyclerview.visibility = View.VISIBLE
 
                 }
             }
             .addOnFailureListener { exception ->
-                animationView.visibility = View.GONE
+                animation_view.visibility = View.GONE
                 Log.w(Util.TAG, "Error getting documents.", exception)
             }
 
@@ -438,7 +400,7 @@ class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListene
             if (dayOfMonth < 10)
                 finalDayString = "0$dayOfMonth"
 
-            instance.dateEt.setText("$finalDayString-$finalMonthString-$year")
+            instance.date_et.setText("$finalDayString-$finalMonthString-$year")
         }
     }
 
@@ -532,7 +494,7 @@ class MainActivity : AppCompatActivity(), MonthRecyclerViewAdapter.ActionListene
                     totalAmount.visibility = View.GONE
 
                 if (monthList.size == 0)
-                    noExpenses.visibility = View.VISIBLE
+                     no_expenses.visibility = View.VISIBLE
             }
             .addOnFailureListener { showMessage("Error deleting expense") }
     }

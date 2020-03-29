@@ -11,15 +11,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.DatePicker
-import android.widget.ProgressBar
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.DialogFragment
-import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
-import com.mikhaellopez.circularimageview.CircularImageView
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.edit_fragment.adding_progress
+import kotlinx.android.synthetic.main.edit_fragment.amount_et
+import kotlinx.android.synthetic.main.edit_fragment.date_et
+import kotlinx.android.synthetic.main.edit_fragment.done
+import kotlinx.android.synthetic.main.edit_fragment.expense_input_card
+import kotlinx.android.synthetic.main.edit_fragment.spent_on_et
 import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
@@ -32,13 +35,6 @@ class EditFragment : DialogFragment() {
     private var item: String? = null
     private var amount: String? = null
     private lateinit var db: FirebaseFirestore
-    private lateinit var dateEt: TextInputEditText
-    private lateinit var spentOnEt: TextInputEditText
-    private lateinit var amountEt: TextInputEditText
-    private lateinit var doneBt: MaterialButton
-    private lateinit var userImage: CircularImageView
-    private lateinit var addingProgress: ProgressBar
-    private lateinit var expenseInputCard: View
     private var documentId: String? = null
 
 
@@ -56,24 +52,18 @@ class EditFragment : DialogFragment() {
         toolbar.setNavigationOnClickListener { dismiss() }
         toolbar.title = "Edit Expense"
 
-        initViews(view)
+        initViews()
         db = FirebaseFirestore.getInstance()
         return view
     }
 
 
-    private fun initViews(view: View) {
+    private fun initViews() {
 
-        dateEt = view.findViewById(R.id.date_et)
-        amountEt = view.findViewById(R.id.amount_et)
-        spentOnEt = view.findViewById(R.id.spent_on_et)
-        doneBt = view.findViewById(R.id.done)
-        addingProgress = view.findViewById(R.id.adding_progress)
-        expenseInputCard = view.findViewById(R.id.expense_input_card)
 
-        dateEt.setOnClickListener { showDatePickerDialog() }
+        date_et.setOnClickListener { showDatePickerDialog() }
 
-        doneBt.setOnClickListener {
+        done.setOnClickListener {
             hideKeyboard(it)
             validateAndUpdateData()
         }
@@ -90,36 +80,36 @@ class EditFragment : DialogFragment() {
         dateString = dateFormat.format(retrievedFormat.parse(mDate))
         currentDate = dateFormat.parse(dateString)
 
-        spentOnEt.setText(item)
-        amountEt.setText(amount)
-        dateEt.setText(dateString)
+        spent_on_et.setText(item)
+        amount_et.setText(amount)
+        date_et.setText(dateString)
 
     }
 
 
     private fun validateAndUpdateData() {
 
-        if (spentOnEt.text.toString() == "" || amountEt.text.toString() == "" || dateEt.text.toString() == "") {
+        if (spent_on_et.text.toString() == "" || amount_et.text.toString() == "" || date_et.text.toString() == "") {
             showMessage("Please add all expense details.")
             return
         }
 
-        doneBt.isEnabled = false
-        doneBt.isActivated = false
-        addingProgress.visibility = View.VISIBLE
-        expenseInputCard.alpha = 0.3f
-        spentOnEt.isEnabled = false
-        amountEt.isEnabled = false
-        dateEt.isEnabled = false
+        done.isEnabled = false
+        done.isActivated = false
+        adding_progress.visibility = View.VISIBLE
+        expense_input_card.alpha = 0.3f
+        spent_on_et.isEnabled = false
+        amount_et.isEnabled = false
+        date_et.isEnabled = false
 
         val date = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
-            .parse(dateEt.text.toString().trim())
+            .parse(date_et.text.toString().trim())
 
 
         val expense = hashMapOf(
             "updated_at" to FieldValue.serverTimestamp(),
-            "item" to spentOnEt.text.toString().trim(),
-            "amount" to amountEt.text.toString().trim(),
+            "item" to spent_on_et.text.toString().trim(),
+            "amount" to amount_et.text.toString().trim(),
             "date" to date
         )
 
@@ -141,14 +131,14 @@ class EditFragment : DialogFragment() {
 
     private fun expenseAfterSaveBehaviour() {
 
-        doneBt.isEnabled = true
-        doneBt.isActivated = true
-        addingProgress.visibility = View.GONE
-        expenseInputCard.alpha = 1.0f
+        done.isEnabled = true
+        done.isActivated = true
+        adding_progress.visibility = View.GONE
+        expense_input_card.alpha = 1.0f
 
-        spentOnEt.isEnabled = true
-        amountEt.isEnabled = true
-        dateEt.isEnabled = true
+        spent_on_et.isEnabled = true
+        amount_et.isEnabled = true
+        date_et.isEnabled = true
 
         onDismissListener?.dismissed()
 
@@ -191,7 +181,7 @@ class EditFragment : DialogFragment() {
             if (dayOfMonth < 10)
                 finalDayString = "0$dayOfMonth"
 
-            instance.dateEt.setText("$finalDayString-$finalMonthString-$year")
+            instance.date_et.setText("$finalDayString-$finalMonthString-$year")
         }
     }
 
