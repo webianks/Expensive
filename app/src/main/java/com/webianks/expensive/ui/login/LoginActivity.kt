@@ -3,22 +3,25 @@ package com.webianks.expensive.ui.login
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import androidx.appcompat.app.AppCompatActivity
-import com.google.android.gms.auth.api.signin.*
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.GoogleAuthProvider
 import com.webianks.expensive.ExpensiveApplication
 import com.webianks.expensive.R
+import com.webianks.expensive.data.DataManager
+import com.webianks.expensive.ui.base.BaseActivity
 import com.webianks.expensive.ui.main.MainActivity
 import kotlinx.android.synthetic.main.login_activity_layout.*
 
 
-class LoginActivity : AppCompatActivity() {
+class LoginActivity : BaseActivity(), LoginMvpView {
 
+    private lateinit var loginPresenter: LoginPresenter<LoginMvpView>
     private lateinit var mGoogleSignInClient: GoogleSignInClient
     private lateinit var auth: FirebaseAuth
 
@@ -41,6 +44,10 @@ class LoginActivity : AppCompatActivity() {
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
         auth = (application as ExpensiveApplication).auth
 
+        val dataManager: DataManager = (application as ExpensiveApplication).dataManager
+        loginPresenter = LoginPresenter(this,dataManager)
+        loginPresenter.onAttach(this)
+
         signInButton.setOnClickListener {
             signIn()
         }
@@ -59,7 +66,7 @@ class LoginActivity : AppCompatActivity() {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             try {
                 val account = task.getResult(ApiException::class.java)
-                firebaseAuthWithGoogle(account!!)
+                loginPresenter.firebaseAuthenticationWithGoogle(account)
             } catch (e: ApiException) {
                 Log.w(TAG, "Google sign in failed", e)
             }
@@ -71,37 +78,22 @@ class LoginActivity : AppCompatActivity() {
         super.onStart()
         val currentUser: FirebaseUser? = auth.currentUser
         if (currentUser != null)
-            updateUI(currentUser)
-    }
-
-    private fun firebaseAuthWithGoogle(acct: GoogleSignInAccount) {
-
-        Log.d(TAG, "firebaseAuthWithGoogle:" + acct.id!!)
-
-        val credential = GoogleAuthProvider.getCredential(acct.idToken, null)
-        auth.signInWithCredential(credential)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    Log.d(TAG, "signInWithCredential:success")
-                    val user = auth.currentUser
-                    updateUI(user)
-                } else {
-                    Log.w(TAG, "signInWithCredential:failure", task.exception)
-                    Snackbar.make(loginFrame, "Authentication Failed.", Snackbar.LENGTH_SHORT).show()
-                    updateUI(null)
-                }
-            }
+            openMainActivity(currentUser)
     }
 
 
-    private fun updateUI(currentUser: FirebaseUser?) {
-        val intent = Intent(this, MainActivity::class.java)
-        intent.putExtra("uid",currentUser?.uid)
-        intent.putExtra("photo_url", currentUser?.photoUrl?.toString())
-        intent.putExtra("name", currentUser?.displayName)
-        intent.putExtra("email", currentUser?.email)
-        startActivity(intent)
-        finish()
+    override fun openMainActivity(user: FirebaseUser?) {
+        if(user != null) {
+            val intent = Intent(this, MainActivity::class.java)
+            intent.putExtra("uid", user.uid)
+            intent.putExtra("photo_url", user.photoUrl?.toString())
+            intent.putExtra("name", user.displayName)
+            intent.putExtra("email", user.email)
+            startActivity(intent)
+            finish()
+        }else{
+            Snackbar.make(loginFrame, "Authentication Failed.", Snackbar.LENGTH_SHORT).show()
+        }
     }
 
 }

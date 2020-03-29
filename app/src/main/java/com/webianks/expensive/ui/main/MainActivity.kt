@@ -28,8 +28,9 @@ import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.webianks.expensive.*
-import com.webianks.expensive.data.Expense
+import com.webianks.expensive.data.local.Expense
 import com.webianks.expensive.monthyearpicker.picker.YearMonthPickerDialog
+import com.webianks.expensive.ui.base.BaseActivity
 import com.webianks.expensive.ui.edit.EditFragment
 import com.webianks.expensive.ui.login.LoginActivity
 import com.webianks.expensive.util.Util
@@ -41,7 +42,7 @@ import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
 
-class MainActivity : AppCompatActivity(),
+class MainActivity : BaseActivity(),
     EditFragment.OnDismissListener, YearMonthPickerDialog.OnDateSetListener {
 
     private var optionsDialog: BottomSheetDialog? = null
@@ -57,7 +58,6 @@ class MainActivity : AppCompatActivity(),
     private lateinit var db: FirebaseFirestore
     private lateinit var uid: String
     private var total: Long = 0L
-
 
     private val adapterActionListener : (Int, Expense) -> Unit = {
 
@@ -143,7 +143,7 @@ class MainActivity : AppCompatActivity(),
         }
 
 
-        sheetBehavior.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+        sheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
             @SuppressLint("SwitchIntDef")
             override fun onStateChanged(view: View, newState: Int) {
                 when (newState) {
@@ -379,7 +379,6 @@ class MainActivity : AppCompatActivity(),
 
     companion object DatePickerFragment : DialogFragment(), DatePickerDialog.OnDateSetListener {
 
-        @SuppressLint("StaticFieldLeak")
         lateinit var instance: MainActivity
 
         override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -392,7 +391,6 @@ class MainActivity : AppCompatActivity(),
             return dialog
         }
 
-        @SuppressLint("SetTextI18n")
         override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
 
             val actualMonth = month + 1
@@ -417,8 +415,8 @@ class MainActivity : AppCompatActivity(),
 
 
 
-    val editClickListener : (Int,Expense)-> Unit = {
-        pos: Int, expense: Expense ->
+    val editClickListener : (Int, Expense)-> Unit = {
+            _: Int, expense: Expense ->
 
         val dialog = EditFragment()
         val ft = supportFragmentManager.beginTransaction()
@@ -449,7 +447,6 @@ class MainActivity : AppCompatActivity(),
 
     }
 
-    @SuppressLint("SetTextI18n")
     private fun deleteNow(pos: Int, expense: Expense) {
 
         val dialog = ProgressDialog(this)
@@ -495,7 +492,6 @@ class MainActivity : AppCompatActivity(),
     override fun dismissed() {
         getCurrentMonthData()
     }
-
 
 
     override fun onYearMonthSet(year: Int, month: Int) {

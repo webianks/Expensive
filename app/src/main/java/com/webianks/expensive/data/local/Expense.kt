@@ -1,4 +1,4 @@
-package com.webianks.expensive.data
+package com.webianks.expensive.data.local
 
 data class Expense(
 

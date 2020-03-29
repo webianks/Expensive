@@ -16,12 +16,14 @@ class NumberPickerWithColor(
     attrs: AttributeSet?
 ) : NumberPicker(context, attrs) {
     init {
+
         var numberPickerClass: Class<*>? = null
         try {
             numberPickerClass = Class.forName("android.widget.NumberPicker")
         } catch (e: ClassNotFoundException) {
             e.printStackTrace()
         }
+
         var selectionDivider: Field? = null
         try {
             if (numberPickerClass != null) selectionDivider =
@@ -29,6 +31,7 @@ class NumberPickerWithColor(
         } catch (e: NoSuchFieldException) {
             e.printStackTrace()
         }
+
         try {
             if (selectionDivider != null) {
                 selectionDivider.isAccessible = true

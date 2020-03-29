@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.webianks.expensive.data.Expense
+import com.webianks.expensive.data.local.Expense
 import com.webianks.expensive.R
 import com.webianks.expensive.ui.main.MonthsAdapter.VH
 import kotlinx.android.synthetic.main.single_expense_layout.view.*
