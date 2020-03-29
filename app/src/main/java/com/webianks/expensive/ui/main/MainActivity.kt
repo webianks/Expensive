@@ -1,4 +1,4 @@
-package com.webianks.expensive.ui
+package com.webianks.expensive.ui.main
 
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
@@ -6,14 +6,12 @@ import android.app.Dialog
 import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.browser.customtabs.CustomTabsIntent
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -33,7 +31,9 @@ import com.webianks.expensive.*
 import com.webianks.expensive.data.Expense
 import com.webianks.expensive.monthyearpicker.picker.YearMonthPickerDialog
 import com.webianks.expensive.ui.edit.EditFragment
+import com.webianks.expensive.ui.login.LoginActivity
 import com.webianks.expensive.util.Util
+import com.webianks.expensive.util.Util.openPrivacyTab
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.profile_bottom_sheet.*
 import kotlinx.android.synthetic.main.this_month.*
@@ -53,7 +53,7 @@ class MainActivity : AppCompatActivity(),
     private lateinit var mGoogleSignInClient: GoogleSignInClient
     private lateinit var sheetBehavior: BottomSheetBehavior<View>
     private lateinit var monthList: ArrayList<Expense>
-    private lateinit var adapter: MonthRecyclerViewAdapter
+    private lateinit var adapter: MonthsAdapter
     private lateinit var db: FirebaseFirestore
     private lateinit var uid: String
     private var total: Long = 0L
@@ -68,7 +68,7 @@ class MainActivity : AppCompatActivity(),
             optionsDialog?.setContentView(dialogView)
             dialogView.findViewById<TextView>(R.id.editOption).setOnClickListener {
                 optionsDialog?.dismiss()
-                editClicked(pos, expense)
+                editClickListener(pos, expense)
             }
             dialogView.findViewById<TextView>(R.id.deleteBt).setOnClickListener {
                 optionsDialog?.dismiss()
@@ -122,10 +122,10 @@ class MainActivity : AppCompatActivity(),
         }
 
         findViewById<ImageView>(R.id.optionsBt).setOnClickListener {
-            val popup = PopupMenu(MainActivity@ this, findViewById<ImageView>(R.id.optionsBt))
+            val popup = PopupMenu(this, findViewById<ImageView>(R.id.optionsBt))
             popup.menuInflater.inflate(R.menu.main_menu, popup.menu)
             popup.setOnMenuItemClickListener {
-                openPrivacyTab()
+                openPrivacyTab(this)
                 true
             }
             popup.show()
@@ -346,11 +346,12 @@ class MainActivity : AppCompatActivity(),
                         )
                     }
 
-                    adapter = MonthRecyclerViewAdapter(
-                        this,
-                        monthList,
-                        adapterActionListener
-                    )
+                    adapter =
+                        MonthsAdapter(
+                            this,
+                            monthList,
+                            adapterActionListener
+                        )
 
 
                     month_recyclerview.adapter = adapter
@@ -415,7 +416,8 @@ class MainActivity : AppCompatActivity(),
 
 
 
-    private fun editClicked(pos: Int, expense: Expense) {
+    val editClickListener : (Int,Expense)-> Unit = {
+        pos: Int, expense: Expense ->
 
         val dialog = EditFragment()
         val ft = supportFragmentManager.beginTransaction()
@@ -493,11 +495,7 @@ class MainActivity : AppCompatActivity(),
         getCurrentMonthData()
     }
 
-    private fun openPrivacyTab() {
-        val builder = CustomTabsIntent.Builder()
-        val customTabsIntent = builder.build()
-        customTabsIntent.launchUrl(this, Uri.parse(Util.PRIVACY_URL))
-    }
+
 
     override fun onYearMonthSet(year: Int, month: Int) {
 

@@ -1,4 +1,4 @@
-package com.webianks.expensive.ui
+package com.webianks.expensive.ui.login
 
 import android.content.Intent
 import android.os.Bundle
@@ -12,6 +12,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.webianks.expensive.R
+import com.webianks.expensive.ui.main.MainActivity
 import kotlinx.android.synthetic.main.login_activity_layout.*
 
 

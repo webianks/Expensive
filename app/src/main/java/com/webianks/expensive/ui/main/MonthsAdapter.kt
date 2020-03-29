@@ -1,4 +1,4 @@
-package com.webianks.expensive.ui
+package com.webianks.expensive.ui.main
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -7,10 +7,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.webianks.expensive.data.Expense
 import com.webianks.expensive.R
-import com.webianks.expensive.ui.MonthRecyclerViewAdapter.VH
+import com.webianks.expensive.ui.main.MonthsAdapter.VH
 import kotlinx.android.synthetic.main.single_expense_layout.view.*
 
-class MonthRecyclerViewAdapter(
+class MonthsAdapter(
     private val context: Context,
     private val expenseList: List<Expense>,
     private val actionListener: (Int, Expense) -> Unit
