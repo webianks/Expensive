@@ -14,6 +14,8 @@ import com.webianks.expensive.R
 import com.webianks.expensive.monthyearpicker.custom_number_picker.NumberPickerWithColor
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.math.max
+import kotlin.math.min
 
 /**
  * Creates a dialog for picking the year and month.
@@ -47,7 +49,7 @@ class YearMonthPickerDialog(
     /**
      * Resulting dialog.
      */
-    private var mDialog: AlertDialog? = null
+    private lateinit var mDialog: AlertDialog
     /**
      * Picked year.
      */
@@ -145,25 +147,25 @@ class YearMonthPickerDialog(
             setTextColor(mYearValue)
         }
         //Setting custom title view and content to dialog.
-        mDialogBuilder!!.setCustomTitle(titleView)
-        mDialogBuilder!!.setView(contentView)
+        mDialogBuilder.setCustomTitle(titleView)
+        mDialogBuilder.setView(contentView)
         //Setting year's picker min and max value
-        mYearPicker?.minValue = MIN_YEAR
-        mYearPicker?.maxValue = MAX_YEAR
+        mYearPicker.minValue = MIN_YEAR
+        mYearPicker.maxValue = MAX_YEAR
         //Setting month's picker min and max value
-        monthPicker?.minValue = 0
-        monthPicker?.maxValue = monthsList()!!.size - 1
+        monthPicker.minValue = 0
+        monthPicker.maxValue = monthsList()!!.size - 1
         //Setting month list.
-        monthPicker?.displayedValues = monthsList()
+        monthPicker.displayedValues = monthsList()
         //Applying current date.
         setCurrentDate(mYearPicker, monthPicker, monthName, mYearValue)
         //Setting all listeners.
         setListeners(mYearPicker, monthPicker, monthName, mYearValue)
         //Setting titles and listeners for dialog buttons.
-        mDialogBuilder!!.setPositiveButton("OK", this)
-        mDialogBuilder!!.setNegativeButton("CANCEL", this)
+        mDialogBuilder.setPositiveButton("OK", this)
+        mDialogBuilder.setNegativeButton("CANCEL", this)
         //Creating dialog.
-        mDialog = mDialogBuilder!!.create()
+        mDialog = mDialogBuilder.create()
     }
 
     /**
@@ -188,8 +190,9 @@ class YearMonthPickerDialog(
         monthPicker: NumberPickerWithColor?,
         monthName: TextView,
         yearValue: TextView?
-    ) { //Getting current date values from Calendar instance.
-////Calendar calendar = Calendar.getInstance();
+    ) {
+        //Getting current date values from Calendar instance.
+        ////Calendar calendar = Calendar.getInstance();
         mMonth = calendar[Calendar.MONTH]
         mYear = calendar[Calendar.YEAR]
         //Setting output format.
@@ -199,7 +202,7 @@ class YearMonthPickerDialog(
         )
         //Setting current date values to dialog title views.
         monthName.text = monthFormat.format(calendar.time)
-        yearValue!!.text = Integer.toString(mYear)
+        yearValue!!.text = mYear.toString()
         //Setting current date values to pickers.
         monthPicker!!.value = mMonth
         yearPicker!!.value = mYear
@@ -215,17 +218,17 @@ class YearMonthPickerDialog(
      */
     @SuppressLint("SetTextI18n")
     private fun setListeners(
-        yearPicker: NumberPickerWithColor?,
-        monthPicker: NumberPickerWithColor?,
+        yearPicker: NumberPickerWithColor,
+        monthPicker: NumberPickerWithColor,
         monthName: TextView,
         yearValue: TextView?
     ) { //Setting listener to month name view.
         monthName.setOnClickListener { v: View? ->
             //If there's no month picker visible
-            if (monthPicker!!.visibility == View.GONE) { //Set it visible
+            if (monthPicker.visibility == View.GONE) { //Set it visible
                 monthPicker.visibility = View.VISIBLE
                 //And hide year picker.
-                yearPicker!!.visibility = View.GONE
+                yearPicker.visibility = View.GONE
                 //Change title views alpha to picking effect.
                 yearValue!!.alpha = 0.39f
                 monthName.alpha = 1f
@@ -234,26 +237,26 @@ class YearMonthPickerDialog(
         //Setting listener to year value view.
         yearValue!!.setOnClickListener { v: View? ->
             //If there's no year picker visible
-            if (yearPicker!!.visibility == View.GONE) { //Set it visible
+            if (yearPicker.visibility == View.GONE) { //Set it visible
                 yearPicker.visibility = View.VISIBLE
                 //And hide year picker.
-                monthPicker!!.visibility = View.GONE
+                monthPicker.visibility = View.GONE
                 //Change title views alpha to picking effect.
                 monthName.alpha = 0.39f
                 yearValue.alpha = 1f
             }
         }
         //Setting listener to month picker. So it can change title text value.
-        monthPicker!!.setOnValueChangedListener { picker: NumberPicker?, oldVal: Int, newVal: Int ->
+        monthPicker.setOnValueChangedListener { _: NumberPicker?, _: Int, newVal: Int ->
             mMonth = newVal
             //Set title month text to picked month.
             monthName.text = monthsList()!![newVal]
         }
         //Setting listener to year picker. So it can change title text value.
-        yearPicker!!.setOnValueChangedListener { picker: NumberPicker?, oldVal: Int, newVal: Int ->
+        yearPicker.setOnValueChangedListener { _: NumberPicker?, _: Int, newVal: Int ->
             mYear = newVal
             //Set title year text to picked year.
-            yearValue.text = Integer.toString(newVal)
+            yearValue.text = newVal.toString()
         }
     }
 
@@ -261,35 +264,33 @@ class YearMonthPickerDialog(
      * Allows user to show created dialog.
      */
     fun show() {
-        mDialog!!.show()
+        mDialog.show()
     }
 
     /**
      * Sets min value of year picker widget.
      * @param minYear The min value inclusive.
      */
+    @SuppressLint("SetTextI18n")
     fun setMinYear(minYear: Int) {
-        if (mYearPicker != null) {
-            if (mYearPicker!!.value < minYear) {
-                mYearPicker!!.value = minYear
-                mYearValue!!.text = Integer.toString(minYear)
-            }
-            mYearPicker!!.minValue = Math.min(minYear, mYearPicker!!.maxValue)
+        if (mYearPicker.value < minYear) {
+            mYearPicker.value = minYear
+            mYearValue?.text = minYear.toString()
         }
+        mYearPicker.minValue = min(minYear, mYearPicker.maxValue)
     }
 
     /**
      * Sets max value of year picker widget.
      * @param maxYear The max value inclusive.
      */
+    @SuppressLint("SetTextI18n")
     fun setMaxYear(maxYear: Int) {
-        if (mYearPicker != null) {
-            if (mYearPicker!!.value > maxYear) {
-                mYearPicker!!.value = maxYear
-                mYearValue!!.text = Integer.toString(maxYear)
-            }
-            mYearPicker!!.maxValue = Math.max(maxYear, mYearPicker!!.minValue)
+        if (mYearPicker.value > maxYear) {
+            mYearPicker.value = maxYear
+            mYearValue?.text = maxYear.toString()
         }
+        mYearPicker.maxValue = max(maxYear, mYearPicker.minValue)
     }
 
     /**

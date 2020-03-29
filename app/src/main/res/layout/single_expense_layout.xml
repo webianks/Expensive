@@ -43,7 +43,7 @@
     <ImageView
             android:id="@+id/deleteBt"
             android:layout_below="@id/amount"
-            android:src="@drawable/outline_more_horiz_24"
+            app:srcCompat="@drawable/outline_more_horiz_24"
             android:fontFamily="@font/google_sans"
             android:textSize="12sp"
             android:layout_alignParentEnd="true"

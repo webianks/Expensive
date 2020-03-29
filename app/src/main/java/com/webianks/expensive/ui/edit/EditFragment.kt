@@ -16,6 +16,7 @@ import androidx.fragment.app.DialogFragment
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import com.webianks.expensive.ExpensiveApplication
 import com.webianks.expensive.R
 import com.webianks.expensive.util.Util
 import kotlinx.android.synthetic.main.activity_main.*
@@ -37,18 +38,24 @@ class EditFragment : DialogFragment() {
     private var item: String? = null
     private var amount: String? = null
     private lateinit var db: FirebaseFirestore
+
     private var documentId: String? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setStyle(STYLE_NORMAL,
+        setStyle(
+            STYLE_NORMAL,
             R.style.FullScreenDialogStyle
         )
     }
 
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         val view = inflater.inflate(R.layout.edit_fragment, container, false)
 
         val toolbar: Toolbar = view.findViewById(R.id.toolbar)
@@ -57,7 +64,11 @@ class EditFragment : DialogFragment() {
         toolbar.title = "Edit Expense"
 
         initViews()
-        db = FirebaseFirestore.getInstance()
+
+        activity?.let {
+            db = (it.application as ExpensiveApplication).db
+        }
+
         return view
     }
 
@@ -168,7 +179,7 @@ class EditFragment : DialogFragment() {
             val year: Int = c.get(Calendar.YEAR)
             val month: Int = c.get(Calendar.MONTH)
             val day: Int = c.get(Calendar.DAY_OF_MONTH)
-            val dialog = DatePickerDialog(context, this, year, month, day)
+            val dialog = DatePickerDialog(activity!!, this, year, month, day)
             dialog.datePicker.maxDate = c.timeInMillis
             return dialog
         }

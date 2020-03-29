@@ -92,8 +92,9 @@ class MainActivity : AppCompatActivity(),
             .build()
 
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
-        db = FirebaseFirestore.getInstance()
-        auth = FirebaseAuth.getInstance()
+
+        db = (application as ExpensiveApplication).db
+        auth = (application as ExpensiveApplication).auth
 
         getCurrentMonthData()
 
@@ -386,7 +387,7 @@ class MainActivity : AppCompatActivity(),
             val year: Int = c.get(Calendar.YEAR)
             val month: Int = c.get(Calendar.MONTH)
             val day: Int = c.get(Calendar.DAY_OF_MONTH)
-            val dialog = DatePickerDialog(context, this, year, month, day)
+            val dialog = DatePickerDialog(activity!!, this, year, month, day)
             dialog.datePicker.maxDate = c.timeInMillis
             return dialog
         }

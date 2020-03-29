@@ -11,6 +11,7 @@
             android:label="@string/app_name"
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
+            android:name=".ExpensiveApplication"
             tools:ignore="GoogleAppIndexingWarning">
 
         <activity android:name=".ui.main.MainActivity">

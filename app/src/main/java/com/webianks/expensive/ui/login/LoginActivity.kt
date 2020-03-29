@@ -11,6 +11,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
+import com.webianks.expensive.ExpensiveApplication
 import com.webianks.expensive.R
 import com.webianks.expensive.ui.main.MainActivity
 import kotlinx.android.synthetic.main.login_activity_layout.*
@@ -19,9 +20,12 @@ import kotlinx.android.synthetic.main.login_activity_layout.*
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var mGoogleSignInClient: GoogleSignInClient
-    private val RC_SIGN_IN: Int = 1242
     private lateinit var auth: FirebaseAuth
-    private val TAG: String = "Expensive"
+
+    companion object{
+        private const val RC_SIGN_IN: Int = 1242
+        private const val TAG: String = "Expensive"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,9 +39,7 @@ class LoginActivity : AppCompatActivity() {
             .build()
 
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
-
-
-        auth = FirebaseAuth.getInstance()
+        auth = (application as ExpensiveApplication).auth
 
         signInButton.setOnClickListener {
             signIn()
