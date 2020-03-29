@@ -1,4 +1,4 @@
-package com.webianks.expensive
+package com.webianks.expensive.ui.edit
 
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
@@ -16,6 +16,8 @@ import androidx.fragment.app.DialogFragment
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import com.webianks.expensive.R
+import com.webianks.expensive.util.Util
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.edit_fragment.adding_progress
 import kotlinx.android.synthetic.main.edit_fragment.amount_et
@@ -40,7 +42,9 @@ class EditFragment : DialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setStyle(STYLE_NORMAL, R.style.FullScreenDialogStyle)
+        setStyle(STYLE_NORMAL,
+            R.style.FullScreenDialogStyle
+        )
     }
 
 
@@ -148,7 +152,8 @@ class EditFragment : DialogFragment() {
 
 
     private fun showDatePickerDialog() {
-        val newFragment: DialogFragment = DatePickerFragment
+        val newFragment: DialogFragment =
+            DatePickerFragment
         instance = this@EditFragment
         newFragment.show(childFragmentManager, "datePicker")
     }

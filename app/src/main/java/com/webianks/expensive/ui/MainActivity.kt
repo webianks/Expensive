@@ -1,4 +1,4 @@
-package com.webianks.expensive
+package com.webianks.expensive.ui
 
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
@@ -29,7 +29,11 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import com.webianks.expensive.*
+import com.webianks.expensive.data.Expense
 import com.webianks.expensive.monthyearpicker.picker.YearMonthPickerDialog
+import com.webianks.expensive.ui.edit.EditFragment
+import com.webianks.expensive.util.Util
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.profile_bottom_sheet.*
 import kotlinx.android.synthetic.main.this_month.*
@@ -55,7 +59,7 @@ class MainActivity : AppCompatActivity(),
     private var total: Long = 0L
 
 
-    private val adapterActionListener : (Int,Expense) -> Unit = {
+    private val adapterActionListener : (Int, Expense) -> Unit = {
 
         pos, expense ->
         if (optionsDialog == null) {
@@ -368,7 +372,11 @@ class MainActivity : AppCompatActivity(),
                         )
                     }
 
-                    adapter = MonthRecyclerViewAdapter(this, monthList,adapterActionListener)
+                    adapter = MonthRecyclerViewAdapter(
+                        this,
+                        monthList,
+                        adapterActionListener
+                    )
 
 
                     month_recyclerview.adapter = adapter
@@ -387,7 +395,8 @@ class MainActivity : AppCompatActivity(),
     }
 
     private fun showDatePickerDialog() {
-        val newFragment: DialogFragment = DatePickerFragment
+        val newFragment: DialogFragment =
+            DatePickerFragment
         instance = this@MainActivity
         newFragment.show(supportFragmentManager, "datePicker")
     }

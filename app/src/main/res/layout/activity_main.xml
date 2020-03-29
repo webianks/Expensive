@@ -83,7 +83,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/colorPrimaryDark"
-                    tools:context=".MainActivity">
+                    tools:context=".ui.MainActivity">
 
                 <FrameLayout
                         app:layout_constraintTop_toTopOf="parent"
