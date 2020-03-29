@@ -42,7 +42,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class MainActivity : AppCompatActivity(),
-    EditFragment.OnDismissListener {
+    EditFragment.OnDismissListener, YearMonthPickerDialog.OnDateSetListener {
 
     private var optionsDialog: BottomSheetDialog? = null
     private lateinit var calendarCurrent: Calendar
@@ -193,33 +193,7 @@ class MainActivity : AppCompatActivity(),
     }
 
     private fun showMonthYearPicker() {
-
-        val yearMonthPickerDialog = YearMonthPickerDialog(
-            this,
-            YearMonthPickerDialog.OnDateSetListener { year, month ->
-
-                calendarCurrent.set(Calendar.YEAR, year)
-                calendarCurrent.set(Calendar.MONTH, month)
-
-
-                val monthYearFormat = SimpleDateFormat("MMM yyyy", Locale.getDefault())
-                val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
-                val currentTime = calendarCurrent.time
-
-                val currentMonth = monthYearFormat.format(currentTime)
-                currentDate = dateFormat.format(currentTime)
-                current_month.text = currentMonth
-
-                val lastDate = calendarCurrent.getActualMaximum(Calendar.DATE)
-                calendarCurrent.set(Calendar.DATE, lastDate)
-                lastDateOfThisMonth = dateFormat.parse(dateFormat.format(calendarCurrent.time))
-                calendarCurrent.set(Calendar.DAY_OF_MONTH, 1)
-                firstDateOfThisMonth = dateFormat.parse(dateFormat.format(calendarCurrent.time))
-
-                getCurrentMonthData()
-
-            }, calendarCurrent
-        )
+        val yearMonthPickerDialog = YearMonthPickerDialog(this, this, calendarCurrent)
         yearMonthPickerDialog.setMaxYear(calendarCurrent.get(Calendar.YEAR))
         yearMonthPickerDialog.show()
     }
@@ -523,6 +497,28 @@ class MainActivity : AppCompatActivity(),
         val builder = CustomTabsIntent.Builder()
         val customTabsIntent = builder.build()
         customTabsIntent.launchUrl(this, Uri.parse(Util.PRIVACY_URL))
+    }
+
+    override fun onYearMonthSet(year: Int, month: Int) {
+
+        calendarCurrent.set(Calendar.YEAR, year)
+        calendarCurrent.set(Calendar.MONTH, month)
+
+        val monthYearFormat = SimpleDateFormat("MMM yyyy", Locale.getDefault())
+        val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+        val currentTime = calendarCurrent.time
+
+        val currentMonth = monthYearFormat.format(currentTime)
+        currentDate = dateFormat.format(currentTime)
+        current_month.text = currentMonth
+
+        val lastDate = calendarCurrent.getActualMaximum(Calendar.DATE)
+        calendarCurrent.set(Calendar.DATE, lastDate)
+        lastDateOfThisMonth = dateFormat.parse(dateFormat.format(calendarCurrent.time))
+        calendarCurrent.set(Calendar.DAY_OF_MONTH, 1)
+        firstDateOfThisMonth = dateFormat.parse(dateFormat.format(calendarCurrent.time))
+
+        getCurrentMonthData()
     }
 
 }
