@@ -38,9 +38,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class MainActivity : AppCompatActivity(),
-    MonthRecyclerViewAdapter.ActionListener,
     EditFragment.OnDismissListener {
-
 
     private var optionsDialog: BottomSheetDialog? = null
     private lateinit var calendarCurrent: Calendar
@@ -55,6 +53,27 @@ class MainActivity : AppCompatActivity(),
     private lateinit var db: FirebaseFirestore
     private lateinit var uid: String
     private var total: Long = 0L
+
+
+    private val adapterActionListener : (Int,Expense) -> Unit = {
+
+        pos, expense ->
+        if (optionsDialog == null) {
+            val dialogView = LayoutInflater.from(this).inflate(R.layout.options_bottom_sheet, null)
+            optionsDialog = BottomSheetDialog(this)
+            optionsDialog?.setContentView(dialogView)
+            dialogView.findViewById<TextView>(R.id.editOption).setOnClickListener {
+                optionsDialog?.dismiss()
+                editClicked(pos, expense)
+            }
+            dialogView.findViewById<TextView>(R.id.deleteBt).setOnClickListener {
+                optionsDialog?.dismiss()
+                deleteClicked(pos, expense)
+            }
+        }
+        optionsDialog?.show()
+
+    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -349,8 +368,9 @@ class MainActivity : AppCompatActivity(),
                         )
                     }
 
-                    adapter = MonthRecyclerViewAdapter(this, monthList)
-                    adapter.actionListener = this
+                    adapter = MonthRecyclerViewAdapter(this, monthList,adapterActionListener)
+
+
                     month_recyclerview.adapter = adapter
                     no_expenses.visibility = View.GONE
                     totalAmount.text = "Total: \u20B9 $total"
@@ -410,28 +430,6 @@ class MainActivity : AppCompatActivity(),
         snackbar.show()
     }
 
-
-    override fun optionsClicked(pos: Int, expense: Expense) {
-
-
-        if (optionsDialog == null) {
-            val dialogView = LayoutInflater.from(this).inflate(R.layout.options_bottom_sheet, null)
-            optionsDialog = BottomSheetDialog(this)
-            optionsDialog?.setContentView(dialogView)
-            dialogView.findViewById<TextView>(R.id.editOption).setOnClickListener {
-                optionsDialog?.dismiss()
-                editClicked(pos, expense)
-            }
-            dialogView.findViewById<TextView>(R.id.deleteBt).setOnClickListener {
-                optionsDialog?.dismiss()
-                deleteClicked(pos, expense)
-            }
-        }
-
-
-        optionsDialog?.show()
-
-    }
 
 
     private fun editClicked(pos: Int, expense: Expense) {
