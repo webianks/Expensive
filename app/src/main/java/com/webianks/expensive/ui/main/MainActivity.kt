@@ -34,6 +34,7 @@ import com.webianks.expensive.ui.edit.EditFragment
 import com.webianks.expensive.ui.login.LoginActivity
 import com.webianks.expensive.util.Util
 import com.webianks.expensive.util.Util.openPrivacyTab
+import com.webianks.expensive.util.hideKeyboard
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.profile_bottom_sheet.*
 import kotlinx.android.synthetic.main.this_month.*
@@ -121,8 +122,8 @@ EditFragment.OnDismissListener, YearMonthPickerDialog.OnDateSetListener {
             showMonthYearPicker()
         }
 
-        findViewById<ImageView>(R.id.optionsBt).setOnClickListener {
-            val popup = PopupMenu(this, findViewById<ImageView>(R.id.optionsBt))
+        optionsBt.setOnClickListener {
+            val popup = PopupMenu(this, optionsBt)
             popup.menuInflater.inflate(R.menu.main_menu, popup.menu)
             popup.setOnMenuItemClickListener {
                 openPrivacyTab(this)
@@ -193,8 +194,11 @@ EditFragment.OnDismissListener, YearMonthPickerDialog.OnDateSetListener {
     }
 
     private fun showMonthYearPicker() {
-        val yearMonthPickerDialog = YearMonthPickerDialog(this, this, calendarCurrent)
-        yearMonthPickerDialog.setMaxYear(calendarCurrent.get(Calendar.YEAR))
+        val yearMonthPickerDialog = YearMonthPickerDialog(this,
+            this,
+            calendarCurrent)
+
+        yearMonthPickerDialog.setMaxYear(Calendar.getInstance().get(Calendar.YEAR))
         yearMonthPickerDialog.show()
     }
 
@@ -477,13 +481,6 @@ EditFragment.OnDismissListener, YearMonthPickerDialog.OnDateSetListener {
             .addOnFailureListener { showMessage("Error deleting expense") }
     }
 
-    private fun hideKeyboard(view: View) {
-        try {
-            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(view.windowToken, 0)
-        } catch (ignored: Exception) {
-        }
-    }
 
 
     override fun dismissed() {
@@ -510,8 +507,10 @@ EditFragment.OnDismissListener, YearMonthPickerDialog.OnDateSetListener {
         current_month.text = currentMonth
 
         val lastDate = calendarCurrent.getActualMaximum(Calendar.DATE)
+
         calendarCurrent.set(Calendar.DATE, lastDate)
         lastDateOfThisMonth = dateFormat.parse(dateFormat.format(calendarCurrent.time))
+
         calendarCurrent.set(Calendar.DAY_OF_MONTH, 1)
         firstDateOfThisMonth = dateFormat.parse(dateFormat.format(calendarCurrent.time))
 

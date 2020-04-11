@@ -41,6 +41,7 @@ class YearMonthPickerDialog(
      * Set Init Date.
      */
     private val calendar: Calendar
+
 ) : DialogInterface.OnClickListener {
     /**
      * The builder for our dialog.
@@ -76,15 +77,13 @@ class YearMonthPickerDialog(
         context: Context,
         calendar: Calendar,
         onDateSetListener: OnDateSetListener?
-    ) : this(context, onDateSetListener, -1, -1, calendar) {
-    }
+    ) : this(context, onDateSetListener, -1, -1, calendar)
 
     constructor(
         context: Context,
         onDateSetListener: OnDateSetListener?,
         calendar: Calendar
-    ) : this(context, onDateSetListener, -1, -1, calendar) {
-    }
+    ) : this(context, onDateSetListener, -1, -1, calendar)
 
     /**
      * Creates a new YearMonthPickerDialog object that represents the dialog for
@@ -99,8 +98,7 @@ class YearMonthPickerDialog(
         onDateSetListener: OnDateSetListener?,
         calendar: Calendar,
         theme: Int
-    ) : this(context, onDateSetListener, theme, -1, calendar) {
-    }
+    ) : this(context, onDateSetListener, theme, -1, calendar)
 
     /**
      * Listens for user's actions.
@@ -152,6 +150,7 @@ class YearMonthPickerDialog(
         //Setting year's picker min and max value
         mYearPicker.minValue = MIN_YEAR
         mYearPicker.maxValue = MAX_YEAR
+
         //Setting month's picker min and max value
         monthPicker.minValue = 0
         monthPicker.maxValue = monthsList()!!.size - 1
