@@ -13,4 +13,6 @@
     <string name="edit">Edit</string>
     <string name="update">Update</string>
     <string name="privacy_policy">Privacy Policy</string>
+    <string name="label_this_month">This month</string>
+    <string name="label_all">All</string>
 </resources>

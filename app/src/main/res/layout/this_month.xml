@@ -1,92 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:orientation="vertical"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/expense_input_frame"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+
+        <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/month_recyclerview"
                 android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:nestedScrollingEnabled="false" />
+
+
+        <TextView
+                android:id="@+id/no_expenses"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/done"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@id/expense_input_frame">
-
-    <com.google.android.material.button.MaterialButton
-            android:id="@+id/current_month"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/google_sans"
-            android:textSize="14sp"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            app:strokeColor="@color/colorPrimary"
-            app:strokeWidth="1dp"
-            app:iconTint="@color/colorPrimary"
-            app:icon="@drawable/outline_keyboard_arrow_down_24"
-            app:cornerRadius="5dp"
-            android:textStyle="bold"
-            android:textColor="@color/colorPrimary"
-            android:layout_marginStart="@dimen/standard"
-            android:layout_marginTop="@dimen/standard"
-            android:layout_marginEnd="@dimen/standard"
-    />
-
-    <TextView
-            android:id="@+id/totalAmount"
-            android:fontFamily="@font/google_sans"
-            android:textColor="@color/Grey_900"
-            android:textStyle="bold"
-            android:textSize="17sp"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="30dp"
-            android:layout_marginEnd="@dimen/double_standard"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-    <com.google.android.material.card.MaterialCardView
-            android:layout_width="match_parent"
-            android:layout_marginTop="20dp"
-            app:strokeWidth="0dp"
-            android:layout_below="@id/current_month"
-            app:cardCornerRadius="0dp"
-            app:strokeColor="@color/Grey_400"
-            app:cardElevation="4dp"
-            android:layout_height="match_parent">
-
-        <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="120dp"
+                android:layout_marginBottom="100dp"
+                android:fontFamily="@font/google_sans"
+                android:gravity="center"
+                android:text="@string/no_expenses"
+                android:textStyle="italic" />
 
 
-            <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/month_recyclerview"
-                    android:layout_width="match_parent"
-                    android:layout_marginTop="4dp"
-                    android:nestedScrollingEnabled="false"
-                    android:layout_height="match_parent"/>
-
-
-            <TextView
-                    android:id="@+id/no_expenses"
-                    android:fontFamily="@font/google_sans"
-                    android:layout_width="wrap_content"
-                    android:text="@string/no_expenses"
-                    android:gravity="center"
-                    android:textStyle="italic"
-                    android:layout_marginTop="120dp"
-                    android:layout_marginBottom="100dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"/>
-
-
-            <com.airbnb.lottie.LottieAnimationView
-                    android:id="@+id/animation_view"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:lottie_fileName="skeleton.json"
-                    android:layout_gravity="center"
-                    app:lottie_loop="true"
-                    app:lottie_autoPlay="true"/>
-
-        </FrameLayout>
-
-
-    </com.google.android.material.card.MaterialCardView>
+        <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/animation_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                app:lottie_autoPlay="true"
+                app:lottie_fileName="skeleton.json"
+                app:lottie_loop="true" />
 
 </RelativeLayout>

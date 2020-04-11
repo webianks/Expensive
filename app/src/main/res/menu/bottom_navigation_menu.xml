@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+            android:id="@+id/item_this_month"
+            android:icon="@drawable/round_calendar_today_24"
+            android:title="@string/label_this_month" />
+
+    <item
+            android:id="@+id/item_all"
+            android:icon="@drawable/round_calendar_today_24"
+            android:title="@string/label_all" />
+</menu>

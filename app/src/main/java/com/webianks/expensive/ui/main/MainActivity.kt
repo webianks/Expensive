@@ -211,7 +211,6 @@ EditFragment.OnDismissListener, YearMonthPickerDialog.OnDateSetListener {
                 it.dismiss()
             }
             .show()
-
     }
 
     private fun revokeAccess() {

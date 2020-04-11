@@ -4,6 +4,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
+        android:background="@color/colorPrimaryDark"
         android:layout_height="match_parent">
 
     <LinearLayout
@@ -14,27 +15,18 @@
         <com.google.android.material.appbar.AppBarLayout
                 android:id="@+id/appbar"
                 android:layout_width="match_parent"
-                app:elevation="0.0dp"
-                android:background="@color/colorPrimaryDark"
                 android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                android:background="@color/white">
 
-            <FrameLayout
+
+            <androidx.appcompat.widget.Toolbar
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                <ImageView
-                        android:id="@+id/background"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
 
                 <TextView
                         android:id="@+id/title"
-                        android:layout_marginTop="35dp"
-                        android:paddingBottom="15dp"
-                        android:textSize="22sp"
+                        android:textSize="21sp"
                         android:textStyle="bold"
                         android:textColor="@color/Grey_900"
                         android:fontFamily="@font/google_sans"
@@ -42,7 +34,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/app_name"
-                />
+                        />
 
 
                 <com.mikhaellopez.circularimageview.CircularImageView
@@ -51,10 +43,10 @@
                         android:layout_height="50dp"
                         android:layout_marginEnd="@dimen/standard"
                         android:layout_marginStart="@dimen/standard"
-                        android:layout_marginTop="24dp"
                         app:civ_border_color="#FFF"
                         app:civ_border_width="2dp"
                         app:civ_shadow="true"
+                        android:visibility="gone"
                         android:layout_gravity="start"
                         app:civ_shadow_radius="2"
                         app:civ_shadow_color="#DDD"/>
@@ -62,7 +54,6 @@
 
                 <ImageView
                         android:id="@+id/optionsBt"
-                        android:layout_marginTop="38dp"
                         android:layout_gravity="end"
                         android:layout_marginStart="@dimen/standard"
                         android:layout_marginEnd="@dimen/standard"
@@ -70,13 +61,15 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
 
-            </FrameLayout>
+            </androidx.appcompat.widget.Toolbar>
+
 
         </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="visible"
                 android:fillViewport="true">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -90,6 +83,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         android:id="@+id/expense_input_frame"
+                        android:visibility="gone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
@@ -220,6 +214,7 @@
                         android:text="@string/done"
                         android:textStyle="bold"
                         app:cornerRadius="5dp"
+                        android:visibility="gone"
                         android:fontFamily="@font/google_sans"
                         app:layout_constraintBottom_toTopOf="@id/marginSpacer"
                         app:layout_constraintEnd_toEndOf="@id/expense_input_frame"
@@ -228,6 +223,8 @@
 
                 <include layout="@layout/this_month"/>
 
+
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.core.widget.NestedScrollView>
@@ -235,5 +232,78 @@
     </LinearLayout>
 
     <include layout="@layout/profile_bottom_sheet"/>
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_gravity="bottom"
+            android:layout_height="wrap_content">
+
+
+    <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_marginBottom="@dimen/standard"
+            android:layout_marginStart="@dimen/standard"
+            android:layout_marginEnd="@dimen/standard"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:cardElevation="0dp"
+            app:cardCornerRadius="8dp"
+            app:strokeWidth="1dp"
+            app:strokeColor="@color/colorPrimary"
+            app:cardBackgroundColor="@color/primaryScrim"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_height="wrap_content">
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="2"
+                android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                    android:id="@+id/current_month"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/standard"
+                    android:layout_marginEnd="@dimen/standard"
+                    android:fontFamily="@font/google_sans"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:visibility="visible"
+                    app:cornerRadius="5dp"
+                    app:icon="@drawable/outline_keyboard_arrow_down_24"
+                    app:iconTint="@color/colorPrimary"
+                    app:strokeColor="@color/colorPrimary"
+                    app:strokeWidth="0dp" />
+
+            <TextView
+                    android:id="@+id/totalAmount"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/double_standard"
+                    android:fontFamily="@font/google_sans"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="17sp"
+                    android:gravity="end"
+                    android:layout_gravity="center_vertical"
+                    android:textStyle="bold"
+                    android:visibility="visible" />
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottom_navigation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            app:menu="@menu/bottom_navigation_menu" />
+    </LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
