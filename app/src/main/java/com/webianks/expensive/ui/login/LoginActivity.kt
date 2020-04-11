@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.util.Log
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
@@ -17,7 +16,6 @@ import com.webianks.expensive.data.DataManager
 import com.webianks.expensive.ui.base.BaseActivity
 import com.webianks.expensive.ui.main.MainActivity
 import kotlinx.android.synthetic.main.login_activity_layout.*
-
 
 class LoginActivity : BaseActivity(), LoginMvpView {
 
@@ -36,12 +34,8 @@ class LoginActivity : BaseActivity(), LoginMvpView {
 
         val signInButton: MaterialButton = findViewById(R.id.signInButton)
 
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.default_web_client_id))
-            .requestEmail()
-            .build()
-
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
+        mGoogleSignInClient = GoogleSignIn.getClient(this,
+            (application as ExpensiveApplication).gso)
         auth = (application as ExpensiveApplication).auth
 
         val dataManager: DataManager = (application as ExpensiveApplication).dataManager

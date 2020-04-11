@@ -26,6 +26,7 @@ import kotlinx.android.synthetic.main.edit_fragment.date_et
 import kotlinx.android.synthetic.main.edit_fragment.done
 import kotlinx.android.synthetic.main.edit_fragment.expense_input_card
 import kotlinx.android.synthetic.main.edit_fragment.spent_on_et
+import kotlinx.android.synthetic.main.edit_fragment.view.*
 import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
@@ -63,7 +64,7 @@ class EditFragment : DialogFragment() {
         toolbar.setNavigationOnClickListener { dismiss() }
         toolbar.title = "Edit Expense"
 
-        initViews()
+        initViews(view)
 
         activity?.let {
             db = (it.application as ExpensiveApplication).db
@@ -73,12 +74,12 @@ class EditFragment : DialogFragment() {
     }
 
 
-    private fun initViews() {
+    private fun initViews(view: View) {
 
 
-        date_et.setOnClickListener { showDatePickerDialog() }
+        view.date_et.setOnClickListener { showDatePickerDialog() }
 
-        done.setOnClickListener {
+        view.done.setOnClickListener {
             hideKeyboard(it)
             validateAndUpdateData()
         }
@@ -95,9 +96,9 @@ class EditFragment : DialogFragment() {
         dateString = dateFormat.format(retrievedFormat.parse(mDate))
         currentDate = dateFormat.parse(dateString)
 
-        spent_on_et.setText(item)
-        amount_et.setText(amount)
-        date_et.setText(dateString)
+        view.spent_on_et.setText(item)
+        view.amount_et.setText(amount)
+        view.date_et.setText(dateString)
 
     }
 

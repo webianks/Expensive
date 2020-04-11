@@ -7,5 +7,4 @@ class DataManager(
     val auth: FirebaseAuth,
     val db: FirebaseFirestore) {
 
-
 }

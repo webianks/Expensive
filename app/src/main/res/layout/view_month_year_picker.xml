@@ -5,14 +5,14 @@
         android:gravity="center"
         android:orientation="vertical">
 
-    <com.webianks.expensive.monthyearpicker.custom_number_picker.NumberPickerWithColor
+    <com.webianks.expensive.ui.month_year_picker.custom_number_picker.NumberPickerWithColor
             android:id="@+id/month_picker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:descendantFocusability="blocksDescendants"
             android:longClickable="false" />
 
-    <com.webianks.expensive.monthyearpicker.custom_number_picker.NumberPickerWithColor
+    <com.webianks.expensive.ui.month_year_picker.custom_number_picker.NumberPickerWithColor
             android:id="@+id/year_picker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

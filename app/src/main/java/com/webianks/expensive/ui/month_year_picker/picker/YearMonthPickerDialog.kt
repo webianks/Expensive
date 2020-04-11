@@ -1,4 +1,4 @@
-package com.webianks.expensive.monthyearpicker.picker
+package com.webianks.expensive.ui.month_year_picker.picker
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -11,7 +11,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import com.webianks.expensive.R
-import com.webianks.expensive.monthyearpicker.custom_number_picker.NumberPickerWithColor
+import com.webianks.expensive.ui.month_year_picker.custom_number_picker.NumberPickerWithColor
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.max

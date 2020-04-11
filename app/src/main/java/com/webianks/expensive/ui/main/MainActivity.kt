@@ -11,13 +11,11 @@ import android.util.Log
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -28,8 +26,9 @@ import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.webianks.expensive.*
+import com.webianks.expensive.data.DataManager
 import com.webianks.expensive.data.local.Expense
-import com.webianks.expensive.monthyearpicker.picker.YearMonthPickerDialog
+import com.webianks.expensive.ui.month_year_picker.picker.YearMonthPickerDialog
 import com.webianks.expensive.ui.base.BaseActivity
 import com.webianks.expensive.ui.edit.EditFragment
 import com.webianks.expensive.ui.login.LoginActivity
@@ -42,9 +41,10 @@ import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
 
-class MainActivity : BaseActivity(),
-    EditFragment.OnDismissListener, YearMonthPickerDialog.OnDateSetListener {
+class MainActivity : BaseActivity(), MainMvpView,
+EditFragment.OnDismissListener, YearMonthPickerDialog.OnDateSetListener {
 
+    private lateinit var mainPresenter: MainPresenter<MainMvpView>
     private var optionsDialog: BottomSheetDialog? = null
     private lateinit var calendarCurrent: Calendar
     private lateinit var firstDateOfThisMonth: Date
@@ -86,15 +86,14 @@ class MainActivity : BaseActivity(),
 
         initViews()
 
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.default_web_client_id))
-            .requestEmail()
-            .build()
-
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
-
+        mGoogleSignInClient = GoogleSignIn.getClient(this, (application as ExpensiveApplication).gso)
         db = (application as ExpensiveApplication).db
         auth = (application as ExpensiveApplication).auth
+
+
+        val dataManager: DataManager = (application as ExpensiveApplication).dataManager
+        mainPresenter = MainPresenter(dataManager)
+        mainPresenter.onAttach(this)
 
         getCurrentMonthData()
 
@@ -307,9 +306,8 @@ class MainActivity : BaseActivity(),
         month_recyclerview.visibility = View.GONE
         total = 0L
         totalAmount.visibility = View.GONE
-
-
         monthList = ArrayList()
+
 
         db.collection(Util.EXPENSE_COLLECTION)
             .whereEqualTo("uid", uid)
@@ -319,7 +317,6 @@ class MainActivity : BaseActivity(),
             .orderBy("created_at", Query.Direction.DESCENDING)
             .get()
             .addOnSuccessListener { result ->
-
 
                 animation_view.visibility = View.GONE
 
@@ -491,6 +488,11 @@ class MainActivity : BaseActivity(),
 
     override fun dismissed() {
         getCurrentMonthData()
+    }
+
+    override fun showCurrentMonthData() {
+
+
     }
 
 
