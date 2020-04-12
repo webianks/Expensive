@@ -2,6 +2,7 @@ package com.webianks.expensive.ui.main
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.webianks.expensive.*
 import com.webianks.expensive.ui.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_main.*
@@ -39,7 +40,7 @@ class MainActivity : BaseActivity(){
                     openFragment(fragment)
                 }
                 R.id.item_all -> {
-                    val fragment = MenuFragment.newInstance(userName, userEmail,userImage)
+                    val fragment = SummaryFragment.newInstance()
                     openFragment(fragment)
                 }
 
@@ -59,10 +60,9 @@ class MainActivity : BaseActivity(){
     private fun openFragment(fragment: Fragment) {
         val transaction = supportFragmentManager.beginTransaction()
         transaction.replace(R.id.container, fragment)
-        transaction.addToBackStack(fragment.tag)
-        transaction.commit()
+        transaction.commitNow()
     }
 
-    fun getBottomNavigation() = bottom_navigation
+    fun getBottomNavigation(): BottomNavigationView = bottom_navigation
 
 }
