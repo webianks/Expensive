@@ -203,8 +203,8 @@ class EditFragment : DialogFragment() {
     }
 
     private fun showMessage(s: String) {
-        val snackbar: Snackbar = Snackbar.make(userImage, s, Snackbar.LENGTH_SHORT)
-        snackbar.show()
+        //val snackbar: Snackbar = Snackbar.make(userImage, s, Snackbar.LENGTH_SHORT)
+        //snackbar.show()
     }
 
 

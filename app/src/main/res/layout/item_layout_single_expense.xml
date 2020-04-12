@@ -4,9 +4,9 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/double_standard"
-        android:layout_marginTop="@dimen/standard"
-        android:layout_marginEnd="@dimen/double_standard"
+        android:layout_marginStart="@dimen/margin_32dp"
+        android:layout_marginTop="@dimen/margin_16dp"
+        android:layout_marginEnd="@dimen/margin_32dp"
         android:layout_marginBottom="4dp">
 
     <TextView
@@ -57,6 +57,6 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_below="@id/deleteBt"
-            android:layout_marginTop="@dimen/standard"
+            android:layout_marginTop="@dimen/margin_16dp"
             android:background="@drawable/dashed_line_bg2" />
 </RelativeLayout>

@@ -17,9 +17,9 @@
             android:id="@+id/userImageSheet"
             android:layout_width="70dp"
             android:layout_height="70dp"
-            android:layout_marginStart="@dimen/double_standard"
-            android:layout_marginEnd="@dimen/standard"
-            android:layout_marginBottom="@dimen/double_standard"
+            android:layout_marginStart="@dimen/margin_32dp"
+            android:layout_marginEnd="@dimen/margin_16dp"
+            android:layout_marginBottom="@dimen/margin_32dp"
             android:layout_marginTop="60dp"
             app:civ_border_color="#FFF"
             app:civ_border_width="2dp"
@@ -38,8 +38,8 @@
             android:layout_toEndOf="@id/userImageSheet"
             android:textSize="17sp"
             android:textColor="@color/white"
-            android:layout_marginStart="@dimen/half"
-            android:layout_marginEnd="@dimen/half"
+            android:layout_marginStart="@dimen/margin_8dp"
+            android:layout_marginEnd="@dimen/margin_8dp"
     />
 
 
@@ -53,8 +53,8 @@
             android:layout_toEndOf="@id/userImageSheet"
             android:textSize="14sp"
             android:textColor="@color/white"
-            android:layout_marginStart="@dimen/half"
-            android:layout_marginEnd="@dimen/half"
+            android:layout_marginStart="@dimen/margin_8dp"
+            android:layout_marginEnd="@dimen/margin_8dp"
     />
 
 
@@ -70,8 +70,8 @@
             android:layout_below="@id/user_email"
             android:layout_toEndOf="@id/userImageSheet"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="@dimen/half"
-            android:layout_marginEnd="@dimen/double_standard"
+            android:layout_marginTop="@dimen/margin_8dp"
+            android:layout_marginEnd="@dimen/margin_32dp"
             android:layout_marginBottom="60dp"
     />
 

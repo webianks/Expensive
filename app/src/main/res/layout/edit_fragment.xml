@@ -49,8 +49,8 @@
                 <com.google.android.material.card.MaterialCardView
                         android:id="@+id/expense_input_card"
                         android:layout_width="match_parent"
-                        android:layout_marginTop="@dimen/standard"
-                        android:layout_marginBottom="@dimen/standard"
+                        android:layout_marginTop="@dimen/margin_16dp"
+                        android:layout_marginBottom="@dimen/margin_16dp"
                         app:strokeWidth="0.5dp"
                         app:cardElevation="0dp"
                         app:cardCornerRadius="0dp"
@@ -60,7 +60,7 @@
                     <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:padding="@dimen/standard"
+                            android:padding="@dimen/margin_16dp"
                             android:orientation="vertical">
 
 
@@ -70,7 +70,7 @@
                                 android:hint="@string/spent_on"
                                 app:hintTextColor="@color/colorPrimary"
                                 app:boxBackgroundMode="none"
-                                android:paddingTop="@dimen/small"
+                                android:paddingTop="@dimen/margin_4dp"
                                 app:boxCollapsedPaddingTop="0dp"
                                 app:boxBackgroundColor="@color/Grey_100"
                                 android:layout_height="wrap_content">
@@ -81,7 +81,7 @@
                                     android:layout_height="wrap_content"
                                     android:textColor="@color/Grey_900"
                                     android:textStyle="bold"
-                                    android:paddingTop="@dimen/half"
+                                    android:paddingTop="@dimen/margin_8dp"
                                     android:background="@drawable/dashed_line_bg"
                                     android:fontFamily="@font/google_sans"
                             />
@@ -92,7 +92,7 @@
                                 android:layout_width="match_parent"
                                 android:hint="@string/spent_how_much"
                                 app:boxBackgroundMode="none"
-                                android:layout_marginTop="@dimen/standard"
+                                android:layout_marginTop="@dimen/margin_16dp"
                                 app:boxBackgroundColor="@color/Grey_100"
                                 android:layout_height="wrap_content">
 
@@ -103,9 +103,9 @@
                                     android:textColor="@color/Grey_900"
                                     android:maxLines="1"
                                     android:textStyle="bold"
-                                    android:drawablePadding="@dimen/half"
+                                    android:drawablePadding="@dimen/margin_8dp"
                                     android:drawableStart="@drawable/ic_rupee_indian"
-                                    android:paddingTop="@dimen/half"
+                                    android:paddingTop="@dimen/margin_8dp"
                                     android:background="@drawable/dashed_line_bg"
                                     android:inputType="number"
                                     app:drawableTint="@color/Grey_800"
@@ -117,8 +117,8 @@
                                 android:layout_width="match_parent"
                                 android:hint="@string/spent_on_date"
                                 app:boxBackgroundMode="none"
-                                android:layout_marginBottom="@dimen/double_standard"
-                                android:layout_marginTop="@dimen/standard"
+                                android:layout_marginBottom="@dimen/margin_32dp"
+                                android:layout_marginTop="@dimen/margin_16dp"
                                 app:boxBackgroundColor="@color/Grey_100"
                                 android:layout_height="wrap_content">
 
@@ -133,7 +133,7 @@
                                     app:drawableTint="@color/Grey_600"
                                     android:drawablePadding="14dp"
                                     android:focusableInTouchMode="false"
-                                    android:paddingTop="@dimen/half"
+                                    android:paddingTop="@dimen/margin_8dp"
                                     android:background="@drawable/dashed_line_bg"
                                     android:inputType="date"
                                     android:fontFamily="@font/google_sans"
@@ -168,7 +168,7 @@
                     android:id="@+id/done"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/standard"
+                    android:layout_marginEnd="@dimen/margin_16dp"
                     android:text="@string/update"
                     android:textStyle="bold"
                     app:cornerRadius="5dp"

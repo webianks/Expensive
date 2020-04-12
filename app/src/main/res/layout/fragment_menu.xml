@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/profile_bottom_sheet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+    <com.mikhaellopez.circularimageview.CircularImageView
+            android:id="@+id/userImageSheet"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginStart="@dimen/margin_32dp"
+            android:layout_marginTop="60dp"
+            android:layout_marginEnd="@dimen/margin_16dp"
+            android:layout_marginBottom="@dimen/margin_32dp"
+            app:civ_border_color="#FFF"
+            app:civ_border_width="2dp"
+            app:civ_shadow="true"
+            app:civ_shadow_color="#DDD"
+            app:civ_shadow_radius="2" />
+
+    <TextView
+            android:id="@+id/user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_8dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginEnd="@dimen/margin_8dp"
+            android:layout_toEndOf="@id/userImageSheet"
+            android:textColor="@color/Grey_900"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            tools:text="Ramankit Singh" />
+
+
+    <TextView
+            android:id="@+id/user_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/user_name"
+            android:layout_marginStart="@dimen/margin_8dp"
+            android:layout_marginEnd="@dimen/margin_8dp"
+            android:layout_toEndOf="@id/userImageSheet"
+            android:textColor="@color/Grey_600"
+            android:textSize="14sp"
+            tools:text="webianks@gmail.com" />
+
+
+    <com.google.android.material.button.MaterialButton
+            android:id="@+id/logoutBt"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/user_email"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="@dimen/margin_8dp"
+            android:layout_marginEnd="@dimen/margin_32dp"
+            android:layout_marginBottom="40dp"
+            android:layout_toEndOf="@id/userImageSheet"
+            android:text="@string/logout"
+            android:textColor="@color/colorPrimary"
+            app:cornerRadius="5dp"
+            app:strokeColor="@color/colorPrimary" />
+
+    <View
+            android:id="@+id/view_profile_divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/logoutBt"
+            android:background="@drawable/dashed_line_bg2" />
+
+    <TextView
+            android:id="@+id/tv_dark_theme"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/view_profile_divider"
+            android:padding="@dimen/margin_22dp"
+            android:text="@string/dark_mode"
+            android:textColor="@color/Grey_700"
+            android:textSize="17sp"
+            android:textStyle="bold" />
+
+    <View
+            android:id="@+id/view_pp_divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/tv_dark_theme"
+            android:background="@drawable/dashed_line_bg2" />
+
+    <TextView
+            android:id="@+id/tv_pp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/view_pp_divider"
+            android:padding="@dimen/margin_22dp"
+            android:text="@string/privacy_policy"
+            android:textColor="@color/Grey_500"
+            android:textSize="17sp"
+            android:textStyle="bold" />
+
+    <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/tv_pp"
+            android:background="@drawable/dashed_line_bg2" />
+
+
+</RelativeLayout>
