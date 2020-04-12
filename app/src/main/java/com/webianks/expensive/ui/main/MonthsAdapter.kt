@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.webianks.expensive.data.local.Expense
 import com.webianks.expensive.R
 import com.webianks.expensive.ui.main.MonthsAdapter.VH
-import kotlinx.android.synthetic.main.single_expense_layout.view.*
+import kotlinx.android.synthetic.main.item_layout_single_expense.view.*
 
 class MonthsAdapter(
     private val context: Context,
@@ -19,7 +19,7 @@ class MonthsAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
         val view =
-            LayoutInflater.from(context).inflate(R.layout.single_expense_layout, parent, false)
+            LayoutInflater.from(context).inflate(R.layout.item_layout_single_expense, parent, false)
         return VH(view)
     }
 
