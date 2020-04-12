@@ -44,12 +44,12 @@ dependencies {
 
     implementation 'androidx.browser:browser:1.2.0'
     implementation 'com.mikhaellopez:circularimageview:4.0.1'
-    implementation "com.airbnb.android:lottie:3.0.7"
 
     implementation 'com.github.bumptech.glide:glide:4.11.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
 
     implementation 'com.google.guava:guava:27.0.1-android'
+    implementation 'io.supercharge:shimmerlayout:2.1.0'
 
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'

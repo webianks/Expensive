@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<io.supercharge.shimmerlayout.ShimmerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/shimmerSkeleton"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        app:shimmer_angle="10"
+        app:shimmer_animation_duration="1200"
+        app:shimmer_color="@color/white"
+        app:shimmer_mask_width="0.4">
+
+    <LinearLayout
+            android:id="@+id/skeletonLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+
+</io.supercharge.shimmerlayout.ShimmerLayout>

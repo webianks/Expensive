@@ -35,19 +35,21 @@ import com.webianks.expensive.ui.edit.EditFragment.DatePickerFragment.instance
 import com.webianks.expensive.ui.login.LoginActivity
 import com.webianks.expensive.ui.month_year_picker.picker.YearMonthPickerDialog
 import com.webianks.expensive.util.Util
+import com.webianks.expensive.util.getSkeletonRowCount
 import com.webianks.expensive.util.hideKeyboard
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_this_month.*
 import kotlinx.android.synthetic.main.fragment_this_month.view.*
 import kotlinx.android.synthetic.main.profile_bottom_sheet.*
+import kotlinx.android.synthetic.main.skeleton_shimmer_layout.*
 import kotlinx.android.synthetic.main.this_month.*
 import kotlinx.android.synthetic.main.this_month.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 
-class ThisMonthFragment : Fragment(),MainMvpView,
+class ThisMonthFragment : Fragment(), MainMvpView,
     EditFragment.OnDismissListener,
-    YearMonthPickerDialog.OnDateSetListener{
+    YearMonthPickerDialog.OnDateSetListener {
 
     private lateinit var calendarCurrent: Calendar
     private lateinit var firstDateOfThisMonth: Date
@@ -64,11 +66,11 @@ class ThisMonthFragment : Fragment(),MainMvpView,
     private lateinit var mainPresenter: MainPresenter<MainMvpView>
 
 
-    companion object{
-        fun newInstance(uid: String): ThisMonthFragment{
+    companion object {
+        fun newInstance(uid: String): ThisMonthFragment {
             val menuFragment = ThisMonthFragment()
             menuFragment.arguments = Bundle().apply {
-                putString("uid",uid)
+                putString("uid", uid)
             }
             return menuFragment
         }
@@ -76,11 +78,12 @@ class ThisMonthFragment : Fragment(),MainMvpView,
 
     private var total: Long = 0L
 
-    private val adapterActionListener : (Int, Expense) -> Unit = {
+    private val adapterActionListener: (Int, Expense) -> Unit = {
 
             pos, expense ->
         if (optionsDialog == null) {
-            val dialogView = LayoutInflater.from(context).inflate(R.layout.options_bottom_sheet, null)
+            val dialogView =
+                LayoutInflater.from(context).inflate(R.layout.options_bottom_sheet, null)
             optionsDialog = BottomSheetDialog(context!!)
             optionsDialog?.setContentView(dialogView)
             dialogView.findViewById<TextView>(R.id.editOption).setOnClickListener {
@@ -101,7 +104,7 @@ class ThisMonthFragment : Fragment(),MainMvpView,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_this_month,container,false)
+        val view = inflater.inflate(R.layout.fragment_this_month, container, false)
         initViews(view)
         return view
     }
@@ -162,12 +165,16 @@ class ThisMonthFragment : Fragment(),MainMvpView,
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        mGoogleSignInClient = GoogleSignIn.getClient(context!!, (context?.applicationContext as ExpensiveApplication).gso)
-        db = (context?.applicationContext  as ExpensiveApplication).db
-        auth = (context?.applicationContext  as ExpensiveApplication).auth
+        mGoogleSignInClient = GoogleSignIn.getClient(
+            context!!,
+            (context?.applicationContext as ExpensiveApplication).gso
+        )
+        db = (context?.applicationContext as ExpensiveApplication).db
+        auth = (context?.applicationContext as ExpensiveApplication).auth
 
 
-        val dataManager: DataManager = (context?.applicationContext  as ExpensiveApplication).dataManager
+        val dataManager: DataManager =
+            (context?.applicationContext as ExpensiveApplication).dataManager
         mainPresenter = MainPresenter(dataManager)
         mainPresenter.onAttach(this)
 
@@ -206,7 +213,7 @@ class ThisMonthFragment : Fragment(),MainMvpView,
             if (dayOfMonth < 10)
                 finalDayString = "0$dayOfMonth"
 
-           // date_et.setText("$finalDayString-$finalMonthString-$year")
+            // date_et.setText("$finalDayString-$finalMonthString-$year")
         }
 
     }
@@ -240,7 +247,8 @@ class ThisMonthFragment : Fragment(),MainMvpView,
 
     private fun getCurrentMonthData() {
 
-        animation_view.visibility = View.VISIBLE
+        showSkeleton(true)
+
         no_expenses.visibility = View.GONE
         month_recyclerview.visibility = View.GONE
         total = 0L
@@ -260,10 +268,10 @@ class ThisMonthFragment : Fragment(),MainMvpView,
                 if (activity == null)
                     return@addOnSuccessListener
 
-                if(!(activity as MainActivity).getBottomNavigation().menu.getItem(0).isChecked)
+                if (!(activity as MainActivity).getBottomNavigation().menu.getItem(0).isChecked)
                     return@addOnSuccessListener
 
-                animation_view.visibility = View.GONE
+
 
                 if (result.size() == 0) {
                     no_expenses.visibility = View.VISIBLE
@@ -303,6 +311,8 @@ class ThisMonthFragment : Fragment(),MainMvpView,
                     totalAmount.visibility = View.VISIBLE
                     month_recyclerview.visibility = View.VISIBLE
 
+                    animateReplaceSkeleton()
+
                 }
             }
             .addOnFailureListener { exception ->
@@ -310,10 +320,11 @@ class ThisMonthFragment : Fragment(),MainMvpView,
                 if (activity == null)
                     return@addOnFailureListener
 
-                if(!(activity as MainActivity).getBottomNavigation().menu.getItem(0).isChecked)
+                if (!(activity as MainActivity).getBottomNavigation().menu.getItem(0).isChecked)
                     return@addOnFailureListener
 
-                animation_view.visibility = View.GONE
+                showSkeleton(false)
+
                 Log.w(Util.TAG, "Error getting documents.", exception)
             }
 
@@ -348,8 +359,7 @@ class ThisMonthFragment : Fragment(),MainMvpView,
         getCurrentMonthData()
     }
 
-    val editClickListener : (Int, Expense)-> Unit = {
-            _: Int, expense: Expense ->
+    val editClickListener: (Int, Expense) -> Unit = { _: Int, expense: Expense ->
 
         val dialog = EditFragment()
         val ft = childFragmentManager.beginTransaction()
@@ -460,14 +470,15 @@ class ThisMonthFragment : Fragment(),MainMvpView,
 
 
     private fun showMonthYearPicker() {
-        val yearMonthPickerDialog = YearMonthPickerDialog(context!!,
+        val yearMonthPickerDialog = YearMonthPickerDialog(
+            context!!,
             this,
-            calendarCurrent)
+            calendarCurrent
+        )
 
         yearMonthPickerDialog.setMaxYear(Calendar.getInstance().get(Calendar.YEAR))
         yearMonthPickerDialog.show()
     }
-
 
 
     override fun showCurrentMonthData() {
@@ -475,5 +486,46 @@ class ThisMonthFragment : Fragment(),MainMvpView,
 
     }
 
+    fun animateReplaceSkeleton() {
+
+        month_recyclerview.visibility = View.VISIBLE
+        month_recyclerview.alpha = 0f
+        month_recyclerview.animate().alpha(1f).setDuration(1000).start();
+
+        skeletonLayout.animate().alpha(0f).setDuration(1000).withEndAction {
+            showSkeleton(false)
+        }.start()
+
+    }
+
+    private fun showSkeleton(show: Boolean) {
+
+
+        if (show) {
+
+            skeletonLayout.removeAllViews()
+
+            val skeletonRows = getSkeletonRowCount(context!!)
+            for (i in 0..4) {
+                val rowLayout =
+                    layoutInflater.inflate(R.layout.item_layout_skeleton_expense, null) as ViewGroup
+                skeletonLayout.addView(rowLayout)
+            }
+            shimmerSkeleton.visibility = View.VISIBLE
+            shimmerSkeleton.startShimmerAnimation()
+            skeletonLayout.visibility = View.VISIBLE
+            skeletonLayout.bringToFront()
+        } else {
+
+            if (activity == null)
+                return
+
+            if (!(activity as MainActivity).getBottomNavigation().menu.getItem(0).isChecked)
+                return
+
+            shimmerSkeleton.stopShimmerAnimation()
+            shimmerSkeleton.visibility = View.GONE
+        }
+    }
 
 }

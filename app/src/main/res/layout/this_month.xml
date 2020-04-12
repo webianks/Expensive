@@ -70,7 +70,6 @@
         </com.google.android.material.card.MaterialCardView>
 
 
-
         <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/month_recyclerview"
                 android:layout_width="match_parent"
@@ -92,13 +91,10 @@
                 />
 
 
-        <com.airbnb.lottie.LottieAnimationView
-                android:id="@+id/animation_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                app:lottie_autoPlay="true"
-                app:lottie_fileName="skeleton.json"
-                app:lottie_loop="true" />
+        <include
+                layout="@layout/skeleton_shimmer_layout"
+                android:layout_width="match_parent"
+                android:layout_below="@id/cv_current_month"
+                android:layout_height="match_parent"/>
 
 </RelativeLayout>

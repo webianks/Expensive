@@ -240,7 +240,7 @@ class SummaryFragment : Fragment(),MainMvpView,
 
     private fun getCurrentMonthData() {
 
-        animation_view.visibility = View.VISIBLE
+        //animation_view.visibility = View.VISIBLE
         no_expenses.visibility = View.GONE
         month_recyclerview.visibility = View.GONE
         total = 0L
@@ -263,7 +263,7 @@ class SummaryFragment : Fragment(),MainMvpView,
                 if(!(activity as MainActivity).getBottomNavigation().menu.getItem(0).isChecked)
                     return@addOnSuccessListener
 
-                animation_view.visibility = View.GONE
+                //animation_view.visibility = View.GONE
 
                 if (result.size() == 0) {
                     no_expenses.visibility = View.VISIBLE
@@ -313,7 +313,7 @@ class SummaryFragment : Fragment(),MainMvpView,
                 if(!(activity as MainActivity).getBottomNavigation().menu.getItem(0).isChecked)
                     return@addOnFailureListener
 
-                animation_view.visibility = View.GONE
+                //animation_view.visibility = View.GONE
                 Log.w(Util.TAG, "Error getting documents.", exception)
             }
 

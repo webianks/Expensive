@@ -53,4 +53,16 @@
             android:background="@color/white"
             app:menu="@menu/bottom_navigation_menu" />
 
+    <com.google.android.material.button.MaterialButton
+            android:layout_width="wrap_content"
+            android:layout_height="55dp"
+            app:cornerRadius="25dp"
+            android:textStyle="bold"
+            android:fontFamily="@font/google_sans"
+            android:textAllCaps="false"
+            android:layout_marginBottom="76dp"
+            android:layout_gravity="center_horizontal|bottom"
+            android:text="@string/label_add_new"
+            />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

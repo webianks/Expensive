@@ -14,7 +14,8 @@
     <string name="update">Update</string>
     <string name="privacy_policy">Privacy Policy</string>
     <string name="label_this_month">This month</string>
-    <string name="label_all">All</string>
+    <string name="label_all">Summary</string>
     <string name="label_menu">Profile</string>
     <string name="dark_mode">Dark Mode</string>
+    <string name="label_add_new">+ Add New Expense</string>
 </resources>
