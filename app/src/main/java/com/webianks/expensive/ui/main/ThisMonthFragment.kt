@@ -257,6 +257,9 @@ class ThisMonthFragment : Fragment(),MainMvpView,
             .get()
             .addOnSuccessListener { result ->
 
+                if((activity as MainActivity).getBottomNavigation()?.menu?.getItem(0)?.isChecked == false)
+                    return@addOnSuccessListener
+
                 animation_view.visibility = View.GONE
 
                 if (result.size() == 0) {
@@ -300,6 +303,9 @@ class ThisMonthFragment : Fragment(),MainMvpView,
                 }
             }
             .addOnFailureListener { exception ->
+                if((activity as MainActivity).getBottomNavigation()?.menu?.getItem(0)?.isChecked == false)
+                    return@addOnFailureListener
+
                 animation_view.visibility = View.GONE
                 Log.w(Util.TAG, "Error getting documents.", exception)
             }

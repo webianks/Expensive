@@ -59,9 +59,10 @@ class MainActivity : BaseActivity(){
     private fun openFragment(fragment: Fragment) {
         val transaction = supportFragmentManager.beginTransaction()
         transaction.replace(R.id.container, fragment)
-        transaction.addToBackStack(null)
+        transaction.addToBackStack(fragment.tag)
         transaction.commit()
     }
 
+    fun getBottomNavigation() = bottom_navigation
 
 }
