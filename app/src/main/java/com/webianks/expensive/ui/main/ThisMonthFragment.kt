@@ -3,24 +3,20 @@ package com.webianks.expensive.ui.main
 import android.app.DatePickerDialog
 import android.app.Dialog
 import android.app.ProgressDialog
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.DatePicker
-import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
@@ -31,16 +27,12 @@ import com.webianks.expensive.R
 import com.webianks.expensive.data.DataManager
 import com.webianks.expensive.data.local.Expense
 import com.webianks.expensive.ui.edit.EditFragment
-import com.webianks.expensive.ui.edit.EditFragment.DatePickerFragment.instance
-import com.webianks.expensive.ui.login.LoginActivity
 import com.webianks.expensive.ui.month_year_picker.picker.YearMonthPickerDialog
 import com.webianks.expensive.util.Util
 import com.webianks.expensive.util.getSkeletonRowCount
 import com.webianks.expensive.util.hideKeyboard
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_this_month.*
 import kotlinx.android.synthetic.main.fragment_this_month.view.*
-import kotlinx.android.synthetic.main.profile_bottom_sheet.*
 import kotlinx.android.synthetic.main.skeleton_shimmer_layout.*
 import kotlinx.android.synthetic.main.this_month.*
 import kotlinx.android.synthetic.main.this_month.view.*
@@ -121,23 +113,9 @@ class ThisMonthFragment : Fragment(), MainMvpView,
             validateAndSaveData()
         }
 
-        /*logoutBt.setOnClickListener {
-            confirmAndLogout()
-        }*/
-
         view.current_month.setOnClickListener {
             showMonthYearPicker()
         }
-
-        /*optionsBt.setOnClickListener {
-            val popup = PopupMenu(context, optionsBt)
-            popup.menuInflater.inflate(R.menu.main_menu, popup.menu)
-            popup.setOnMenuItemClickListener {
-                Util.openPrivacyTab(this)
-                true
-            }
-            popup.show()
-        }*/
 
 
         view.month_recyclerview.layoutManager = LinearLayoutManager(context)
