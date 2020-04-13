@@ -464,7 +464,7 @@ class ThisMonthFragment : Fragment(), MainMvpView,
 
     }
 
-    fun animateReplaceSkeleton() {
+    private fun animateReplaceSkeleton() {
 
         month_recyclerview.visibility = View.VISIBLE
         month_recyclerview.alpha = 0f

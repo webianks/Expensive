@@ -3,15 +3,15 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@color/white"
         android:orientation="vertical">
 
     <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:elevation="1dp"
-            android:background="@color/colorPrimaryDark"
+            android:background="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -43,18 +43,6 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
-
-                <com.google.android.material.card.MaterialCardView
-                        android:id="@+id/expense_input_card"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/margin_16dp"
-                        android:layout_marginBottom="@dimen/margin_16dp"
-                        app:cardBackgroundColor="@color/white"
-                        app:cardCornerRadius="0dp"
-                        app:cardElevation="0dp"
-                        app:strokeColor="@color/Grey_400"
-                        app:strokeWidth="0dp">
 
                     <LinearLayout
                             android:layout_width="match_parent"
@@ -133,9 +121,6 @@
 
 
                     </LinearLayout>
-
-
-                </com.google.android.material.card.MaterialCardView>
 
 
                 <ProgressBar

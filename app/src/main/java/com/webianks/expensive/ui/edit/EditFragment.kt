@@ -20,13 +20,9 @@ import com.webianks.expensive.ExpensiveApplication
 import com.webianks.expensive.R
 import com.webianks.expensive.util.Util
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.edit_fragment.adding_progress
-import kotlinx.android.synthetic.main.edit_fragment.amount_et
-import kotlinx.android.synthetic.main.edit_fragment.date_et
-import kotlinx.android.synthetic.main.edit_fragment.done
-import kotlinx.android.synthetic.main.edit_fragment.expense_input_card
-import kotlinx.android.synthetic.main.edit_fragment.spent_on_et
+import kotlinx.android.synthetic.main.edit_fragment.*
 import kotlinx.android.synthetic.main.edit_fragment.view.*
+import kotlinx.android.synthetic.main.edit_fragment.view.expense_input_frame
 import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
@@ -62,7 +58,7 @@ class EditFragment : DialogFragment() {
         val toolbar: Toolbar = view.findViewById(R.id.toolbar)
         toolbar.setNavigationIcon(R.drawable.round_close_24)
         toolbar.setNavigationOnClickListener { dismiss() }
-        toolbar.title = "Edit Expense"
+        toolbar.title =  arguments?.getString("title") ?: "Edit Expense"
 
         initViews(view)
 
@@ -93,9 +89,10 @@ class EditFragment : DialogFragment() {
 
         val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
         val retrievedFormat = SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault())
-        dateString = dateFormat.format(retrievedFormat.parse(mDate))
-        currentDate = dateFormat.parse(dateString)
-
+        mDate?.let {
+            dateString = dateFormat.format(retrievedFormat.parse(mDate))
+            currentDate = dateFormat.parse(dateString)
+        }
         view.spent_on_et.setText(item)
         view.amount_et.setText(amount)
         view.date_et.setText(dateString)
@@ -113,7 +110,7 @@ class EditFragment : DialogFragment() {
         done.isEnabled = false
         done.isActivated = false
         adding_progress.visibility = View.VISIBLE
-        expense_input_card.alpha = 0.3f
+        expense_input_frame.alpha = 0.3f
         spent_on_et.isEnabled = false
         amount_et.isEnabled = false
         date_et.isEnabled = false
@@ -150,7 +147,7 @@ class EditFragment : DialogFragment() {
         done.isEnabled = true
         done.isActivated = true
         adding_progress.visibility = View.GONE
-        expense_input_card.alpha = 1.0f
+        expense_input_frame.alpha = 1.0f
 
         spent_on_et.isEnabled = true
         amount_et.isEnabled = true

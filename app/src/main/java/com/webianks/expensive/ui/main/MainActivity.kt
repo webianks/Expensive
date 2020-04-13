@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.webianks.expensive.*
 import com.webianks.expensive.ui.base.BaseActivity
+import com.webianks.expensive.ui.edit.EditFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseActivity() {
@@ -54,15 +55,13 @@ class MainActivity : BaseActivity() {
         bottom_navigation.selectedItemId = R.id.item_this_month
 
         bt_add_expense.setOnClickListener {
-            /*val ft = childFragmentManager.beginTransaction()
+            val dialog = EditFragment()
+            val ft = supportFragmentManager.beginTransaction()
             val bundle = Bundle()
-            bundle.putString("id", expense.id)
-            bundle.putString("item", expense.spentOn)
-            bundle.putString("amount", expense.amount)
-            bundle.putString("date", expense.date)
-            dialog.arguments = bundle
-            dialog.setOnDismissListener(this)
-            dialog.show(ft, "EditFragment")*/
+            dialog.arguments = bundle.apply {
+                putString("title","Add Expense")
+            }
+            dialog.show(ft, "ExpenseFragment")
         }
 
     }
