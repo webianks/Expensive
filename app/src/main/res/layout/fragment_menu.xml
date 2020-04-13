@@ -79,6 +79,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/view_profile_divider"
             android:padding="@dimen/margin_22dp"
+            android:drawableStart="@drawable/baseline_nights_stay_24"
+            android:drawablePadding="@dimen/margin_16dp"
             android:text="@string/dark_mode"
             android:textColor="@color/Grey_700"
             android:textSize="17sp"
@@ -97,8 +99,10 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/view_pp_divider"
             android:padding="@dimen/margin_22dp"
+            android:drawableStart="@drawable/baseline_policy_24"
+            android:drawablePadding="@dimen/margin_16dp"
             android:text="@string/privacy_policy"
-            android:textColor="@color/Grey_500"
+            android:textColor="@color/Grey_700"
             android:textSize="17sp"
             android:textStyle="bold" />
 

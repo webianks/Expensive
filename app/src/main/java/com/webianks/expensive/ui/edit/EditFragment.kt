@@ -58,7 +58,7 @@ class EditFragment : DialogFragment() {
         val toolbar: Toolbar = view.findViewById(R.id.toolbar)
         toolbar.setNavigationIcon(R.drawable.round_close_24)
         toolbar.setNavigationOnClickListener { dismiss() }
-        toolbar.title =  arguments?.getString("title") ?: "Edit Expense"
+        toolbar.title = ""
 
         initViews(view)
 
@@ -72,6 +72,7 @@ class EditFragment : DialogFragment() {
 
     private fun initViews(view: View) {
 
+        view.title.text =  arguments?.getString("title") ?: "Edit Expense"
 
         view.date_et.setOnClickListener { showDatePickerDialog() }
 
