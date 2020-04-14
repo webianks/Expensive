@@ -158,7 +158,7 @@
                     android:textColor="@color/colorPrimary"
                     android:textStyle="bold"
                     app:backgroundTint="@color/primaryScrim"
-                    app:cornerRadius="8dp"
+                    app:cornerRadius="25dp"
                     app:icon="@drawable/round_done_outline_24"
                     app:iconGravity="textStart"
                     app:iconPadding="@dimen/margin_16dp"
@@ -166,7 +166,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/expense_input_frame"
                     app:strokeColor="@color/colorPrimary"
-                    app:strokeWidth="0.5dp" />
+                    app:strokeWidth="1dp" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
