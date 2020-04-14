@@ -1,4 +1,4 @@
-package com.webianks.expensive.ui.main
+package com.webianks.expensive.ui.main.this_month
 
 import android.app.DatePickerDialog
 import android.app.Dialog
@@ -27,6 +27,8 @@ import com.webianks.expensive.R
 import com.webianks.expensive.data.DataManager
 import com.webianks.expensive.data.local.Expense
 import com.webianks.expensive.ui.edit.EditFragment
+import com.webianks.expensive.ui.main.MainActivity
+import com.webianks.expensive.ui.main.MainPresenter
 import com.webianks.expensive.ui.month_year_picker.picker.YearMonthPickerDialog
 import com.webianks.expensive.util.Util
 import com.webianks.expensive.util.getSkeletonRowCount
@@ -40,7 +42,8 @@ import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
-class ThisMonthFragment : Fragment(), MainMvpView,
+class ThisMonthFragment : Fragment(),
+    MainMvpView,
     EditFragment.OnDismissListener,
     YearMonthPickerDialog.OnDateSetListener {
 
@@ -68,7 +71,8 @@ class ThisMonthFragment : Fragment(), MainMvpView,
 
     companion object {
         fun newInstance(uid: String): ThisMonthFragment {
-            val menuFragment = ThisMonthFragment()
+            val menuFragment =
+                ThisMonthFragment()
             menuFragment.arguments = Bundle().apply {
                 putString("uid", uid)
             }
@@ -169,7 +173,8 @@ class ThisMonthFragment : Fragment(), MainMvpView,
     }
 
     private fun showDatePickerDialog() {
-        val newFragment: DialogFragment = DatePickerFragment
+        val newFragment: DialogFragment =
+            DatePickerFragment
         newFragment.show(childFragmentManager, "datePicker")
     }
 

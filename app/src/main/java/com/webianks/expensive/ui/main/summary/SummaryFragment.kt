@@ -1,4 +1,4 @@
-package com.webianks.expensive.ui.main
+package com.webianks.expensive.ui.main.summary
 
 import android.app.DatePickerDialog
 import android.app.Dialog
@@ -12,7 +12,6 @@ import android.widget.DatePicker
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -27,17 +26,19 @@ import com.webianks.expensive.R
 import com.webianks.expensive.data.DataManager
 import com.webianks.expensive.data.local.Expense
 import com.webianks.expensive.ui.edit.EditFragment
+import com.webianks.expensive.ui.main.MainActivity
+import com.webianks.expensive.ui.main.this_month.MainMvpView
+import com.webianks.expensive.ui.main.MainPresenter
+import com.webianks.expensive.ui.main.this_month.MonthsAdapter
 import com.webianks.expensive.ui.month_year_picker.picker.YearMonthPickerDialog
 import com.webianks.expensive.util.Util
-import com.webianks.expensive.util.hideKeyboard
 import kotlinx.android.synthetic.main.fragment_summary.*
-import kotlinx.android.synthetic.main.fragment_summary.view.*
 import kotlinx.android.synthetic.main.this_month.*
-import kotlinx.android.synthetic.main.this_month.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 
-class SummaryFragment : Fragment(),MainMvpView,
+class SummaryFragment : Fragment(),
+    MainMvpView,
     EditFragment.OnDismissListener,
     YearMonthPickerDialog.OnDateSetListener{
 
@@ -57,8 +58,9 @@ class SummaryFragment : Fragment(),MainMvpView,
 
 
     companion object{
-        fun newInstance(): SummaryFragment{
-            val menuFragment = SummaryFragment()
+        fun newInstance(): SummaryFragment {
+            val menuFragment =
+                SummaryFragment()
             menuFragment.arguments = Bundle().apply {
 
             }
@@ -176,7 +178,8 @@ class SummaryFragment : Fragment(),MainMvpView,
     }
 
     private fun showDatePickerDialog() {
-        val newFragment: DialogFragment = DatePickerFragment
+        val newFragment: DialogFragment =
+            DatePickerFragment
         newFragment.show(childFragmentManager, "datePicker")
     }
 

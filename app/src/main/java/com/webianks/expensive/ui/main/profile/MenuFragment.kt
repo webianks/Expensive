@@ -1,4 +1,4 @@
-package com.webianks.expensive.ui.main
+package com.webianks.expensive.ui.main.profile
 
 import android.app.ProgressDialog
 import android.content.Intent
@@ -27,8 +27,9 @@ class MenuFragment : Fragment(){
     private lateinit var auth: FirebaseAuth
 
     companion object{
-        fun newInstance(userName: String, userEmail: String, userImage: String): MenuFragment{
-            val menuFragment = MenuFragment()
+        fun newInstance(userName: String, userEmail: String, userImage: String): MenuFragment {
+            val menuFragment =
+                MenuFragment()
             menuFragment.arguments = Bundle().apply {
                 putString("user_name",userName)
                 putString("user_email",userEmail)

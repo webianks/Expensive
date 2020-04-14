@@ -1,11 +1,15 @@
 package com.webianks.expensive.ui.main
 
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.webianks.expensive.*
 import com.webianks.expensive.ui.base.BaseActivity
 import com.webianks.expensive.ui.edit.EditFragment
+import com.webianks.expensive.ui.main.profile.MenuFragment
+import com.webianks.expensive.ui.main.summary.SummaryFragment
+import com.webianks.expensive.ui.main.this_month.ThisMonthFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseActivity() {
@@ -17,6 +21,8 @@ class MainActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        //AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         setContentView(R.layout.activity_main)
 
 

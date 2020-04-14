@@ -75,7 +75,6 @@ class LoginActivity : BaseActivity(), LoginMvpView {
             openMainActivity(currentUser)
     }
 
-
     override fun openMainActivity(user: FirebaseUser?) {
         if(user != null) {
             val intent = Intent(this, MainActivity::class.java)

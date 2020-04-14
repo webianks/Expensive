@@ -1,4 +1,4 @@
-package com.webianks.expensive.ui.main
+package com.webianks.expensive.ui.main.this_month
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.webianks.expensive.R
 import com.webianks.expensive.data.local.Expense
-import com.webianks.expensive.ui.main.MonthsAdapter.VH
+import com.webianks.expensive.ui.main.this_month.MonthsAdapter.VH
 import kotlinx.android.synthetic.main.item_layout_single_expense.view.*
 import java.text.DecimalFormat
 
@@ -23,7 +23,6 @@ class MonthsAdapter(
         decimalFormat.isGroupingUsed = true
         decimalFormat.groupingSize = 3
     }
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
         val view =
