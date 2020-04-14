@@ -37,7 +37,7 @@ import kotlinx.android.synthetic.main.this_month.*
 import java.text.SimpleDateFormat
 import java.util.*
 
-class SummaryFragment : Fragment(),
+class SummaryFragment : Fragment(R.layout.fragment_summary),
     MainMvpView,
     EditFragment.OnDismissListener,
     YearMonthPickerDialog.OnDateSetListener{
@@ -90,17 +90,8 @@ class SummaryFragment : Fragment(),
 
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(R.layout.fragment_summary,container,false)
-        initViews(view)
-        return view
-    }
 
-    private fun initViews(view: View) {
+    private fun initViews() {
 
 /*
 
@@ -163,6 +154,8 @@ class SummaryFragment : Fragment(),
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        initViews()
 
         mGoogleSignInClient = GoogleSignIn.getClient(context!!, (context?.applicationContext as ExpensiveApplication).gso)
         db = (context?.applicationContext  as ExpensiveApplication).db

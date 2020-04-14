@@ -42,7 +42,7 @@ import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
-class ThisMonthFragment : Fragment(),
+class ThisMonthFragment : Fragment(R.layout.fragment_this_month),
     MainMvpView,
     EditFragment.OnDismissListener,
     YearMonthPickerDialog.OnDateSetListener {
@@ -103,57 +103,11 @@ class ThisMonthFragment : Fragment(),
 
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(R.layout.fragment_this_month, container, false)
-        initViews(view)
-        return view
-    }
-
-    private fun initViews(view: View) {
-
-
-        uid = arguments?.getString("uid").toString()
-
-        view.date_et.setOnClickListener { showDatePickerDialog() }
-
-        view.done.setOnClickListener {
-            hideKeyboard(it)
-            validateAndSaveData()
-        }
-
-        view.current_month.setOnClickListener {
-            showMonthYearPicker()
-        }
-
-
-        view.month_recyclerview.layoutManager = LinearLayoutManager(context)
-
-        val cal = Calendar.getInstance()
-
-        val monthYearFormat = SimpleDateFormat("MMM yyyy", Locale.getDefault())
-        val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
-        val currentTime = cal.time
-
-        val currentMonth = monthYearFormat.format(currentTime)
-        currentDate = dateFormat.format(currentTime)
-        view.current_month.text = currentMonth
-
-        val lastDate = cal.getActualMaximum(Calendar.DATE)
-        cal.set(Calendar.DATE, lastDate)
-        lastDateOfThisMonth = dateFormat.parse(dateFormat.format(cal.time))
-        cal.set(Calendar.DAY_OF_MONTH, 1)
-        firstDateOfThisMonth = dateFormat.parse(dateFormat.format(cal.time))
-
-        calendarCurrent = Calendar.getInstance()
-
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        initViews()
 
         mGoogleSignInClient = GoogleSignIn.getClient(
             context!!,
@@ -171,6 +125,46 @@ class ThisMonthFragment : Fragment(),
         getCurrentMonthData()
 
     }
+
+    private fun initViews() {
+
+
+        uid = arguments?.getString("uid").toString()
+
+        date_et.setOnClickListener { showDatePickerDialog() }
+
+        done.setOnClickListener {
+            hideKeyboard(it)
+            validateAndSaveData()
+        }
+
+        current_month.setOnClickListener {
+            showMonthYearPicker()
+        }
+
+
+        month_recyclerview.layoutManager = LinearLayoutManager(context)
+
+        val cal = Calendar.getInstance()
+
+        val monthYearFormat = SimpleDateFormat("MMM yyyy", Locale.getDefault())
+        val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+        val currentTime = cal.time
+
+        val currentMonth = monthYearFormat.format(currentTime)
+        currentDate = dateFormat.format(currentTime)
+        current_month.text = currentMonth
+
+        val lastDate = cal.getActualMaximum(Calendar.DATE)
+        cal.set(Calendar.DATE, lastDate)
+        lastDateOfThisMonth = dateFormat.parse(dateFormat.format(cal.time))
+        cal.set(Calendar.DAY_OF_MONTH, 1)
+        firstDateOfThisMonth = dateFormat.parse(dateFormat.format(cal.time))
+
+        calendarCurrent = Calendar.getInstance()
+
+    }
+
 
     private fun showDatePickerDialog() {
         val newFragment: DialogFragment =

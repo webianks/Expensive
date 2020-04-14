@@ -17,7 +17,7 @@ import com.webianks.expensive.R
 import com.webianks.expensive.ui.login.LoginActivity
 import kotlinx.android.synthetic.main.fragment_menu.*
 
-class MenuFragment : Fragment(){
+class MenuFragment : Fragment(R.layout.fragment_menu){
 
     private var imageUrl: String? = "--"
     private var email: String? = "--"
@@ -39,14 +39,6 @@ class MenuFragment : Fragment(){
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        val view = layoutInflater.inflate(R.layout.fragment_menu,container,false)
-        return view
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
