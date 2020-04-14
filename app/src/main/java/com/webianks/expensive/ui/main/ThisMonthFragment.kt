@@ -58,7 +58,7 @@ class ThisMonthFragment : Fragment(), MainMvpView,
     private var optionsDialog: BottomSheetDialog? = null
     private lateinit var mainPresenter: MainPresenter<MainMvpView>
 
-    val decimalFormat =  DecimalFormat("#.##")
+    private val decimalFormat =  DecimalFormat("#.##")
 
     init {
         decimalFormat.isGroupingUsed = true

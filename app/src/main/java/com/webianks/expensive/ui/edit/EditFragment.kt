@@ -5,6 +5,9 @@ import android.app.DatePickerDialog
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextUtils
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -20,8 +23,7 @@ import com.webianks.expensive.R
 import com.webianks.expensive.util.Util
 import kotlinx.android.synthetic.main.edit_fragment.*
 import kotlinx.android.synthetic.main.edit_fragment.view.*
-import kotlinx.android.synthetic.main.edit_fragment.view.title
-import java.lang.Exception
+import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -36,6 +38,12 @@ class EditFragment : DialogFragment() {
 
     private var documentId: String? = null
 
+    private val decimalFormat = DecimalFormat("#.##")
+
+    init {
+        decimalFormat.isGroupingUsed = true
+        decimalFormat.groupingSize = 3
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,8 +81,8 @@ class EditFragment : DialogFragment() {
 
     private fun initViews(view: View) {
 
-        view.title.text =  arguments?.getString("title") ?: "Edit Expense"
-        view.done.text =  arguments?.getString("action_text") ?: "Update"
+        view.title.text = arguments?.getString("title") ?: "Edit Expense"
+        view.done.text = arguments?.getString("action_text") ?: "Update"
 
         view.date_et.setOnClickListener { showDatePickerDialog() }
 
@@ -99,6 +107,39 @@ class EditFragment : DialogFragment() {
         view.spent_on_et.setText(item)
         view.amount_et.setText(amount)
         view.date_et.setText(dateString)
+
+
+        view.amount_et.addTextChangedListener(object : TextWatcher {
+
+            override fun afterTextChanged(p0: Editable?) {
+
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+                var initial: String = s.toString()
+                if (!TextUtils.isEmpty(initial)) {
+
+                    initial = initial.replace(",", "")
+                    view.amount_et.removeTextChangedListener(this)
+                    val processed = decimalFormat.format(initial.toDouble())
+                    view.amount_et.setText(processed)
+
+                    try {
+                        view.amount_et.setSelection(processed.length)
+                    } catch (e: java.lang.Exception) {
+                        e.printStackTrace()
+                    }
+
+                    view.amount_et.addTextChangedListener(this)
+                }
+            }
+
+        })
 
         showSoftKeyboard(view.spent_on_et)
 
@@ -243,7 +284,7 @@ class EditFragment : DialogFragment() {
     private fun showSoftKeyboard(view: View) {
         if (view.requestFocus()) {
             val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,0)
+            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
         }
     }
 }

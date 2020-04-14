@@ -162,6 +162,7 @@
                     app:icon="@drawable/round_done_outline_24"
                     app:iconGravity="textStart"
                     app:iconPadding="@dimen/margin_16dp"
+                    app:iconTint="@color/colorPrimary"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/expense_input_frame"
                     app:strokeColor="@color/colorPrimary"
