@@ -36,6 +36,7 @@ import kotlinx.android.synthetic.main.fragment_this_month.view.*
 import kotlinx.android.synthetic.main.skeleton_shimmer_layout.*
 import kotlinx.android.synthetic.main.this_month.*
 import kotlinx.android.synthetic.main.this_month.view.*
+import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -56,6 +57,13 @@ class ThisMonthFragment : Fragment(), MainMvpView,
 
     private var optionsDialog: BottomSheetDialog? = null
     private lateinit var mainPresenter: MainPresenter<MainMvpView>
+
+    val decimalFormat =  DecimalFormat("#.##")
+
+    init {
+        decimalFormat.isGroupingUsed = true
+        decimalFormat.groupingSize = 3
+    }
 
 
     companion object {
@@ -285,7 +293,7 @@ class ThisMonthFragment : Fragment(), MainMvpView,
 
                     month_recyclerview.adapter = adapter
                     no_expenses.visibility = View.GONE
-                    totalAmount.text = "Total: \u20B9 $total"
+                    totalAmount.text = "Total: \u20B9 ${decimalFormat.format(total.toDouble())}"
                     totalAmount.visibility = View.VISIBLE
                     month_recyclerview.visibility = View.VISIBLE
 

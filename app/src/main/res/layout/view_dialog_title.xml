@@ -12,7 +12,6 @@
         android:layout_height="wrap_content"
         android:padding="16dp"
         android:text=""
-        android:fontFamily="@font/google_sans"
         android:textColor="@color/white"
         android:textSize="22sp" />
 
@@ -21,11 +20,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toEndOf="@id/month_name"
-        android:layout_toRightOf="@id/month_name"
         android:alpha="0.39"
         android:padding="16dp"
         android:text=""
-        android:fontFamily="@font/google_sans"
         android:textColor="@color/white"
         android:textSize="22sp" />
 

@@ -20,6 +20,7 @@ import com.webianks.expensive.R
 import com.webianks.expensive.util.Util
 import kotlinx.android.synthetic.main.edit_fragment.*
 import kotlinx.android.synthetic.main.edit_fragment.view.*
+import kotlinx.android.synthetic.main.edit_fragment.view.title
 import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
@@ -73,6 +74,7 @@ class EditFragment : DialogFragment() {
     private fun initViews(view: View) {
 
         view.title.text =  arguments?.getString("title") ?: "Edit Expense"
+        view.done.text =  arguments?.getString("action_text") ?: "Update"
 
         view.date_et.setOnClickListener { showDatePickerDialog() }
 

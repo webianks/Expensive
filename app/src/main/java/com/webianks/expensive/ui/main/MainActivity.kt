@@ -60,6 +60,7 @@ class MainActivity : BaseActivity() {
             val bundle = Bundle()
             dialog.arguments = bundle.apply {
                 putString("title","Add Expense")
+                putString("action_text","Save")
             }
             dialog.show(ft, "ExpenseFragment")
         }

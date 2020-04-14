@@ -21,10 +21,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:fontFamily="@font/google_sans"
                     android:text="@string/app_name"
                     android:textColor="@color/Grey_900"
-                    android:textSize="21sp"
+                    android:textSize="19sp"
                     android:textStyle="bold" />
 
 
@@ -56,7 +55,6 @@
             android:layout_height="55dp"
             android:layout_gravity="center_horizontal|bottom"
             android:layout_marginBottom="76dp"
-            android:fontFamily="@font/google_sans"
             android:text="@string/label_add_new"
             android:textAllCaps="false"
             android:textStyle="bold"

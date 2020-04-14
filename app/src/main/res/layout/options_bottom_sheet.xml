@@ -8,7 +8,7 @@
         android:layout_height="wrap_content"
         app:behavior_hideable="true"
         app:behavior_peekHeight="0dp"
-        android:elevation="2dp"
+        app:elevation="2dp"
         android:background="@color/Grey_100"
         app:layout_behavior="@string/bottom_sheet_behavior">
 
@@ -18,7 +18,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/edit"
-            android:fontFamily="@font/google_sans"
             android:layout_marginTop="20dp"
             android:textSize="17sp"
             android:clickable="true"
@@ -39,7 +38,6 @@
             android:id="@+id/deleteBt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/google_sans"
             android:textSize="17sp"
             android:drawablePadding="@dimen/margin_32dp"
             android:drawableStart="@drawable/round_delete_24"

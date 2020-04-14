@@ -13,7 +13,6 @@
             android:id="@+id/spent_on"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/google_sans"
             android:textColor="@color/Grey_900"
             android:textSize="16sp"
             android:textStyle="bold"
@@ -25,7 +24,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/spent_on"
-            android:fontFamily="@font/google_sans"
             android:textColor="@color/Grey_400"
             tools:text="12 Jun 2019" />
 
@@ -35,7 +33,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:fontFamily="@font/google_sans"
             android:textColor="@color/colorAccent"
             android:textSize="16sp"
             android:textStyle="bold"
@@ -48,7 +45,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/amount"
             android:layout_alignParentEnd="true"
-            android:fontFamily="@font/google_sans"
             android:textSize="12sp"
             android:textStyle="bold"
             app:srcCompat="@drawable/outline_more_horiz_24" />
