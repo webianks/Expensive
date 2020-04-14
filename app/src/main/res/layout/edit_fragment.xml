@@ -40,8 +40,7 @@
 
     <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fillViewport="true">
+            android:layout_height="wrap_content">
 
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -79,6 +78,8 @@
                                     android:layout_height="wrap_content"
                                     android:background="@drawable/dashed_line_colored"
                                     android:paddingTop="@dimen/margin_16dp"
+                                    android:focusable="true"
+                                    android:focusableInTouchMode="true"
                                     android:textColor="@color/Grey_900"
                                     android:textStyle="bold" />
 
@@ -88,7 +89,7 @@
                         <com.google.android.material.textfield.TextInputLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/margin_22dp"
+                                android:layout_marginTop="@dimen/margin_16dp"
                                 android:hint="@string/spent_how_much"
                                 app:boxBackgroundMode="none">
 
@@ -110,7 +111,7 @@
                         <com.google.android.material.textfield.TextInputLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/margin_22dp"
+                                android:layout_marginTop="@dimen/margin_16dp"
                                 android:layout_marginBottom="@dimen/margin_32dp"
                                 android:hint="@string/spent_on_date"
                                 app:boxBackgroundMode="none">
@@ -145,13 +146,6 @@
 
             </FrameLayout>
 
-            <View
-                    android:id="@+id/marginSpacer"
-                    android:layout_width="0dp"
-                    android:layout_height="1dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/expense_input_frame" />
-
 
             <com.google.android.material.button.MaterialButton
                     android:id="@+id/done"
@@ -162,12 +156,10 @@
                     android:text="@string/update"
                     app:cornerRadius="8dp"
                     android:textStyle="bold"
-                    app:layout_constraintTop_toBottomOf="@id/marginSpacer"
-                    android:layout_marginTop="@dimen/margin_16dp"
+                    app:layout_constraintTop_toBottomOf="@id/expense_input_frame"
                     android:layout_marginStart="@dimen/margin_22dp"
                     app:icon="@drawable/round_done_outline_24"
-                    app:layout_constraintBottom_toTopOf="@id/marginSpacer"
-                    app:layout_constraintEnd_toEndOf="@id/expense_input_frame" />
+                    app:layout_constraintEnd_toEndOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

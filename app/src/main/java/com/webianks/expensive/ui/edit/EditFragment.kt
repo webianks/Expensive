@@ -13,16 +13,13 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.DatePicker
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.DialogFragment
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.webianks.expensive.ExpensiveApplication
 import com.webianks.expensive.R
 import com.webianks.expensive.util.Util
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.edit_fragment.*
 import kotlinx.android.synthetic.main.edit_fragment.view.*
-import kotlinx.android.synthetic.main.edit_fragment.view.expense_input_frame
 import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
@@ -57,7 +54,10 @@ class EditFragment : DialogFragment() {
 
         val toolbar: Toolbar = view.findViewById(R.id.toolbar)
         toolbar.setNavigationIcon(R.drawable.round_close_24)
-        toolbar.setNavigationOnClickListener { dismiss() }
+        toolbar.setNavigationOnClickListener {
+            dismiss()
+            hideKeyboard()
+        }
         toolbar.title = ""
 
         initViews(view)
@@ -77,7 +77,7 @@ class EditFragment : DialogFragment() {
         view.date_et.setOnClickListener { showDatePickerDialog() }
 
         view.done.setOnClickListener {
-            hideKeyboard(it)
+            hideKeyboard()
             validateAndUpdateData()
         }
 
@@ -97,6 +97,8 @@ class EditFragment : DialogFragment() {
         view.spent_on_et.setText(item)
         view.amount_et.setText(amount)
         view.date_et.setText(dateString)
+
+        showSoftKeyboard(view.spent_on_et)
 
     }
 
@@ -206,10 +208,10 @@ class EditFragment : DialogFragment() {
     }
 
 
-    private fun hideKeyboard(view: View) {
+    private fun hideKeyboard() {
         try {
             val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(view.windowToken, 0)
+            imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
         } catch (ignored: Exception) {
         }
     }
@@ -233,6 +235,13 @@ class EditFragment : DialogFragment() {
             val width = ViewGroup.LayoutParams.MATCH_PARENT
             val height = ViewGroup.LayoutParams.MATCH_PARENT
             dialog.window!!.setLayout(width, height)
+        }
+    }
+
+    private fun showSoftKeyboard(view: View) {
+        if (view.requestFocus()) {
+            val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,0)
         }
     }
 }
