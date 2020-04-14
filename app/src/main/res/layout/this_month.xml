@@ -71,7 +71,7 @@
 
 
     <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/month_recyclerview"
+            android:id="@+id/rv_data"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="@dimen/margin_16dp"

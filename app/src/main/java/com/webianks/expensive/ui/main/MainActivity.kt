@@ -1,10 +1,9 @@
 package com.webianks.expensive.ui.main
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.webianks.expensive.*
+import com.webianks.expensive.R
 import com.webianks.expensive.ui.base.BaseActivity
 import com.webianks.expensive.ui.edit.EditFragment
 import com.webianks.expensive.ui.main.profile.MenuFragment
@@ -46,7 +45,7 @@ class MainActivity : BaseActivity() {
                     openFragment(fragment)
                 }
                 R.id.item_all -> {
-                    val fragment = SummaryFragment.newInstance()
+                    val fragment = SummaryFragment.newInstance(uid)
                     openFragment(fragment)
                 }
 

@@ -1,46 +1,31 @@
 package com.webianks.expensive.ui.main.summary
 
-import android.app.DatePickerDialog
-import android.app.Dialog
-import android.app.ProgressDialog
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.DatePicker
-import android.widget.TextView
-import androidx.fragment.app.DialogFragment
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.webianks.expensive.ExpensiveApplication
 import com.webianks.expensive.R
 import com.webianks.expensive.data.DataManager
-import com.webianks.expensive.data.local.Expense
-import com.webianks.expensive.ui.edit.EditFragment
+import com.webianks.expensive.data.local.Summary
 import com.webianks.expensive.ui.main.MainActivity
-import com.webianks.expensive.ui.main.this_month.MainMvpView
 import com.webianks.expensive.ui.main.MainPresenter
-import com.webianks.expensive.ui.main.this_month.MonthsAdapter
-import com.webianks.expensive.ui.month_year_picker.picker.YearMonthPickerDialog
+import com.webianks.expensive.ui.main.this_month.MainMvpView
 import com.webianks.expensive.util.Util
 import kotlinx.android.synthetic.main.fragment_summary.*
-import kotlinx.android.synthetic.main.this_month.*
 import java.text.SimpleDateFormat
 import java.util.*
 
-class SummaryFragment : Fragment(R.layout.fragment_summary),
-    MainMvpView,
-    EditFragment.OnDismissListener,
-    YearMonthPickerDialog.OnDateSetListener{
+class SummaryFragment : Fragment(R.layout.fragment_summary), MainMvpView{
 
     private lateinit var calendarCurrent: Calendar
     private lateinit var firstDateOfThisMonth: Date
@@ -48,88 +33,29 @@ class SummaryFragment : Fragment(R.layout.fragment_summary),
     private lateinit var currentDate: String
     private lateinit var auth: FirebaseAuth
     private lateinit var mGoogleSignInClient: GoogleSignInClient
-    private lateinit var monthList: ArrayList<Expense>
-    private lateinit var adapter: MonthsAdapter
+    private lateinit var monthList: ArrayList<Summary>
+    private lateinit var adapter: SummaryAdapter
     private lateinit var db: FirebaseFirestore
     private lateinit var uid: String
 
-    private var optionsDialog: BottomSheetDialog? = null
     private lateinit var mainPresenter: MainPresenter<MainMvpView>
 
 
     companion object{
-        fun newInstance(): SummaryFragment {
+        fun newInstance(uid: String): SummaryFragment {
             val menuFragment =
                 SummaryFragment()
             menuFragment.arguments = Bundle().apply {
-
+                putString("uid",uid)
             }
             return menuFragment
         }
     }
 
-    private var total: Long = 0L
-
-    private val adapterActionListener : (Int, Expense) -> Unit = {
-
-            pos, expense ->
-        if (optionsDialog == null) {
-            val dialogView = LayoutInflater.from(context).inflate(R.layout.options_bottom_sheet, null)
-            optionsDialog = BottomSheetDialog(context!!)
-            optionsDialog?.setContentView(dialogView)
-            dialogView.findViewById<TextView>(R.id.editOption).setOnClickListener {
-                optionsDialog?.dismiss()
-                editClickListener(pos, expense)
-            }
-            dialogView.findViewById<TextView>(R.id.deleteBt).setOnClickListener {
-                optionsDialog?.dismiss()
-                deleteClicked(pos, expense)
-            }
-        }
-        optionsDialog?.show()
-
-    }
-
-
     private fun initViews() {
 
-/*
-
         uid = arguments?.getString("uid").toString()
-
-        view.date_et.setOnClickListener { showDatePickerDialog() }
-
-        view.done.setOnClickListener {
-            hideKeyboard(it)
-            validateAndSaveData()
-        }
-
-        */
-/*logoutBt.setOnClickListener {
-            confirmAndLogout()
-        }*//*
-
-
-      */
-/*  view.current_month.setOnClickListener {
-            showMonthYearPicker()
-        }*//*
-
-
-        */
-/*optionsBt.setOnClickListener {
-            val popup = PopupMenu(context, optionsBt)
-            popup.menuInflater.inflate(R.menu.main_menu, popup.menu)
-            popup.setOnMenuItemClickListener {
-                Util.openPrivacyTab(this)
-                true
-            }
-            popup.show()
-        }*//*
-
-
-
-        view.month_recyclerview.layoutManager = LinearLayoutManager(context)
+        rv_data.layoutManager = LinearLayoutManager(context)
 
         val cal = Calendar.getInstance()
 
@@ -139,7 +65,6 @@ class SummaryFragment : Fragment(R.layout.fragment_summary),
 
         val currentMonth = monthYearFormat.format(currentTime)
         currentDate = dateFormat.format(currentTime)
-        view.current_month.text = currentMonth
 
         val lastDate = cal.getActualMaximum(Calendar.DATE)
         cal.set(Calendar.DATE, lastDate)
@@ -148,7 +73,6 @@ class SummaryFragment : Fragment(R.layout.fragment_summary),
         firstDateOfThisMonth = dateFormat.parse(dateFormat.format(cal.time))
 
         calendarCurrent = Calendar.getInstance()
-*/
 
     }
 
@@ -166,88 +90,29 @@ class SummaryFragment : Fragment(R.layout.fragment_summary),
         mainPresenter = MainPresenter(dataManager)
         mainPresenter.onAttach(this)
 
-        //getCurrentMonthData()
+        getMonthWiseSummary()
 
     }
 
-    private fun showDatePickerDialog() {
-        val newFragment: DialogFragment =
-            DatePickerFragment
-        newFragment.show(childFragmentManager, "datePicker")
-    }
-
-    object DatePickerFragment : DialogFragment(), DatePickerDialog.OnDateSetListener {
-
-        lateinit var instance: MainActivity
-
-        override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-            val c = Calendar.getInstance()
-            val year: Int = c.get(Calendar.YEAR)
-            val month: Int = c.get(Calendar.MONTH)
-            val day: Int = c.get(Calendar.DAY_OF_MONTH)
-            val dialog = DatePickerDialog(activity!!, this, year, month, day)
-            dialog.datePicker.maxDate = c.timeInMillis
-            return dialog
-        }
-
-        override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
-
-            val actualMonth = month + 1
-
-            var finalMonthString: String = actualMonth.toString()
-            var finalDayString: String = dayOfMonth.toString()
-
-            if (month < 10)
-                finalMonthString = "0$actualMonth"
-            if (dayOfMonth < 10)
-                finalDayString = "0$dayOfMonth"
-
-           // date_et.setText("$finalDayString-$finalMonthString-$year")
-        }
-
-    }
 
     private fun showMessage(s: String) {
-        //val snackbar: Snackbar = Snackbar.make(userImage, s, Snackbar.LENGTH_SHORT)
-        //snackbar.view.setBackgroundColor(ContextCompat.getColor(this@MainActivity, R.color.colorPrimary))
-        //snackbar.show()
+        val snackbar: Snackbar = Snackbar.make(rv_data, s, Snackbar.LENGTH_SHORT)
+        snackbar.view.setBackgroundColor(ContextCompat.getColor(context!!, R.color.colorPrimary))
+        snackbar.show()
     }
 
-    private fun expenseAfterSaveBehaviour(resetData: Boolean) {
 
-        done.isEnabled = true
-        done.isActivated = true
-        adding_progress.visibility = View.GONE
-        expense_input_card.alpha = 1.0f
-
-        spent_on_et.isEnabled = true
-        amount_et.isEnabled = true
-        date_et.isEnabled = true
-
-
-        if (resetData) {
-            spent_on_et.text = null
-            amount_et.text = null
-            date_et.text = null
-            spent_on_et.clearFocus()
-            amount_et.clearFocus()
-        }
-    }
-
-    private fun getCurrentMonthData() {
+    private fun getMonthWiseSummary() {
 
         //animation_view.visibility = View.VISIBLE
-        no_expenses.visibility = View.GONE
-        month_recyclerview.visibility = View.GONE
-        total = 0L
-        totalAmount.visibility = View.GONE
+        //no_expenses.visibility = View.GONE
+        rv_data.visibility = View.GONE
+        //totalAmount.visibility = View.GONE
         monthList = ArrayList()
 
 
         db.collection(Util.EXPENSE_COLLECTION)
             .whereEqualTo("uid", uid)
-            .whereGreaterThanOrEqualTo("date", firstDateOfThisMonth)
-            .whereLessThanOrEqualTo("date", lastDateOfThisMonth)
             .orderBy("date", Query.Direction.DESCENDING)
             .orderBy("created_at", Query.Direction.DESCENDING)
             .get()
@@ -256,48 +121,60 @@ class SummaryFragment : Fragment(R.layout.fragment_summary),
                 if (activity == null)
                     return@addOnSuccessListener
 
-                if(!(activity as MainActivity).getBottomNavigation().menu.getItem(0).isChecked)
+                if(!(activity as MainActivity).getBottomNavigation().menu.getItem(1).isChecked)
                     return@addOnSuccessListener
 
                 //animation_view.visibility = View.GONE
 
                 if (result.size() == 0) {
-                    no_expenses.visibility = View.VISIBLE
-                    totalAmount.visibility = View.GONE
+                    //no_expenses.visibility = View.VISIBLE
+                    //totalAmount.visibility = View.GONE
 
                 } else {
-                    total = 0L
+
+                    val map = hashMapOf<String,Summary>()
+
                     for (document in result) {
                         Log.d(Util.TAG, "${document.id} => ${document.data}")
                         val dataMap = document.data
-                        total += dataMap["amount"].toString().toLong()
 
-                        val date = SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault())
-                            .format((dataMap["date"] as Timestamp).toDate())
+                        val dbDate = (dataMap["date"] as Timestamp).toDate()
+                        val month = dbDate.month
+                        val year = dbDate.year
 
-                        monthList.add(
-                            Expense(
-                                id = document.id,
-                                spentOn = dataMap["item"].toString(),
-                                amount = dataMap["amount"].toString(),
-                                date = date
+                        val date = SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault()).format(dbDate)
+                        //val displayMonth = SimpleDateFormat("MMM", Locale.getDefault()).format(dbDate)
+                        //val displayYear = SimpleDateFormat("yyyy", Locale.getDefault()).format(dbDate)
+
+                        if(map.containsKey("$month _ $year")){
+                           val summary: Summary = map["$month _ $year"]!!
+                            summary.totalAmount += dataMap["amount"].toString().toDouble()
+                        }else{
+                            val summary = Summary("$month _ $year",
+                                date.split("-")[1],
+                                date.split("-")[2],
+                                dataMap["amount"].toString().toDouble()
                             )
-                        )
+                            map["$month _ $year"] = summary
+                        }
                     }
 
+                    monthList.addAll(
+                        map.values
+                    )
+
                     adapter =
-                        MonthsAdapter(
+                        SummaryAdapter(
                             context!!,
-                            monthList,
-                            adapterActionListener
+                            monthList
                         )
 
 
-                    month_recyclerview.adapter = adapter
-                    no_expenses.visibility = View.GONE
-                    totalAmount.text = "Total: \u20B9 $total"
-                    totalAmount.visibility = View.VISIBLE
-                    month_recyclerview.visibility = View.VISIBLE
+                    rv_data.adapter = adapter
+                    //no_expenses.visibility = View.GONE
+                    //totalAmount.text = "Total: \u20B9 $total"
+                    //totalAmount.visibility = View.VISIBLE
+                    rv_data.visibility = View.VISIBLE
 
                 }
             }
@@ -306,7 +183,7 @@ class SummaryFragment : Fragment(R.layout.fragment_summary),
                 if (activity == null)
                     return@addOnFailureListener
 
-                if(!(activity as MainActivity).getBottomNavigation().menu.getItem(0).isChecked)
+                if(!(activity as MainActivity).getBottomNavigation().menu.getItem(1).isChecked)
                     return@addOnFailureListener
 
                 //animation_view.visibility = View.GONE
@@ -314,156 +191,6 @@ class SummaryFragment : Fragment(R.layout.fragment_summary),
             }
 
     }
-
-
-    override fun onYearMonthSet(year: Int, month: Int) {
-
-        calendarCurrent.set(Calendar.YEAR, year)
-        calendarCurrent.set(Calendar.MONTH, month)
-
-        val monthYearFormat = SimpleDateFormat("MMM yyyy", Locale.getDefault())
-        val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
-        val currentTime = calendarCurrent.time
-
-        val currentMonth = monthYearFormat.format(currentTime)
-        currentDate = dateFormat.format(currentTime)
-        current_month.text = currentMonth
-
-        val lastDate = calendarCurrent.getActualMaximum(Calendar.DATE)
-
-        calendarCurrent.set(Calendar.DATE, lastDate)
-        lastDateOfThisMonth = dateFormat.parse(dateFormat.format(calendarCurrent.time))
-
-        calendarCurrent.set(Calendar.DAY_OF_MONTH, 1)
-        firstDateOfThisMonth = dateFormat.parse(dateFormat.format(calendarCurrent.time))
-
-        getCurrentMonthData()
-    }
-
-    override fun dismissed() {
-        getCurrentMonthData()
-    }
-
-    val editClickListener : (Int, Expense)-> Unit = {
-            _: Int, expense: Expense ->
-
-        val dialog = EditFragment()
-        val ft = childFragmentManager.beginTransaction()
-        val bundle = Bundle()
-        bundle.putString("id", expense.id)
-        bundle.putString("item", expense.spentOn)
-        bundle.putString("amount", expense.amount)
-        bundle.putString("date", expense.date)
-        dialog.arguments = bundle
-        dialog.setOnDismissListener(this)
-        dialog.show(ft, "EditFragment")
-    }
-
-    private fun deleteClicked(pos: Int, expense: Expense) {
-        confirmAndDelete(pos, expense)
-    }
-
-    private fun confirmAndDelete(pos: Int, expense: Expense) {
-
-        MaterialAlertDialogBuilder(context)
-            .setMessage("Are you sure you want to delete this expense?")
-            .setTitle("Expensive")
-            .setPositiveButton("Delete") { _, _ -> deleteNow(pos, expense) }
-            .setNegativeButton("Cancel") { it, _ ->
-                it.dismiss()
-            }
-            .show()
-
-    }
-
-    private fun deleteNow(pos: Int, expense: Expense) {
-
-        val dialog = ProgressDialog(context)
-        dialog.setMessage("Deleting Expense...Please wait.")
-        dialog.setCancelable(false)
-        dialog.show()
-
-        val db = FirebaseFirestore.getInstance()
-        db.collection(Util.EXPENSE_COLLECTION).document(expense.id)
-            .delete()
-            .addOnSuccessListener {
-
-                dialog.dismiss()
-
-                showMessage("Expense deleted!")
-                //getCurrentMonthData()
-
-                total -= expense.amount.toLong()
-
-                totalAmount.text = "Total $total"
-
-                monthList.removeAt(pos)
-                adapter.notifyItemRemoved(pos)
-
-                if (total == 0L)
-                    totalAmount.visibility = View.GONE
-
-                if (monthList.size == 0)
-                    no_expenses.visibility = View.VISIBLE
-            }
-            .addOnFailureListener { showMessage("Error deleting expense") }
-    }
-
-    private fun validateAndSaveData() {
-
-        if (spent_on_et.text.toString() == "" || amount_et.text.toString() == "" || date_et.text.toString() == "") {
-            showMessage("Please add all expense details.")
-            return
-        }
-
-        done.isEnabled = false
-        done.isActivated = false
-        adding_progress.visibility = View.VISIBLE
-        expense_input_card.alpha = 0.3f
-        spent_on_et.isEnabled = false
-        amount_et.isEnabled = false
-        date_et.isEnabled = false
-
-        val date = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
-            .parse(date_et.text.toString().trim())
-
-
-        val expense = hashMapOf(
-            "uid" to uid,
-            "created_at" to FieldValue.serverTimestamp(),
-            "updated_at" to FieldValue.serverTimestamp(),
-            "item" to spent_on_et.text.toString().trim(),
-            "amount" to amount_et.text.toString().trim(),
-            "date" to date
-        )
-
-        db.collection(Util.EXPENSE_COLLECTION)
-            .add(expense)
-            .addOnSuccessListener { documentReference ->
-
-                Log.d(Util.TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
-                //showMessage("Expense added successfully.")
-
-                expenseAfterSaveBehaviour(true)
-
-                getCurrentMonthData()
-            }
-            .addOnFailureListener {
-                showMessage("Error adding expense.")
-                expenseAfterSaveBehaviour(false)
-            }
-    }
-
-
-    private fun showMonthYearPicker() {
-        val yearMonthPickerDialog = YearMonthPickerDialog(context!!,
-            this,
-            calendarCurrent)
-
-        yearMonthPickerDialog.setMaxYear(Calendar.getInstance().get(Calendar.YEAR))
-        yearMonthPickerDialog.show()
-    }
-
 
 
     override fun showCurrentMonthData() {

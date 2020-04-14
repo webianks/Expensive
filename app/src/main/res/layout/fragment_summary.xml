@@ -1,155 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true"
-        android:visibility="visible">
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:context=".ui.main.MainActivity">
-
-        <FrameLayout
-                android:id="@+id/expense_input_frame"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        tools:context=".ui.main.MainActivity"
+        xmlns:android="http://schemas.android.com/apk/res/android">
 
 
-            <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/expense_input_card"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_16dp"
-                    android:layout_marginBottom="@dimen/margin_16dp"
-                    app:cardCornerRadius="0dp"
-                    app:cardElevation="0dp"
-                    app:strokeColor="@color/Grey_400"
-                    app:strokeWidth="0.5dp">
+    <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_data"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
 
-                <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="@dimen/margin_16dp">
+</androidx.constraintlayout.widget.ConstraintLayout>
 
-
-                    <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/spent_on_layout"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/spent_on"
-                            android:paddingTop="@dimen/margin_4dp"
-                            app:boxBackgroundColor="@color/Grey_100"
-                            app:boxBackgroundMode="none"
-                            app:boxCollapsedPaddingTop="0dp"
-                            app:hintTextColor="@color/colorPrimary">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/spent_on_et"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:background="@drawable/dashed_line_bg"
-                                android:paddingTop="@dimen/margin_8dp"
-                                android:textColor="@color/Grey_900"
-                                android:textStyle="bold" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-
-                    <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/margin_16dp"
-                            android:hint="@string/spent_how_much"
-                            app:boxBackgroundColor="@color/Grey_100"
-                            app:boxBackgroundMode="none">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/amount_et"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:background="@drawable/dashed_line_bg"
-                                android:drawableStart="@drawable/ic_rupee_indian"
-                                android:drawablePadding="@dimen/margin_8dp"
-                                android:inputType="number"
-                                android:maxLines="1"
-                                android:paddingTop="@dimen/margin_8dp"
-                                android:textColor="@color/Grey_900"
-                                android:textStyle="bold"
-                                app:drawableTint="@color/Grey_800" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/margin_16dp"
-                            android:layout_marginBottom="@dimen/margin_32dp"
-                            android:hint="@string/spent_on_date"
-                            app:boxBackgroundColor="@color/Grey_100"
-                            app:boxBackgroundMode="none">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/date_et"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:background="@drawable/dashed_line_bg"
-                                android:drawableStart="@drawable/round_calendar_today_24"
-                                android:drawablePadding="14dp"
-                                android:focusableInTouchMode="false"
-                                android:inputType="date"
-                                android:maxLines="1"
-                                android:paddingTop="@dimen/margin_8dp"
-                                android:textColor="@color/Grey_900"
-                                android:textStyle="bold"
-                                app:drawableTint="@color/Grey_600" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-
-                </LinearLayout>
-
-
-            </com.google.android.material.card.MaterialCardView>
-
-
-            <ProgressBar
-                    android:id="@+id/adding_progress"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:visibility="gone" />
-
-        </FrameLayout>
-
-        <View
-                android:id="@+id/marginSpacer"
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_marginTop="10dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/expense_input_frame" />
-
-
-        <com.google.android.material.button.MaterialButton
-                android:id="@+id/done"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/margin_16dp"
-                android:text="@string/done"
-                android:textStyle="bold"
-                android:visibility="gone"
-                app:cornerRadius="5dp"
-                app:icon="@drawable/round_done_outline_24"
-                app:layout_constraintBottom_toTopOf="@id/marginSpacer"
-                app:layout_constraintEnd_toEndOf="@id/expense_input_frame" />
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-</androidx.core.widget.NestedScrollView>
 

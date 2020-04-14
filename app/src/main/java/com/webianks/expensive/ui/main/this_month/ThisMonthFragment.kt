@@ -34,10 +34,8 @@ import com.webianks.expensive.util.Util
 import com.webianks.expensive.util.getSkeletonRowCount
 import com.webianks.expensive.util.hideKeyboard
 import kotlinx.android.synthetic.main.fragment_this_month.*
-import kotlinx.android.synthetic.main.fragment_this_month.view.*
 import kotlinx.android.synthetic.main.skeleton_shimmer_layout.*
 import kotlinx.android.synthetic.main.this_month.*
-import kotlinx.android.synthetic.main.this_month.view.*
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -143,7 +141,7 @@ class ThisMonthFragment : Fragment(R.layout.fragment_this_month),
         }
 
 
-        month_recyclerview.layoutManager = LinearLayoutManager(context)
+        rv_data.layoutManager = LinearLayoutManager(context)
 
         val cal = Calendar.getInstance()
 
@@ -235,7 +233,7 @@ class ThisMonthFragment : Fragment(R.layout.fragment_this_month),
         showSkeleton(true)
 
         no_expenses.visibility = View.GONE
-        month_recyclerview.visibility = View.GONE
+        rv_data.visibility = View.GONE
         total = 0L
         totalAmount.visibility = View.GONE
         monthList = ArrayList()
@@ -290,11 +288,11 @@ class ThisMonthFragment : Fragment(R.layout.fragment_this_month),
                         )
 
 
-                    month_recyclerview.adapter = adapter
+                    rv_data.adapter = adapter
                     no_expenses.visibility = View.GONE
                     totalAmount.text = "Total: \u20B9 ${decimalFormat.format(total.toDouble())}"
                     totalAmount.visibility = View.VISIBLE
-                    month_recyclerview.visibility = View.VISIBLE
+                    rv_data.visibility = View.VISIBLE
 
                     animateReplaceSkeleton()
 
@@ -473,9 +471,9 @@ class ThisMonthFragment : Fragment(R.layout.fragment_this_month),
 
     private fun animateReplaceSkeleton() {
 
-        month_recyclerview.visibility = View.VISIBLE
-        month_recyclerview.alpha = 0f
-        month_recyclerview.animate().alpha(1f).setDuration(1000).start();
+        rv_data.visibility = View.VISIBLE
+        rv_data.alpha = 0f
+        rv_data.animate().alpha(1f).setDuration(1000).start();
 
         skeletonLayout.animate().alpha(0f).setDuration(1000).withEndAction {
             showSkeleton(false)
