@@ -132,7 +132,7 @@ class SummaryFragment : Fragment(R.layout.fragment_summary), MainMvpView{
 
                 } else {
 
-                    val map = hashMapOf<String,Summary>()
+                    val map = linkedMapOf<String,Summary>()
 
                     for (document in result) {
                         Log.d(Util.TAG, "${document.id} => ${document.data}")
