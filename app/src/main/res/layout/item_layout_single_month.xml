@@ -1,46 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_marginStart="@dimen/margin_32dp"
         android:layout_marginTop="@dimen/margin_16dp"
         android:layout_marginEnd="@dimen/margin_32dp"
+        app:cardCornerRadius="8dp"
+        app:strokeWidth="1dp"
+        app:cardElevation="0dp"
+        app:cardBackgroundColor="@color/Grey_50"
+        app:strokeColor="@color/primaryScrim"
         android:layout_marginBottom="4dp">
 
-    <TextView
-            android:id="@+id/tv_month"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/Grey_900"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            tools:text="April" />
-
-
-    <TextView
-            android:id="@+id/tv_year"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tv_month"
-            android:textColor="@color/Grey_400"
-            tools:text="2019" />
-
-
-    <TextView
-            android:id="@+id/tv_amount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:textColor="@color/colorAccent"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            tools:text="₹50000" />
-
-    <View
+    <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_below="@id/tv_year"
-            android:layout_marginTop="@dimen/margin_16dp"
-            android:background="@drawable/dashed_line_bg2" />
-</RelativeLayout>
+            android:padding="@dimen/margin_16dp"
+            android:layout_height="wrap_content">
+
+        <TextView
+                android:id="@+id/tv_month"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimary"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                tools:text="April" />
+
+
+        <TextView
+                android:id="@+id/tv_year"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_month"
+                android:textSize="17sp"
+                android:textColor="@color/colorPrimary"
+                tools:text="2019" />
+
+
+        <TextView
+                android:id="@+id/tv_amount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:textColor="@color/colorAccent"
+                android:textSize="18sp"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/margin_16dp"
+                android:textStyle="bold"
+                tools:text="₹50000" />
+
+    </RelativeLayout>
+
+</com.google.android.material.card.MaterialCardView>
