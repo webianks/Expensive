@@ -20,6 +20,7 @@ import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.webianks.expensive.ExpensiveApplication
 import com.webianks.expensive.R
+import com.webianks.expensive.data.local.Expense
 import com.webianks.expensive.util.Util
 import kotlinx.android.synthetic.main.edit_fragment.*
 import kotlinx.android.synthetic.main.edit_fragment.view.*
@@ -30,6 +31,7 @@ import java.util.*
 
 class EditFragment : DialogFragment() {
 
+    private lateinit var modifiedExpense: Expense
     private var uid: String? = null
     private var dateString: String? = null
     private var currentDate: Date? = null
@@ -183,6 +185,15 @@ class EditFragment : DialogFragment() {
 
                     Log.d(Util.TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
                     //showMessage("Expense added successfully.")
+                    val dateFormatted = SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault())
+                        .format(date)
+
+                    modifiedExpense =  Expense(
+                        id = documentReference.id,
+                        spentOn = spent_on_et.text.toString().trim(),
+                        amount = amount_et.text.toString().trim().replace(",", ""),
+                        date = dateFormatted
+                    )
                     expenseAfterSaveBehaviour()
                 }
                 .addOnFailureListener {
@@ -206,6 +217,16 @@ class EditFragment : DialogFragment() {
                     .addOnSuccessListener {
                         Log.d(Util.TAG, "DocumentSnapshot Updated.")
                         //showMessage("Expense added successfully.")
+
+                        val dateFormatted = SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault())
+                            .format(date)
+
+                        modifiedExpense = Expense(
+                            id = documentId!!,
+                            spentOn = amount_et.text.toString().trim(),
+                            amount = amount_et.text.toString().trim(),
+                            date = dateFormatted
+                        )
                         expenseAfterSaveBehaviour()
 
                     }
@@ -229,7 +250,7 @@ class EditFragment : DialogFragment() {
         amount_et.isEnabled = true
         date_et.isEnabled = true
 
-        onDismissListener?.dismissed()
+        onDismissListener?.dismissed(modifiedExpense)
 
         dismiss()
 
@@ -290,7 +311,7 @@ class EditFragment : DialogFragment() {
     }
 
     interface OnDismissListener {
-        fun dismissed()
+        fun dismissed(expense: Expense)
     }
 
 

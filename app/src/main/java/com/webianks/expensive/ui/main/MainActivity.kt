@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.webianks.expensive.R
+import com.webianks.expensive.data.local.Expense
 import com.webianks.expensive.ui.base.BaseActivity
 import com.webianks.expensive.ui.edit.EditFragment
 import com.webianks.expensive.ui.main.profile.MenuFragment
@@ -83,13 +84,13 @@ class MainActivity : BaseActivity(), EditFragment.OnDismissListener {
 
     fun getBottomNavigation(): BottomNavigationView = bottom_navigation
 
-    override fun dismissed() {
+    override fun dismissed(expense: Expense) {
 
         if (bottom_navigation.selectedItemId == R.id.item_this_month) {
 
             val fragment = supportFragmentManager.findFragmentById(R.id.container)
             if (fragment is ThisMonthFragment) {
-                fragment.newExpenseDialogDismissed()
+                fragment.newExpenseDialogDismissed(expense)
             }
         }
     }

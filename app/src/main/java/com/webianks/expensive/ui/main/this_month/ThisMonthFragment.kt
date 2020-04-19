@@ -338,12 +338,13 @@ class ThisMonthFragment : Fragment(R.layout.fragment_this_month),
         getCurrentMonthData()
     }
 
-    override fun dismissed() {
+    override fun dismissed(expense: Expense) {
         getCurrentMonthData()
     }
 
-    public fun newExpenseDialogDismissed() {
-        getCurrentMonthData()
+    fun newExpenseDialogDismissed(expense: Expense) {
+        monthList.add(0,expense)
+        adapter.notifyItemInserted(0)
     }
 
     val editClickListener: (Int, Expense) -> Unit = { _: Int, expense: Expense ->
