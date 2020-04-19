@@ -64,8 +64,9 @@ class MainActivity : BaseActivity() {
             val ft = supportFragmentManager.beginTransaction()
             val bundle = Bundle()
             dialog.arguments = bundle.apply {
-                putString("title","Add Expense")
-                putString("action_text","Save")
+                putString("title", "Add Expense")
+                putString("action_text", "Save")
+                putString("uid", uid)
             }
             dialog.show(ft, "ExpenseFragment")
         }

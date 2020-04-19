@@ -30,6 +30,7 @@ import java.util.*
 
 class EditFragment : DialogFragment() {
 
+    private var uid: String? = null
     private var dateString: String? = null
     private var currentDate: Date? = null
     private var item: String? = null
@@ -83,6 +84,7 @@ class EditFragment : DialogFragment() {
 
         view.title.text = arguments?.getString("title") ?: "Edit Expense"
         view.done.text = arguments?.getString("action_text") ?: "Update"
+        uid = arguments?.getString("uid")
 
         view.date_et.setOnClickListener { showDatePickerDialog() }
 
@@ -165,27 +167,55 @@ class EditFragment : DialogFragment() {
             .parse(date_et.text.toString().trim())
 
 
-        val expense = hashMapOf(
-            "updated_at" to FieldValue.serverTimestamp(),
-            "item" to spent_on_et.text.toString().trim(),
-            "amount" to amount_et.text.toString().trim(),
-            "date" to date
-        )
+        if (documentId == null) {
+            val expense = hashMapOf(
+                "uid" to uid,
+                "created_at" to FieldValue.serverTimestamp(),
+                "updated_at" to FieldValue.serverTimestamp(),
+                "item" to spent_on_et.text.toString().trim(),
+                "amount" to amount_et.text.toString().trim(),
+                "date" to date
+            )
 
-        documentId?.let {
             db.collection(Util.EXPENSE_COLLECTION)
-                .document(it)
-                .update(expense)
-                .addOnSuccessListener {
-                    Log.d(Util.TAG, "DocumentSnapshot Updated.")
+                .add(expense)
+                .addOnSuccessListener { documentReference ->
+
+                    Log.d(Util.TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
                     //showMessage("Expense added successfully.")
                     expenseAfterSaveBehaviour()
-
                 }
                 .addOnFailureListener {
-                    showMessage("Error updating expense.")
+                    showMessage("Error adding expense.")
+                    expenseAfterSaveBehaviour()
                 }
+
+        } else {
+
+            var expense = hashMapOf(
+                "updated_at" to FieldValue.serverTimestamp(),
+                "item" to spent_on_et.text.toString().trim(),
+                "amount" to amount_et.text.toString().trim(),
+                "date" to date
+            )
+
+            documentId?.let {
+                db.collection(Util.EXPENSE_COLLECTION)
+                    .document(it)
+                    .update(expense)
+                    .addOnSuccessListener {
+                        Log.d(Util.TAG, "DocumentSnapshot Updated.")
+                        //showMessage("Expense added successfully.")
+                        expenseAfterSaveBehaviour()
+
+                    }
+                    .addOnFailureListener {
+                        showMessage("Error updating expense.")
+                    }
+            }
         }
+
+
     }
 
     private fun expenseAfterSaveBehaviour() {
