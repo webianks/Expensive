@@ -173,7 +173,7 @@ class EditFragment : DialogFragment() {
                 "created_at" to FieldValue.serverTimestamp(),
                 "updated_at" to FieldValue.serverTimestamp(),
                 "item" to spent_on_et.text.toString().trim(),
-                "amount" to amount_et.text.toString().trim(),
+                "amount" to amount_et.text.toString().trim().replace(",", ""),
                 "date" to date
             )
 
