@@ -342,6 +342,10 @@ class ThisMonthFragment : Fragment(R.layout.fragment_this_month),
         getCurrentMonthData()
     }
 
+    public fun newExpenseDialogDismissed() {
+        getCurrentMonthData()
+    }
+
     val editClickListener: (Int, Expense) -> Unit = { _: Int, expense: Expense ->
 
         val dialog = EditFragment()

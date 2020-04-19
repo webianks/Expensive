@@ -11,7 +11,7 @@ import com.webianks.expensive.ui.main.summary.SummaryFragment
 import com.webianks.expensive.ui.main.this_month.ThisMonthFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : BaseActivity() {
+class MainActivity : BaseActivity(), EditFragment.OnDismissListener {
 
     private lateinit var userImage: String
     private lateinit var userEmail: String
@@ -68,6 +68,7 @@ class MainActivity : BaseActivity() {
                 putString("action_text", "Save")
                 putString("uid", uid)
             }
+            dialog.setOnDismissListener(this)
             dialog.show(ft, "ExpenseFragment")
         }
 
@@ -81,5 +82,16 @@ class MainActivity : BaseActivity() {
     }
 
     fun getBottomNavigation(): BottomNavigationView = bottom_navigation
+
+    override fun dismissed() {
+
+        if (bottom_navigation.selectedItemId == R.id.item_this_month) {
+
+            val fragment = supportFragmentManager.findFragmentById(R.id.container)
+            if (fragment is ThisMonthFragment) {
+                fragment.newExpenseDialogDismissed()
+            }
+        }
+    }
 
 }
