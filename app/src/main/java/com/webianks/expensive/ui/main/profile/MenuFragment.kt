@@ -79,7 +79,7 @@ class MenuFragment : Fragment(R.layout.fragment_menu){
 
     private fun confirmAndLogout() {
 
-        MaterialAlertDialogBuilder(context)
+        MaterialAlertDialogBuilder(context!!)
             .setMessage("Are you sure you want to logout?")
             .setPositiveButton("Logout") { _, _ -> revokeAccess() }
             .setNegativeButton("Cancel") { it, _ ->

@@ -259,7 +259,7 @@ class ThisMonthFragment : Fragment(R.layout.fragment_this_month),
                 if (result.size() == 0) {
                     no_expenses.visibility = View.VISIBLE
                     totalAmount.visibility = View.GONE
-                    animateReplaceSkeleton()
+                    skeletonLayout.visibility = View.GONE
 
                 } else {
                     total = 0L
@@ -368,7 +368,7 @@ class ThisMonthFragment : Fragment(R.layout.fragment_this_month),
 
     private fun confirmAndDelete(pos: Int, expense: Expense) {
 
-        MaterialAlertDialogBuilder(context)
+        MaterialAlertDialogBuilder(context!!)
             .setMessage("Are you sure you want to delete this expense?")
             .setTitle("Expensive")
             .setPositiveButton("Delete") { _, _ -> deleteNow(pos, expense) }

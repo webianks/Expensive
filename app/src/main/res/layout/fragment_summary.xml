@@ -11,6 +11,21 @@
             android:id="@+id/rv_data"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            tools:itemCount="10"
+            tools:listitem="@layout/item_layout_single_month"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
+
+    <include
+            layout="@layout/skeleton_shimmer_layout"
+            android:layout_width="0dp"
+            android:layout_marginTop="@dimen/margin_16dp"
+            android:layout_marginStart="@dimen/margin_16dp"
+            android:layout_marginEnd="@dimen/margin_16dp"
+            android:layout_height="0dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"

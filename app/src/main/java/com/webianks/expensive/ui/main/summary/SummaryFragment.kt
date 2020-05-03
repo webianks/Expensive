@@ -3,6 +3,7 @@ package com.webianks.expensive.ui.main.summary
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,7 +22,9 @@ import com.webianks.expensive.ui.main.MainActivity
 import com.webianks.expensive.ui.main.MainPresenter
 import com.webianks.expensive.ui.main.this_month.MainMvpView
 import com.webianks.expensive.util.Util
+import com.webianks.expensive.util.getSkeletonRowCount
 import kotlinx.android.synthetic.main.fragment_summary.*
+import kotlinx.android.synthetic.main.skeleton_shimmer_layout.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -104,7 +107,7 @@ class SummaryFragment : Fragment(R.layout.fragment_summary), MainMvpView{
 
     private fun getMonthWiseSummary() {
 
-        //animation_view.visibility = View.VISIBLE
+        showSkeleton(true)
         //no_expenses.visibility = View.GONE
         rv_data.visibility = View.GONE
         //totalAmount.visibility = View.GONE
@@ -176,6 +179,8 @@ class SummaryFragment : Fragment(R.layout.fragment_summary), MainMvpView{
                     //totalAmount.visibility = View.VISIBLE
                     rv_data.visibility = View.VISIBLE
 
+                    animateReplaceSkeleton()
+
                 }
             }
             .addOnFailureListener { exception ->
@@ -197,6 +202,49 @@ class SummaryFragment : Fragment(R.layout.fragment_summary), MainMvpView{
 
 
     }
+
+    private fun animateReplaceSkeleton() {
+
+        rv_data.visibility = View.VISIBLE
+        rv_data.alpha = 0f
+        rv_data.animate().alpha(1f).setDuration(1000).start();
+
+        skeletonLayout.animate().alpha(0f).setDuration(1000).withEndAction {
+            showSkeleton(false)
+        }.start()
+
+    }
+
+    private fun showSkeleton(show: Boolean) {
+
+
+        if (show) {
+
+            skeletonLayout.removeAllViews()
+
+            val skeletonRows = getSkeletonRowCount(context!!)
+            for (i in 0..6) {
+                val rowLayout =
+                    layoutInflater.inflate(R.layout.item_layout_skeleton_expense, null) as ViewGroup
+                skeletonLayout.addView(rowLayout)
+            }
+            shimmerSkeleton.visibility = View.VISIBLE
+            shimmerSkeleton.startShimmerAnimation()
+            skeletonLayout.visibility = View.VISIBLE
+            skeletonLayout.bringToFront()
+        } else {
+
+            if (activity == null)
+                return
+
+            if (!(activity as MainActivity).getBottomNavigation().menu.getItem(0).isChecked)
+                return
+
+            shimmerSkeleton.stopShimmerAnimation()
+            shimmerSkeleton.visibility = View.GONE
+        }
+    }
+
 
 
 }
