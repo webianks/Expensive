@@ -259,6 +259,7 @@ class ThisMonthFragment : Fragment(R.layout.fragment_this_month),
                 if (result.size() == 0) {
                     no_expenses.visibility = View.VISIBLE
                     totalAmount.visibility = View.GONE
+                    animateReplaceSkeleton()
 
                 } else {
                     total = 0L
