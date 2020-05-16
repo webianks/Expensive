@@ -4,8 +4,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_marginStart="@dimen/margin_32dp"
-        android:layout_marginEnd="@dimen/margin_32dp"
+        android:layout_marginStart="@dimen/margin_16dp"
+        android:layout_marginEnd="@dimen/margin_16dp"
         app:cardCornerRadius="8dp"
         app:strokeWidth="0dp"
         app:cardElevation="0dp"
@@ -33,8 +33,10 @@
                 android:id="@+id/tv_year"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/tv_month"
+                android:layout_toEndOf="@id/tv_month"
                 android:textSize="15sp"
+                android:layout_marginTop="2dp"
+                android:layout_marginStart="@dimen/margin_8dp"
                 android:textColor="@color/Grey_600"
                 tools:text="2019" />
 
@@ -55,7 +57,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_below="@id/tv_year"
-                android:layout_marginTop="@dimen/margin_16dp"
+                android:layout_marginTop="@dimen/margin_22dp"
                 android:background="@drawable/dashed_line_bg2" />
 
     </RelativeLayout>

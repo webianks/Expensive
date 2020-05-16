@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_skeleton_expense_layout"
+        >
+
+    <View
+            android:id="@+id/spent_on"
+            android:layout_width="100dp"
+            android:layout_height="10dp"
+            android:layout_marginStart="@dimen/margin_32dp"
+            android:layout_marginTop="@dimen/margin_16dp"
+            android:background="@drawable/skeleton" />
+
+
+
+    <View
+            android:id="@+id/amount"
+            android:layout_width="50dp"
+            android:layout_height="10dp"
+            android:layout_marginEnd="@dimen/margin_32dp"
+            android:layout_marginTop="@dimen/margin_16dp"
+            android:layout_alignParentEnd="true"
+            android:background="@drawable/skeleton" />
+
+
+    <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/spent_on"
+            android:layout_marginTop="@dimen/margin_32dp"
+            android:layout_marginStart="@dimen/margin_32dp"
+            android:layout_marginEnd="@dimen/margin_32dp"
+            android:layout_marginBottom="4dp"
+            android:background="@drawable/dashed_line_bg2" />
+</RelativeLayout>

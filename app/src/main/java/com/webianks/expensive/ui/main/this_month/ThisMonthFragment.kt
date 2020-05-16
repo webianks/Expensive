@@ -268,7 +268,7 @@ class ThisMonthFragment : Fragment(R.layout.fragment_this_month),
                         val dataMap = document.data
                         total += dataMap["amount"].toString().toLong()
 
-                        val date = SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault())
+                        val date = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
                             .format((dataMap["date"] as Timestamp).toDate())
 
                         monthList.add(

@@ -103,7 +103,7 @@ class EditFragment : DialogFragment() {
 
 
         val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
-        val retrievedFormat = SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault())
+        val retrievedFormat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
         mDate?.let {
             dateString = dateFormat.format(retrievedFormat.parse(mDate))
             currentDate = dateFormat.parse(dateString)

@@ -225,7 +225,7 @@ class SummaryFragment : Fragment(R.layout.fragment_summary), MainMvpView{
             val skeletonRows = getSkeletonRowCount(context!!)
             for (i in 0..6) {
                 val rowLayout =
-                    layoutInflater.inflate(R.layout.item_layout_skeleton_expense, null) as ViewGroup
+                    layoutInflater.inflate(R.layout.item_layout_skeleton_month, null) as ViewGroup
                 skeletonLayout.addView(rowLayout)
             }
             shimmerSkeleton.visibility = View.VISIBLE

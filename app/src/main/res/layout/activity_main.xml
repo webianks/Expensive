@@ -47,20 +47,20 @@
             android:layout_gravity="bottom"
             app:menu="@menu/bottom_navigation_menu" />
 
-    <androidx.appcompat.widget.AppCompatButton
+    <com.google.android.material.button.MaterialButton
             android:id="@+id/bt_add_expense"
             android:layout_width="wrap_content"
-            android:layout_height="50dp"
+            android:layout_height="55dp"
             android:layout_gravity="center_horizontal|bottom"
             android:layout_marginBottom="76dp"
             android:text="@string/label_add_new"
             android:textAllCaps="false"
             android:textStyle="bold"
             app:elevation="0dp"
-            android:textColor="@color/white"
             android:paddingStart="@dimen/margin_16dp"
             android:paddingEnd="@dimen/margin_16dp"
-            android:background="@drawable/bt_selector"
+            app:cornerRadius="25dp"
+            app:backgroundTint="#7986cb"
             />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
