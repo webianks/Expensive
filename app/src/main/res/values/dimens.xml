@@ -5,6 +5,5 @@
     <dimen name="margin_16dp">16dp</dimen>
     <dimen name="margin_8dp">8dp</dimen>
     <dimen name="margin_4dp">4dp</dimen>
-
     <dimen name="height_skeleton_expense_layout">80dp</dimen>
 </resources>

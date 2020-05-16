@@ -60,7 +60,7 @@
             android:paddingStart="@dimen/margin_16dp"
             android:paddingEnd="@dimen/margin_16dp"
             app:cornerRadius="25dp"
-            app:backgroundTint="#7986cb"
+            app:backgroundTint="@color/colorPrimary"
             />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
