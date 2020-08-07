@@ -344,8 +344,29 @@ class ThisMonthFragment : Fragment(R.layout.fragment_this_month),
     }
 
     fun newExpenseDialogDismissed(expense: Expense) {
-        monthList.add(0,expense)
-        adapter.notifyItemInserted(0)
+
+        total += expense.amount.toLong()
+
+        if(monthList.size == 0){
+            monthList.add(0,expense)
+            adapter =
+                MonthsAdapter(
+                    context!!,
+                    monthList,
+                    adapterActionListener
+                )
+
+            rv_data.adapter = adapter
+            no_expenses.visibility = View.GONE
+            totalAmount.text = "Total: \u20B9 ${decimalFormat.format(total.toDouble())}"
+            totalAmount.visibility = View.VISIBLE
+            rv_data.visibility = View.VISIBLE
+        }else {
+            monthList.add(0, expense)
+            adapter.notifyItemInserted(0)
+            totalAmount.text = "Total: \u20B9 ${decimalFormat.format(total.toDouble())}"
+        }
+
     }
 
     val editClickListener: (Int, Expense) -> Unit = { _: Int, expense: Expense ->
