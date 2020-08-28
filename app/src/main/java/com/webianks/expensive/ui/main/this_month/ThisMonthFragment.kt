@@ -218,7 +218,6 @@ class ThisMonthFragment : Fragment(R.layout.fragment_this_month),
         amount_et.isEnabled = true
         date_et.isEnabled = true
 
-
         if (resetData) {
             spent_on_et.text = null
             amount_et.text = null
@@ -253,8 +252,6 @@ class ThisMonthFragment : Fragment(R.layout.fragment_this_month),
 
                 if (!(activity as MainActivity).getBottomNavigation().menu.getItem(0).isChecked)
                     return@addOnSuccessListener
-
-
 
                 if (result.size() == 0) {
                     no_expenses.visibility = View.VISIBLE
@@ -345,28 +342,29 @@ class ThisMonthFragment : Fragment(R.layout.fragment_this_month),
 
     fun newExpenseDialogDismissed(expense: Expense) {
 
-        total += expense.amount.toLong()
+        if(currentDate == expense.date) {
+            total += expense.amount.toLong()
 
-        if(monthList.size == 0){
-            monthList.add(0,expense)
-            adapter =
-                MonthsAdapter(
-                    context!!,
-                    monthList,
-                    adapterActionListener
-                )
+            if (monthList.size == 0) {
+                monthList.add(0, expense)
+                adapter =
+                    MonthsAdapter(
+                        context!!,
+                        monthList,
+                        adapterActionListener
+                    )
 
-            rv_data.adapter = adapter
-            no_expenses.visibility = View.GONE
-            totalAmount.text = "Total: \u20B9 ${decimalFormat.format(total.toDouble())}"
-            totalAmount.visibility = View.VISIBLE
-            rv_data.visibility = View.VISIBLE
-        }else {
-            monthList.add(0, expense)
-            adapter.notifyItemInserted(0)
-            totalAmount.text = "Total: \u20B9 ${decimalFormat.format(total.toDouble())}"
+                rv_data.adapter = adapter
+                no_expenses.visibility = View.GONE
+                totalAmount.text = "Total: \u20B9 ${decimalFormat.format(total.toDouble())}"
+                totalAmount.visibility = View.VISIBLE
+                rv_data.visibility = View.VISIBLE
+            } else {
+                monthList.add(0, expense)
+                adapter.notifyItemInserted(0)
+                totalAmount.text = "Total: \u20B9 ${decimalFormat.format(total.toDouble())}"
+            }
         }
-
     }
 
     val editClickListener: (Int, Expense) -> Unit = { _: Int, expense: Expense ->
@@ -467,9 +465,7 @@ class ThisMonthFragment : Fragment(R.layout.fragment_this_month),
 
                 Log.d(Util.TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
                 //showMessage("Expense added successfully.")
-
                 expenseAfterSaveBehaviour(true)
-
                 getCurrentMonthData()
             }
             .addOnFailureListener {

@@ -25,18 +25,15 @@ class MainActivity : BaseActivity(), EditFragment.OnDismissListener {
         //AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         setContentView(R.layout.activity_main)
 
-
         uid = intent.getStringExtra("uid")
         userName = intent.getStringExtra("name")
         userEmail = intent.getStringExtra("email")
         userImage = intent.getStringExtra("photo_url")
 
         initViews()
-
     }
 
     private fun initViews() {
-
 
         bottom_navigation.setOnNavigationItemSelectedListener {
             when (it.itemId) {
