@@ -2,7 +2,6 @@ package com.webianks.expensive.ui.main.this_month
 
 import android.app.DatePickerDialog
 import android.app.Dialog
-import android.app.ProgressDialog
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -19,7 +18,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.webianks.expensive.ExpensiveApplication
@@ -32,7 +30,6 @@ import com.webianks.expensive.ui.main.MainPresenter
 import com.webianks.expensive.ui.month_year_picker.picker.YearMonthPickerDialog
 import com.webianks.expensive.util.Util
 import com.webianks.expensive.util.getSkeletonRowCount
-import com.webianks.expensive.util.hideKeyboard
 import kotlinx.android.synthetic.main.fragment_this_month.*
 import kotlinx.android.synthetic.main.skeleton_shimmer_layout.*
 import kotlinx.android.synthetic.main.this_month.*
@@ -42,7 +39,6 @@ import java.util.*
 
 class ThisMonthFragment : Fragment(R.layout.fragment_this_month),
     MainMvpView,
-    EditFragment.OnDismissListener,
     YearMonthPickerDialog.OnDateSetListener {
 
     private lateinit var calendarCurrent: Calendar
@@ -131,15 +127,9 @@ class ThisMonthFragment : Fragment(R.layout.fragment_this_month),
 
         date_et.setOnClickListener { showDatePickerDialog() }
 
-        done.setOnClickListener {
-            hideKeyboard(it)
-            validateAndSaveData()
-        }
-
         current_month.setOnClickListener {
             showMonthYearPicker()
         }
-
 
         rv_data.layoutManager = LinearLayoutManager(context)
 
@@ -207,10 +197,10 @@ class ThisMonthFragment : Fragment(R.layout.fragment_this_month),
         //snackbar.show()
     }
 
-    private fun expenseAfterSaveBehaviour(resetData: Boolean) {
+  /*  private fun expenseAfterSaveBehaviour(resetData: Boolean) {
 
-        done.isEnabled = true
-        done.isActivated = true
+        *//*done.isEnabled = true
+        done.isActivated = true*//*
         adding_progress.visibility = View.GONE
         expense_input_card.alpha = 1.0f
 
@@ -225,7 +215,7 @@ class ThisMonthFragment : Fragment(R.layout.fragment_this_month),
             spent_on_et.clearFocus()
             amount_et.clearFocus()
         }
-    }
+    }*/
 
     private fun getCurrentMonthData() {
 
@@ -336,9 +326,6 @@ class ThisMonthFragment : Fragment(R.layout.fragment_this_month),
         getCurrentMonthData()
     }
 
-    override fun dismissed(expense: Expense) {
-        getCurrentMonthData()
-    }
 
     fun newExpenseDialogDismissed(expense: Expense) {
 
@@ -377,7 +364,9 @@ class ThisMonthFragment : Fragment(R.layout.fragment_this_month),
         bundle.putString("amount", expense.amount)
         bundle.putString("date", expense.date)
         dialog.arguments = bundle
-        dialog.setOnDismissListener(this)
+        dialog.onDismissListener = {
+            getCurrentMonthData()
+        }
         dialog.show(ft, "EditFragment")
     }
 
@@ -400,10 +389,12 @@ class ThisMonthFragment : Fragment(R.layout.fragment_this_month),
 
     private fun deleteNow(pos: Int, expense: Expense) {
 
-        val dialog = ProgressDialog(context)
-        dialog.setMessage("Deleting Expense...Please wait.")
-        dialog.setCancelable(false)
-        dialog.show()
+        val dialog = MaterialAlertDialogBuilder(activity!!).run {
+            //setView(layoutInflater.inflate(R.layout.view_dialog_title,null))
+            setMessage("Deleting Expense, Please wait..")
+            setCancelable(false)
+            show()
+        }
 
         val db = FirebaseFirestore.getInstance()
         db.collection(Util.EXPENSE_COLLECTION).document(expense.id)
@@ -431,6 +422,7 @@ class ThisMonthFragment : Fragment(R.layout.fragment_this_month),
             .addOnFailureListener { showMessage("Error deleting expense") }
     }
 
+   /*
     private fun validateAndSaveData() {
 
         if (spent_on_et.text.toString() == "" || amount_et.text.toString() == "" || date_et.text.toString() == "") {
@@ -474,7 +466,7 @@ class ThisMonthFragment : Fragment(R.layout.fragment_this_month),
             }
     }
 
-
+*/
     private fun showMonthYearPicker() {
         val yearMonthPickerDialog = YearMonthPickerDialog(
             context!!,

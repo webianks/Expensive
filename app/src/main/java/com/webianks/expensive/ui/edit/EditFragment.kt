@@ -95,32 +95,28 @@ class EditFragment : DialogFragment() {
             validateAndUpdateData()
         }
 
-
         documentId = arguments?.getString("id")
         item = arguments?.getString("item")
         amount = arguments?.getString("amount")
         val mDate = arguments?.getString("date")
 
-
         val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
         val retrievedFormat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
+
         mDate?.let {
             dateString = dateFormat.format(retrievedFormat.parse(mDate))
             currentDate = dateFormat.parse(dateString)
         }
+
         view.spent_on_et.setText(item)
         view.amount_et.setText(amount)
         view.date_et.setText(dateString)
 
-
         view.amount_et.addTextChangedListener(object : TextWatcher {
-
             override fun afterTextChanged(p0: Editable?) {
-
             }
 
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
             }
 
             override fun onTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -185,7 +181,7 @@ class EditFragment : DialogFragment() {
 
                     Log.d(Util.TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
                     //showMessage("Expense added successfully.")
-                    val dateFormatted = SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault())
+                    val dateFormatted = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
                         .format(date)
 
                     modifiedExpense =  Expense(
@@ -203,7 +199,7 @@ class EditFragment : DialogFragment() {
 
         } else {
 
-            var expense = hashMapOf(
+            val expense = hashMapOf(
                 "updated_at" to FieldValue.serverTimestamp(),
                 "item" to spent_on_et.text.toString().trim(),
                 "amount" to amount_et.text.toString().trim(),
@@ -218,8 +214,7 @@ class EditFragment : DialogFragment() {
                         Log.d(Util.TAG, "DocumentSnapshot Updated.")
                         //showMessage("Expense added successfully.")
 
-                        val dateFormatted = SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault())
-                            .format(date)
+                        val dateFormatted = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(date)
 
                         modifiedExpense = Expense(
                             id = documentId!!,
@@ -236,7 +231,6 @@ class EditFragment : DialogFragment() {
             }
         }
 
-
     }
 
     private fun expenseAfterSaveBehaviour() {
@@ -250,10 +244,11 @@ class EditFragment : DialogFragment() {
         amount_et.isEnabled = true
         date_et.isEnabled = true
 
-        onDismissListener?.dismissed(modifiedExpense)
+        onDismissListener?.let {
+            it(modifiedExpense)
+        }
 
         dismiss()
-
     }
 
 
@@ -310,17 +305,7 @@ class EditFragment : DialogFragment() {
         }
     }
 
-    interface OnDismissListener {
-        fun dismissed(expense: Expense)
-    }
-
-
-    private var onDismissListener: OnDismissListener? = null
-
-    fun setOnDismissListener(onDismissListener: OnDismissListener) {
-        this.onDismissListener = onDismissListener
-    }
-
+    var onDismissListener: ((Expense) -> Unit)? = null
 
     override fun onStart() {
         super.onStart()

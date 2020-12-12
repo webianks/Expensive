@@ -129,20 +129,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/expense_input_frame" />
 
-
-    <com.google.android.material.button.MaterialButton
-            android:id="@+id/done"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/margin_16dp"
-            android:text="@string/done"
-            android:textStyle="bold"
-            android:visibility="gone"
-            app:cornerRadius="5dp"
-            app:icon="@drawable/round_done_outline_24"
-            app:layout_constraintBottom_toTopOf="@id/marginSpacer"
-            app:layout_constraintEnd_toEndOf="@id/expense_input_frame" />
-
     <include layout="@layout/this_month" />
 
 
