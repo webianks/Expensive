@@ -4,5 +4,5 @@ import com.webianks.expensive.ui.base.MvpView
 
 interface MainMvpView :MvpView {
 
-    fun showCurrentMonthData()
+    fun getCurrentMonthData()
 }

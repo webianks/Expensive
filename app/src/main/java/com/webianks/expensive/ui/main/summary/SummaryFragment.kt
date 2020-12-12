@@ -198,8 +198,7 @@ class SummaryFragment : Fragment(R.layout.fragment_summary), MainMvpView{
     }
 
 
-    override fun showCurrentMonthData() {
-
+    override fun getCurrentMonthData() {
 
     }
 
@@ -217,11 +216,8 @@ class SummaryFragment : Fragment(R.layout.fragment_summary), MainMvpView{
 
     private fun showSkeleton(show: Boolean) {
 
-
         if (show) {
-
             skeletonLayout.removeAllViews()
-
             val skeletonRows = getSkeletonRowCount(context!!)
             for (i in 0..6) {
                 val rowLayout =

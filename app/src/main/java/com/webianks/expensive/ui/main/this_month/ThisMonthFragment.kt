@@ -76,12 +76,10 @@ class ThisMonthFragment : Fragment(R.layout.fragment_this_month),
 
     private var total: Long = 0L
 
-    private val adapterActionListener: (Int, Expense) -> Unit = {
+    private val adapterActionListener: (Int, Expense) -> Unit = { pos, expense ->
 
-            pos, expense ->
         if (optionsDialog == null) {
-            val dialogView =
-                LayoutInflater.from(context).inflate(R.layout.options_bottom_sheet, null)
+            val dialogView = LayoutInflater.from(context).inflate(R.layout.options_bottom_sheet, null)
             optionsDialog = BottomSheetDialog(context!!)
             optionsDialog?.setContentView(dialogView)
             dialogView.findViewById<TextView>(R.id.editOption).setOnClickListener {
@@ -96,7 +94,6 @@ class ThisMonthFragment : Fragment(R.layout.fragment_this_month),
         optionsDialog?.show()
 
     }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -197,27 +194,7 @@ class ThisMonthFragment : Fragment(R.layout.fragment_this_month),
         //snackbar.show()
     }
 
-  /*  private fun expenseAfterSaveBehaviour(resetData: Boolean) {
-
-        *//*done.isEnabled = true
-        done.isActivated = true*//*
-        adding_progress.visibility = View.GONE
-        expense_input_card.alpha = 1.0f
-
-        spent_on_et.isEnabled = true
-        amount_et.isEnabled = true
-        date_et.isEnabled = true
-
-        if (resetData) {
-            spent_on_et.text = null
-            amount_et.text = null
-            date_et.text = null
-            spent_on_et.clearFocus()
-            amount_et.clearFocus()
-        }
-    }*/
-
-    private fun getCurrentMonthData() {
+    override fun getCurrentMonthData() {
 
         showSkeleton(true)
 
@@ -226,7 +203,6 @@ class ThisMonthFragment : Fragment(R.layout.fragment_this_month),
         total = 0L
         totalAmount.visibility = View.GONE
         monthList = ArrayList()
-
 
         db.collection(Util.EXPENSE_COLLECTION)
             .whereEqualTo("uid", uid)
@@ -375,7 +351,6 @@ class ThisMonthFragment : Fragment(R.layout.fragment_this_month),
     }
 
     private fun confirmAndDelete(pos: Int, expense: Expense) {
-
         MaterialAlertDialogBuilder(context!!)
             .setMessage("Are you sure you want to delete this expense?")
             .setTitle("Expensive")
@@ -384,7 +359,6 @@ class ThisMonthFragment : Fragment(R.layout.fragment_this_month),
                 it.dismiss()
             }
             .show()
-
     }
 
     private fun deleteNow(pos: Int, expense: Expense) {
@@ -405,9 +379,7 @@ class ThisMonthFragment : Fragment(R.layout.fragment_this_month),
 
                 showMessage("Expense deleted!")
                 //getCurrentMonthData()
-
                 total -= expense.amount.toLong()
-
                 totalAmount.text = "Total $total"
 
                 monthList.removeAt(pos)
@@ -422,87 +394,29 @@ class ThisMonthFragment : Fragment(R.layout.fragment_this_month),
             .addOnFailureListener { showMessage("Error deleting expense") }
     }
 
-   /*
-    private fun validateAndSaveData() {
-
-        if (spent_on_et.text.toString() == "" || amount_et.text.toString() == "" || date_et.text.toString() == "") {
-            showMessage("Please add all expense details.")
-            return
-        }
-
-        done.isEnabled = false
-        done.isActivated = false
-        adding_progress.visibility = View.VISIBLE
-        expense_input_card.alpha = 0.3f
-        spent_on_et.isEnabled = false
-        amount_et.isEnabled = false
-        date_et.isEnabled = false
-
-        val date = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
-            .parse(date_et.text.toString().trim())
-
-
-        val expense = hashMapOf(
-            "uid" to uid,
-            "created_at" to FieldValue.serverTimestamp(),
-            "updated_at" to FieldValue.serverTimestamp(),
-            "item" to spent_on_et.text.toString().trim(),
-            "amount" to amount_et.text.toString().trim(),
-            "date" to date
-        )
-
-        db.collection(Util.EXPENSE_COLLECTION)
-            .add(expense)
-            .addOnSuccessListener { documentReference ->
-
-                Log.d(Util.TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
-                //showMessage("Expense added successfully.")
-                expenseAfterSaveBehaviour(true)
-                getCurrentMonthData()
-            }
-            .addOnFailureListener {
-                showMessage("Error adding expense.")
-                expenseAfterSaveBehaviour(false)
-            }
-    }
-
-*/
     private fun showMonthYearPicker() {
         val yearMonthPickerDialog = YearMonthPickerDialog(
             context!!,
             this,
             calendarCurrent
         )
-
         yearMonthPickerDialog.setMaxYear(Calendar.getInstance().get(Calendar.YEAR))
         yearMonthPickerDialog.show()
     }
 
-
-    override fun showCurrentMonthData() {
-
-
-    }
-
     private fun animateReplaceSkeleton() {
-
         rv_data.visibility = View.VISIBLE
         rv_data.alpha = 0f
-        rv_data.animate().alpha(1f).setDuration(1000).start();
-
+        rv_data.animate().alpha(1f).setDuration(1000).start()
         skeletonLayout.animate().alpha(0f).setDuration(1000).withEndAction {
             showSkeleton(false)
         }.start()
-
     }
 
     private fun showSkeleton(show: Boolean) {
 
-
         if (show) {
-
             skeletonLayout.removeAllViews()
-
             val skeletonRows = getSkeletonRowCount(context!!)
             for (i in 0..4) {
                 val rowLayout =

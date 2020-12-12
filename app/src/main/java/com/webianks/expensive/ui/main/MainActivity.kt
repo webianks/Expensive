@@ -18,10 +18,11 @@ class MainActivity : BaseActivity() {
     private lateinit var userName: String
     private lateinit var uid: String
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        //AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+       //AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         setContentView(R.layout.activity_main)
 
         uid = intent.getStringExtra("uid")

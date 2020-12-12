@@ -42,6 +42,7 @@ class EditFragment : DialogFragment() {
     private var documentId: String? = null
 
     private val decimalFormat = DecimalFormat("#.##")
+    var onDismissListener: ((Expense) -> Unit)? = null
 
     init {
         decimalFormat.isGroupingUsed = true
@@ -77,7 +78,6 @@ class EditFragment : DialogFragment() {
         activity?.let {
             db = (it.application as ExpensiveApplication).db
         }
-
         return view
     }
 
@@ -109,7 +109,7 @@ class EditFragment : DialogFragment() {
         }
 
         view.spent_on_et.setText(item)
-        view.amount_et.setText(amount)
+        view.amount_et.setText(decimalFormat.format(amount?.toDouble()))
         view.date_et.setText(dateString)
 
         view.amount_et.addTextChangedListener(object : TextWatcher {
@@ -202,7 +202,7 @@ class EditFragment : DialogFragment() {
             val expense = hashMapOf(
                 "updated_at" to FieldValue.serverTimestamp(),
                 "item" to spent_on_et.text.toString().trim(),
-                "amount" to amount_et.text.toString().trim(),
+                "amount" to amount_et.text.toString().trim().replace(",", ""),
                 "date" to date
             )
 
@@ -305,7 +305,6 @@ class EditFragment : DialogFragment() {
         }
     }
 
-    var onDismissListener: ((Expense) -> Unit)? = null
 
     override fun onStart() {
         super.onStart()
