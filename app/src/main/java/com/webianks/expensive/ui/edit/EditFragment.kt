@@ -109,7 +109,9 @@ class EditFragment : DialogFragment() {
         }
 
         view.spent_on_et.setText(item)
-        view.amount_et.setText(decimalFormat.format(amount?.toDouble()))
+        amount?.let {
+            view.amount_et.setText(decimalFormat.format(it.toDouble()))
+        }
         view.date_et.setText(dateString)
 
         view.amount_et.addTextChangedListener(object : TextWatcher {

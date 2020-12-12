@@ -244,13 +244,7 @@ class ThisMonthFragment : Fragment(R.layout.fragment_this_month),
                         )
                     }
 
-                    adapter =
-                        MonthsAdapter(
-                            context!!,
-                            monthList,
-                            adapterActionListener
-                        )
-
+                    adapter = MonthsAdapter(context!!, monthList, adapterActionListener)
 
                     rv_data.adapter = adapter
                     no_expenses.visibility = View.GONE
@@ -266,12 +260,9 @@ class ThisMonthFragment : Fragment(R.layout.fragment_this_month),
 
                 if (activity == null)
                     return@addOnFailureListener
-
                 if (!(activity as MainActivity).getBottomNavigation().menu.getItem(0).isChecked)
                     return@addOnFailureListener
-
                 showSkeleton(false)
-
                 Log.w(Util.TAG, "Error getting documents.", exception)
             }
 
