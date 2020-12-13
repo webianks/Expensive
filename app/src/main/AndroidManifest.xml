@@ -14,9 +14,7 @@
             android:name=".ExpensiveApplication"
             tools:ignore="GoogleAppIndexingWarning">
 
-        <activity android:name=".ui.main.MainActivity">
-
-        </activity>
+        <activity android:name=".ui.main.MainActivity"/>
 
         <activity android:name=".ui.login.LoginActivity">
             <intent-filter>
@@ -24,7 +22,6 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-
 
     </application>
 
