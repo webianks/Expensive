@@ -52,10 +52,9 @@ class ThisMonthFragment : Fragment(R.layout.fragment_this_month),
     private lateinit var db: FirebaseFirestore
     private lateinit var uid: String
 
-    private var optionsDialog: BottomSheetDialog? = null
     private lateinit var mainPresenter: MainPresenter<MainMvpView>
 
-    private val decimalFormat =  DecimalFormat("#.##")
+    private val decimalFormat = DecimalFormat("#.##")
 
     init {
         decimalFormat.isGroupingUsed = true
@@ -78,21 +77,18 @@ class ThisMonthFragment : Fragment(R.layout.fragment_this_month),
 
     private val adapterActionListener: (Int, Expense) -> Unit = { pos, expense ->
 
-        if (optionsDialog == null) {
-            val dialogView = LayoutInflater.from(context).inflate(R.layout.options_bottom_sheet, null)
-            optionsDialog = BottomSheetDialog(context!!)
-            optionsDialog?.setContentView(dialogView)
-            dialogView.findViewById<TextView>(R.id.editOption).setOnClickListener {
-                optionsDialog?.dismiss()
-                editClickListener(pos, expense)
-            }
-            dialogView.findViewById<TextView>(R.id.deleteBt).setOnClickListener {
-                optionsDialog?.dismiss()
-                deleteClicked(pos, expense)
-            }
+        val dialogView = LayoutInflater.from(context).inflate(R.layout.options_bottom_sheet, null)
+        val optionsDialog = BottomSheetDialog(context!!)
+        optionsDialog.setContentView(dialogView)
+        dialogView.findViewById<TextView>(R.id.editOption).setOnClickListener {
+            optionsDialog.dismiss()
+            editClickListener(pos, expense)
         }
-        optionsDialog?.show()
-
+        dialogView.findViewById<TextView>(R.id.deleteBt).setOnClickListener {
+            optionsDialog.dismiss()
+            deleteClicked(pos, expense)
+        }
+        optionsDialog.show()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -119,7 +115,6 @@ class ThisMonthFragment : Fragment(R.layout.fragment_this_month),
 
     private fun initViews() {
 
-
         uid = arguments?.getString("uid").toString()
 
         date_et.setOnClickListener { showDatePickerDialog() }
@@ -145,11 +140,8 @@ class ThisMonthFragment : Fragment(R.layout.fragment_this_month),
         lastDateOfThisMonth = dateFormat.parse(dateFormat.format(cal.time))
         cal.set(Calendar.DAY_OF_MONTH, 1)
         firstDateOfThisMonth = dateFormat.parse(dateFormat.format(cal.time))
-
         calendarCurrent = Calendar.getInstance()
-
     }
-
 
     private fun showDatePickerDialog() {
         val newFragment: DialogFragment =
@@ -296,7 +288,7 @@ class ThisMonthFragment : Fragment(R.layout.fragment_this_month),
 
     fun newExpenseDialogDismissed(expense: Expense) {
 
-        if(currentDate == expense.date) {
+        if (currentDate == expense.date) {
             total += expense.amount.toLong()
 
             if (monthList.size == 0) {
