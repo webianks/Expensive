@@ -11,7 +11,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-
         <com.mikhaellopez.circularimageview.CircularImageView
                 android:id="@+id/userImageSheet"
                 android:layout_width="70dp"
@@ -77,23 +76,29 @@
                 android:background="@drawable/dashed_line_bg2" />
 
         <TextView
-                android:id="@+id/tv_dark_theme"
+                android:id="@+id/tv_theme"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/view_profile_divider"
-                android:drawableStart="@drawable/baseline_nights_stay_24"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="0dp"
+                android:background="?selectableItemBackground"
+                android:clickable="true"
                 android:drawablePadding="@dimen/margin_16dp"
+                android:focusable="true"
                 android:padding="@dimen/margin_22dp"
-                android:text="@string/dark_mode"
+                android:text="@string/label_theme"
                 android:textColor="@color/Grey_700"
                 android:textSize="17sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                app:drawableStartCompat="@drawable/baseline_nights_stay_24" />
 
         <View
                 android:id="@+id/view_pp_divider"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_below="@id/tv_dark_theme"
+                android:layout_below="@id/tv_theme"
                 android:background="@drawable/dashed_line_bg2" />
 
         <TextView
@@ -101,20 +106,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/view_pp_divider"
-                android:drawableStart="@drawable/baseline_policy_24"
+                android:background="?selectableItemBackground"
+                android:clickable="true"
                 android:drawablePadding="@dimen/margin_16dp"
+                android:focusable="true"
                 android:padding="@dimen/margin_22dp"
                 android:text="@string/privacy_policy"
                 android:textColor="@color/Grey_700"
                 android:textSize="17sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                app:drawableStartCompat="@drawable/baseline_policy_24" />
 
         <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_below="@id/tv_pp"
                 android:background="@drawable/dashed_line_bg2" />
-
 
     </RelativeLayout>
 </ScrollView>

@@ -16,6 +16,9 @@
     <string name="label_this_month">This month</string>
     <string name="label_all">Summary</string>
     <string name="label_menu">Profile</string>
-    <string name="dark_mode">Dark Mode</string>
+    <string name="dark">Dark</string>
+    <string name="light">Light</string>
+    <string name="system_default">System Default</string>
     <string name="label_add_new">+ Add New Expense</string>
+    <string name="label_theme">Theme</string>
 </resources>

@@ -18,11 +18,9 @@ class MainActivity : BaseActivity() {
     private lateinit var userName: String
     private lateinit var uid: String
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-       //AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         setContentView(R.layout.activity_main)
 
         uid = intent.getStringExtra("uid")
@@ -31,6 +29,11 @@ class MainActivity : BaseActivity() {
         userImage = intent.getStringExtra("photo_url")
 
         initViews()
+
+        if (savedInstanceState != null){
+            val fragment = MenuFragment.newInstance(userName, userEmail, userImage)
+            openFragment(fragment)
+        }
     }
 
     private fun initViews() {
@@ -76,9 +79,7 @@ class MainActivity : BaseActivity() {
             }
             dialog.show(ft, "ExpenseFragment")
         }
-
     }
-
 
     private fun openFragment(fragment: Fragment) {
         val transaction = supportFragmentManager.beginTransaction()

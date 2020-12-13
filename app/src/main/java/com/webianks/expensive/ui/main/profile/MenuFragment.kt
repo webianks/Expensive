@@ -13,6 +13,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.webianks.expensive.ExpensiveApplication
 import com.webianks.expensive.R
 import com.webianks.expensive.ui.login.LoginActivity
+import com.webianks.expensive.util.ThemeHelper
+import com.webianks.expensive.util.Util
 import kotlinx.android.synthetic.main.fragment_menu.*
 
 class MenuFragment : Fragment(R.layout.fragment_menu){
@@ -50,6 +52,16 @@ class MenuFragment : Fragment(R.layout.fragment_menu){
 
         logoutBt.setOnClickListener{
             confirmAndLogout()
+        }
+
+        tv_pp.setOnClickListener {
+            activity?.let {
+                Util.openPrivacyTab(it)
+            }
+        }
+
+        tv_theme.setOnClickListener {
+            ThemeHelper.applyTheme("light")
         }
 
         user_name.text = name
